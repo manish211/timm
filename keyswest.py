@@ -330,3 +330,6 @@ tbl = table('data/nasa93.csv')
 
 for col in tbl.head.nums:
   print(col.name,col.cache.has())
+
+for col in tbl.head.syms:
+  print(col.name,col.counts)
