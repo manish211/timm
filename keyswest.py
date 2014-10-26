@@ -30,14 +30,18 @@ def settings(**d): return o(
     """,
   author="Tim Menzies",
   copyleft="(c) 2014, MIT license, http://goo.gl/3UYBp",
+  secure = False,
   seed=1,
   tiny=0.5,
   start='print(The._logo)',
   cache = o(size=256),
-  reader= o(sep      = ",",
+  read  = o(sep      = ",",
             bad      = r'(["\' \t\r\n]|#.*)',
-            skip     ='?',
-            numc     ='$',
+            skip     = '?',
+            numc     = '$',
+            less     = '<',
+            more     = '>',
+            klass    = '=',
             missing  = '?',
             )
   ).update(**d)
@@ -45,6 +49,12 @@ def settings(**d): return o(
 class o:
   def __init__(i,**d): i.update(**d)
   def update(i,**d): i.__dict__.update(**d); return i
+  def __repr__(i)   : 
+    d    = i.__dict__
+    show = [':%s %s' % (k,d[k]) 
+            for k in sorted(d.keys() ) 
+            if k[0] is not "_"]
+    return '{'+' '.join(show)+'}'
 
 The= settings()
 
@@ -61,11 +71,12 @@ def sayln(*lst):
 def _say(): sayln(1,2,3,4)
 
 def cmd(com=The.start):
-  if globals()["__name__"] == "__main__":
-    if len(sys.argv) == 3:
-      if sys.argv[1] == '--cmd':
-        com = sys.argv[2] + '()'
-    if len(sys.argv) == 4:
+  if not The.secure:
+    if globals()["__name__"] == "__main__":
+      if len(sys.argv) == 3:
+        if sys.argv[1] == '--cmd':
+          com = sys.argv[2] + '()'
+      if len(sys.argv) == 4:
         com = sys.argv[2] + '(' + sys.argv[3] + ')'
     eval(com)
 
@@ -87,22 +98,25 @@ def atom(x):
 #########################################################
 
 def table(source):
-  tbl = o(rows=[],cols=None)
+  tbl = o(rows=[],head=None)
   for n,cells in row(source): 
     if n == 0 : 
-      f = factory(cells)
-      tbl.cols = f(); exit()
+      f = factory0(cells)
+      tbl.head = f()
+      meta = tbl.head.cols[0]
     else : 
-      tbl.cols += cells
+      cells = [meta] + cells
+      tbl.head += cells
+      tbl.rows += [cells]
   return tbl
 
 def row(file):
   """Leaps over any columns marked 'skip'.
   Turn strings to numbers or strings. 
   Kill comments. Join lines that end in 'sep'."""
-  skip = The.reader.skip
-  sep  = The.reader.sep
-  bad  = The.reader.bad
+  skip = The.read.skip
+  sep  = The.read.sep
+  bad  = The.read.bad
   def rows(): 
     n,kept = 0,""
     for line in open(file):
@@ -123,15 +137,17 @@ def _rows(f='data/nasa93.csv'):
    for n,cells in row(f): 
      print(n,cells)
 
-
-
 #########################################################
 class Col:
   def any(i): return None
   def dist(i,x,y): return 0
   def norm(i,x) : return x
+  def __iadd__(i,x):
+    if not x is None:
+      i.add(x)
+    return i
 
-class Cache:
+class Cache(Col):
   "Keep a random sample of stuff seen so far."
   def any(i): return any(i.all)
   def dist(i,x,y): 
@@ -142,7 +158,7 @@ class Cache:
   def __init__(i,inits=[]):
     i.all,i.n,i._has = [],0,None
     map(i.__iadd__,inits)
-  def __iadd__(i,x):
+  def add(i,x):
     i.n += 1
     if len(i.all) < The.cache.size: # if not full
       i._has = None
@@ -151,10 +167,9 @@ class Cache:
       if rand() <= The.cache.size/i.n:
         i._has=None
         i.all[int(rand()*The.cache.size)] = x
-    return i
   def has(i):
     if i._has == None:
-      lst  = sorted(i.all)
+      i.all  = sorted(i.all)
       med,iqr = medianIQR(i.all,ordered=True)
       i._has = o(
         median = med,      iqr = iqr,
@@ -163,18 +178,19 @@ class Cache:
 
 class N(Col):
   "For nums"
-  def __init__(i,col=0,least=0,most=1,name=None):
+  def __init__(i,col=0,least=None,most=None,name=None):
     i.col=col
     i.name=None
     i.least, i.most=least,most  
     i.lo,i.hi = 10**32, -1*10**32
-  def __iadd__(i,x):
-    assert x >= i.least and x <= i.most
-    i.lo = min(i.lo,x)
-    i.hi = max(i.hi,x)
-    return i
+    i.cache   = Cache()
+  def add(i,x):
+    if not (None == i.least == i.most):
+      assert x >= i.least and x <= i.most
+    i.cache += x
   def norm(i,x):
-    tmp = (x - i.lo)/ (i.hi - i.lo + 0.00001)
+    z = i.cache.has()
+    tmp = (x - z.lo)/ (z.hi - z.lo + 0.00001)
     return max(0,min(1,tmp))
   def dist(i,x,y):
     return i.norm(x) - i.norm(y)
@@ -186,10 +202,16 @@ class S(Col):
     i.items = items
     i.col=col
     i.name=name 
+    i.counts={}
+    i.mode, i.most = None,0
   def any(i):
     return random.choice(i.items)
-  def __iadd__(i,x): 
-    assert x in i.index
+  def __iadd__(i,x):
+    if i.index:
+      assert x in i.index
+    n = i.counts[x] = i.counts.get(x,0) + 1
+    if n > i.most:
+      i.mode, i.most = x,n
   def dist(i,x,y): return 0 if x == y else 0
 
 class O(Col):
@@ -198,6 +220,7 @@ class O(Col):
     love=False # for objectives to maximize, set love to True
     ):
     i.f=f
+    i.col=col
     i.love=love
     i.name= name or f.__name__
     i.n= N(col=col,least= -10**32, most=10**32)
@@ -208,6 +231,8 @@ class O(Col):
         i.n += x
         lst[i.col] = x
     return x
+  def add(i,x):
+    i.n += x
   def height(i):
     return i.n.norm(i._score)
   def better(i,x,y):
@@ -221,35 +246,46 @@ class Meta(Col):
     i.weight, i.of, i.klass = weight, of, None
     i.id = Meta.id = Meta.id + 1
   def any(i):
-    return Meta(i.of)
+    return i
   def __repr__(i):
-    return i.of.name + ':' \
-           + ('DEAD' if i.dead else 'ALIVE') \
-           + '*' + str(i.weight)
+    return i.of.name + '*' + str(i.weight)
 
 def head(lst):
+  def sym(x)  : return not The.read.numc  in x
+  def num(x)  : return The.read.numc in x
+  def less(x) : return The.read.less in x and num(x)  
+  def more(x) : return The.read.more in x and num(x)
+  def klass(x): return The.read.klass in x and sym(x)
   def w(n,x):
-    y = N if The.reader.numc in x else S
+    y = N if num(x) else S
     y = y()
-    y.name, y.col = n, x
+    y.name, y.col = x, n
+    y.klass, y.less, y.more = klass(x), less(x), more(x)
+    return y
   return [w(n,x) for n,x in enumerate(lst)]
 
-
 class Cols:
-  def __init__(i,factory,cols=[]):
+  def __init__(i,factory,cols=[],name=None):
     i.cols = [Meta(i)] + cols
     i.factory, i.name  = factory, factory.__name__
-    i.nums = [];  i.syms = []; i.objs = []
+    i.nums = [];  i.syms = []; i.objs = []; 
+    i.indep= []; i.dep = [];  i.less = []; i.more = []
     for pos,header in enumerate(i.cols):
       header.col = pos 
-      if isinstance(header,N): i.nums += [header]
-      if isinstance(header,S): i.syms += [header]
-      if isinstance(header,O): i.objs += [header]
+      if pos >= 1:
+        if isinstance(header,N): i.nums += [header]
+        if isinstance(header,S): i.syms += [header]
+        if header.less or header.more or \
+           isinstance(header,O): i.objs += [header]
+        if header.klass:         i.dep  += [header]
     i.indep = i.nums + i.syms
-    i.cl    = Close()
   def any(i): return [z.any() for z in i.cols]
-  def tell(i,lst): 
+  def __iadd__(i,lst):
+    i.add(lst)
+    return i
+  def add(i,lst): 
     for z in i.indep: z += lst[z.col]
+    for z in i.dep:   z += lst[z.col]
   def score(i,l): return [z.score(l) for z in i.objs]
   def fromHell(i):
     x,c = 0, len(i.objs)
@@ -266,15 +302,14 @@ class Cols:
       if obj.worse(x,y) : return False
       if obj.better(x,y): better = True
     return better
-  def dist(i,lst1,lst2,peeking=False):
+  def dist(i,lst1,lst2):
     total,c = 0,len(i.indep)
     for x,y,indep in vals(lst1,lst2,i.indep):
       total += indep.dist(x,y)**2 
-    d= total**0.5/c**0.5
-    if not peeking: cl += d          
+    d= total**0.5/c**0.5        
     return d
 
-def factory(lst):
+def factory0(lst):
   def f():
     return Cols(f,cols=head(lst))
   return f
@@ -293,8 +328,5 @@ def fromLine(a,b,c):
 
 tbl = table('data/nasa93.csv')
 
-print(tbl.cols.cols)
-
- 
-#cmd('_close()')
-
+for col in tbl.head.nums:
+  print(col.name,col.cache.has())
