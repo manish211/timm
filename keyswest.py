@@ -5,17 +5,6 @@ sys.dont_write_bytecode =True
 def settings(**d): return o(
   name="KEYSWEST v0.1",
   what="A linear-time MOEA/D variant",
-  synopsis="""
-  Read tabular data from disk.  Find 'islands'-
-  leaves of a dendogram found via recursive PCA-like
-  clustering. Then discretize the numerics via
-  minimizing the entropy of the island ids
-  associated with the numeric values.  Apply 'envy'
-  to find islands 'better' than some 'current'
-  island.  Sort ranges via their frequency in better
-  and current.  Greedy search the sort to find the
-  best fewest ranges.
-  """,
   _logo="""
             .-""-.
            / .--. \ 
@@ -28,6 +17,17 @@ def settings(**d): return o(
          \\\ '::::' /
      jgs  `=':-..-'`
     """,
+  synopsis="""
+  Read tabular data from disk.  Find 'islands'-
+  leaves of a dendogram found via recursive PCA-like
+  clustering. Then discretize the numerics via
+  minimizing the entropy of the island ids
+  associated with the numeric values.  Apply 'envy'
+  to find islands 'better' than some 'current'
+  island.  Sort ranges via their frequency in better
+  and current.  Greedy search the sort to find the
+  best fewest ranges.
+  """,
   author="Tim Menzies",
   copyleft="(c) 2014, MIT license, http://goo.gl/3UYBp",
   secure = False,
@@ -61,6 +61,8 @@ The= settings()
 rand= random.random
 seed= random.seed
 any = random.choice
+def gt(x,y): return x > y
+def lt(x,y): return x < y
 
 def say(*lst):
   sys.stdout.write(' '.join(map(str,lst)))
@@ -191,7 +193,9 @@ class N(Col):
   def norm(i,x):
     z = i.cache.has()
     tmp = (x - z.lo)/ (z.hi - z.lo + 0.00001)
-    return max(0,min(1,tmp))
+    tmp =  max(0,min(1,tmp))
+    print("T",x,tmp)
+    return tmp
   def dist(i,x,y):
     return i.norm(x) - i.norm(y)
     
@@ -212,7 +216,7 @@ class S(Col):
     n = i.counts[x] = i.counts.get(x,0) + 1
     if n > i.most:
       i.mode, i.most = x,n
-  def dist(i,x,y): return 0 if x == y else 0
+  def dist(i,x,y): return 0 if x == y else 1
 
 class O(Col):
   "for objectives"
@@ -304,10 +308,14 @@ class Cols:
     return better
   def dist(i,lst1,lst2):
     total,c = 0,len(i.indep)
+    print(3333)
     for x,y,indep in vals(lst1,lst2,i.indep):
-      total += indep.dist(x,y)**2 
+      inc =  indep.dist(x,y)**2
+      print("I>",x,y,inc)
+      total += inc
     d= total**0.5/c**0.5        
     return d
+
 
 def factory0(lst):
   def f():
@@ -326,10 +334,44 @@ def fromLine(a,b,c):
     x = (a**2 + c**2 - b**2)/ (2*c)
     return max(0,(a**2 - x**2))**0.5
 
+def closest(row1, rows, best=10**32):
+  id1, cols, out  = id(row1), row1[0], row1
+  print(best)
+  for row2 in rows:
+    id2 = id(row2)
+    if id2 > id1:
+      print(id1,id2)
+      tmp = cols.dist(row1,row2)
+      print("D>",tmp,id1,id2)
+      print("  ",row1)
+      print("  ",row2)
+      if tmp < best:
+        print(tmp)
+        best,out = tmp,row2
+        exit()
+        return best
+  return out
+
+def furthest(row, rows):
+  return closest(row, rows,best=-1,better=gt)
+
 tbl = table('data/nasa93.csv')
 
-for col in tbl.head.nums:
-  print(col.name,col.cache.has())
+# for col in tbl.head.nums:
+#   print(col.name,col.cache.has())
 
-for col in tbl.head.syms:
-  print(col.name,col.counts)
+# for col in tbl.head.syms:
+#   print(col.name,col.counts)
+
+# for n1,row1 in enumerate(tbl.rows):
+#   for n2,row2 in enumerate(tbl.rows):
+#     if n1 > n2:
+#       print(n1,n2,tbl.head.dist(row1,row2))
+
+print("\n=========================================")
+
+for row1 in tbl.rows:
+  row2 = closest(row1,tbl.rows)
+  #row3 = furthest(row1,tbl.rows)
+  #print("\n",row1,"\n",row2," <== closest\n",row3," <== furthest")
+      
