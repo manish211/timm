@@ -2,45 +2,57 @@ from __future__ import division,print_function
 import sys,random,re
 sys.dont_write_bytecode =True
 
+####################################################
 def genic0(**d): return o(
-    k=10,
-    era=100,
-    num='$',
-    klass='=',
-    seed=1).update(**d)
+  _logo=
+ """GENIC v2: incremental evolutionary clustering
+(C) MIT (3 clause), Tim Menzies, 2014
+                                            ,d$b
+                                        ,d$$P'
+                                      ,d$$$' 
+                                    ,d$$$P'
+                                  ,d$PB$'
+                                ,d$$$P'
+                               d$$$P'
+                             d$$$P'               
+            ___,,---''\     d$$P'                 
+  ___,,---''            \_/'\P'                    
+ \           __  ,---,_ | _/'                     
+   \      ,-"  `\\ \   `)/`\                      
+     \    |  \   )`-`\_-'"'\ \                     
+       \  `--'`\/     `\    )  \ 
+         \      `\    `,_\-'     \ 
+           \   \_,'                \ 
+             \            ___,,---''
+               \___,,---''           pb
+The beginning, the end, the one who is many. 
+I bring order to chaos.""",
+  k=10,
+  era=100,
+  num='$',
+  klass='=',
+  seed=1).update(**d)
 
+def rows0(**d): return o(
+  skip="?",
+  sep  = ',',
+  bad = r'(["\' \t\r\n]|#.*)'
+  ).update(**d)
+
+####################################################
 rand= random.random
 seed= random.seed
 
 def say(c):
   sys.stdout.write(c); sys.stdout.flush()
+ 
+def g3(lst):
+  for col,val in enumerate(lst):
+    if isinstance(val,float): 
+      val = round(n,3)
+    lst[col] = val
+  return lst
 
-def rows(file):
-  """Leaps over any columns marked 'skip'.
-  Turn strings to numbers or strings. 
-  Kill comments. Join lines that end in 'sep'."""
-  skip, sep  = '?', ','
-  bad = r'(["\' \t\r\n]|#.*)'
-  def atom(x):
-    try : return int(x)
-    except ValueError:
-       try : return float(x)
-       except ValueError : return x
-  def worker(): 
-    n,kept = 0,""
-    for line in open(file):
-      now   = re.sub(bad,"",line)
-      kept += now
-      if kept:
-        if not now[-1] == sep:
-          yield n, map(atom, kept.split(sep))
-          n += 1
-          kept = "" 
-  todo = None
-  for n,line in worker():
-    todo = todo or [col for col,name in enumerate(line) 
-                    if not skip in name]
-    yield n, [ line[col] for col in todo ]
 
 class o:
   """Standard trick for defining a bag of names slots
@@ -53,6 +65,33 @@ class o:
             for k in sorted(d.keys() ) 
             if k[0] is not "_"]
     return '{'+' '.join(show)+'}'
+
+####################################################
+def rows(file,w=None):
+  """Leaps over any columns marked 'skip'.
+  Turn strings to numbers or strings. 
+  Kill comments. Join lines that end in 'sep'."""
+  w = w or rows0()
+  def atom(x):
+    try : return int(x)
+    except ValueError:
+       try : return float(x)
+       except ValueError : return x
+  def worker(): 
+    n,kept = 0,""
+    for line in open(file):
+      now   = re.sub(w.bad,"",line)
+      kept += now
+      if kept:
+        if not now[-1] == w.sep:
+          yield n, map(atom, kept.split(w.sep))
+          n += 1
+          kept = "" 
+  todo = None
+  for n,line in worker():
+    todo = todo or [col for col,name in enumerate(line) 
+                    if not w.skip in name]
+    yield n, [ line[col] for col in todo ]
 
 def header(w,row):
   def numOrSym(val):
@@ -71,38 +110,44 @@ def data(w,row):
     w.min[col] = min(val, w.min.get(col,val))
     w.max[col] = max(val, w.max.get(col,val))
     
+def indep(w,cols):
+  for col in cols:
+    if col in w.indep:
+      yield col
+
+####################################################
 def nearest(w,row):
   def norm(val,col):
     lo, hi = w.min[col], w.max[col]
     return (val - lo ) / (hi - lo + 0.00001)
-  def dist(a,b,w):
+  def dist(centroid):
     n,d = 0,0
-    for col in w.num:
-      x1,x2 = a[col], b[col]
+    for col in indep(w, w.num):
+      x1,x2 = row[col], centroid[col]
       n1,n2 = norm(x1,col), norm(x2,col)
       d    += (n1 - n2)**2
       n    += 1
-    for col in w.sym:
-      x1,x2 = a[col],b[col]
+    for col in indep(w, w.sym):
+      x1,x2 = row[col],centroid[col]
       d    += (0 if x1 == x2 else 1)
       n    += 1
     return d**0.5 / n**0.5
   lo, out = 10**32, None
   for n,(_,centroid) in enumerate(w.centroids):
-    d = dist(row,centroid,w)
-    if 0.01 < d < lo:
+    d = dist(centroid)
+    if d < lo:
       lo,out = d,n
   return out
 
-def move(w,row1,n):
-  u0,row0 = w.centroids[n]
+def move(w,new,n):
+  u0,old = w.centroids[n]
   u1 = 1
-  out = [None]*len(row1)
+  out = [None]*len(old)
   for col in w.sym:
-    x0,x1 = row0[col], row1[col]
+    x0,x1 = old[col], new[col]
     out[col] = x1 if rand() < 1/(u0+u1) else x0
   for col in w.num:
-    x0,x1= row0[col], row1[col]
+    x0,x1= old[col], new[col]
     out[col] = (u0*x0 + u1*x1)/ (u0+u1)
   w.centroids[n] = (u0 + u1, out)
 
@@ -118,12 +163,12 @@ def normu(w):
   most = all[-1][0]
   return [(u/most,row) for u,row in all]
 
-def genic(datafile='data/diabetes.csv',opt=None):
+def genic(src='data/diabetes.csv',opt=None):
   w = o(num=[], sym=[], dep=[], indep=[],
         centroids=[],
         min={}, max={}, name={},index={},
         opt=None or genic0())
-  for n,row in rows(datafile):
+  for n,row in rows(src):
     if n == 0: 
       header(w,row)
     else:
@@ -131,20 +176,17 @@ def genic(datafile='data/diabetes.csv',opt=None):
       if len(w.centroids) < w.opt.k:
         say("+")
         w.centroids += [(1,row)]
-      else:
-        move(w,row,nearest(w,row))
+        continue
+      move(w,row,nearest(w,row))
       if 0 == (n % w.opt.era):
         less(w)
   return sorted(normu(w),reverse=True)
 
-def g3(row):
-  for col,val in enumerate(row):
-    if isinstance(val,float): 
-      val = round(n,3)
-    row[col] = val
-  return row
-
-for n,row in genic():
-  print(n,":",g3(row))
+if __name__ == '__main__':
+  clusters = genic()
+  seed(113)
+  print("")
+  for n,centroid in clusters:
+    print(int(100*n),":",g3(centroid))
         
       
