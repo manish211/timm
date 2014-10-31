@@ -90,7 +90,7 @@ def nearest(w,row):
   lo, out = 10**32, None
   for n,(_,centroid) in enumerate(w.centroids):
     d = dist(row,centroid,w)
-    if d < lo:
+    if 0.01 < d < lo:
       lo,out = d,n
   return out
 
