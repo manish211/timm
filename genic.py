@@ -2,34 +2,8 @@ from __future__ import division,print_function
 import sys,random,re
 sys.dont_write_bytecode =True
 
-
-# 5min 33secs for 1.5M rows. using 0.2% of my memory
-
-####################################################
+###################################################
 def genic0(**d): return o(
-  _logo=
- """GENIC v2: incremental evolutionary clustering
-(C) MIT (3 clause), Tim Menzies, 2014
-                                            ,d$b
-                                        ,d$$P'
-                                      ,d$$$' 
-                                    ,d$$$P'
-                                  ,d$PB$'
-                                ,d$$$P'
-                               d$$$P'
-                             d$$$P'               
-            ___,,---''\     d$$P'                 
-  ___,,---''            \_/'\P'                    
- \           __  ,---,_ | _/'                     
-   \      ,-"  `\\ \   `)/`\                      
-     \    |  \   )`-`\_-'"'\ \                     
-       \  `--'`\/     `\    )  \ 
-         \      `\    `,_\-'     \ 
-           \   \_,'                \ 
-             \            ___,,---''
-               \___,,---''           pb
-The beginning, the end, the one who is many. 
-I bring order to chaos.""",
   k=16,
   era=5000,
   num='$',
@@ -42,7 +16,7 @@ def rows0(**d): return o(
   bad = r'(["\' \t\r\n]|#.*)'
   ).update(**d)
 
-####################################################
+###################################################
 rand= random.random
 seed= random.seed
 
@@ -56,12 +30,11 @@ def g(lst,n=3):
     lst[col] = val
   return lst
 
-
 class o:
-  """Standard trick for defining a bag of names slots
-  that have no methods."""
+  "Define a bag of names slots with no methods."
   def __init__(i,**d): i.update(**d)
-  def update(i,**d): i.__dict__.update(**d); return i
+  def update(i,**d): 
+    i.__dict__.update(**d); return i
   def __repr__(i)   : 
     d    = i.__dict__
     show = [':%s %s' % (k,d[k]) 
@@ -69,7 +42,7 @@ class o:
             if k[0] is not "_"]
     return '{'+' '.join(show)+'}'
 
-####################################################
+###################################################
 def rows(file,w=None):
   """Leaps over any columns marked 'skip'.
   Turn strings to numbers or strings. 
@@ -92,9 +65,12 @@ def rows(file,w=None):
           kept = "" 
   todo = None
   for n,line in lines():
-    todo = todo or [col for col,name in enumerate(line) 
+    todo = todo or [col for col,name 
+                    in enumerate(line) 
                     if not w.skip in name]
     yield n, [ line[col] for col in todo ]
+
+
 
 def header(w,row):
   def numOrSym(val):
@@ -117,7 +93,7 @@ def indep(w,cols):
   for col in cols:
     if col in w.indep: yield col
 
-####################################################
+##################################################
 def nearest(w,row):
   def norm(val,col):
     lo, hi = w.min[col], w.max[col]
@@ -155,16 +131,20 @@ def move(w,new,n):
 
 def less(w) :
   b4 = len(w.centroids)
-  #all = normu(w)
   rare = w.opt.era/w.opt.k  
-  w.centroids = [(1,row) for u,row in w.centroids if u < rare]
+  w.centroids = [(1,row) for u,row in 
+                 w.centroids if u < rare]
   now=len(w.centroids)
   print(" - ",b4 - now)
 
-def normu(w):
-  all  = sorted([(u,row) for u,row in w.centroids])
-  most = all[-1][0]
-  return [(u/most,row) for u,row in all]
+
+
+
+
+
+
+
+
 
 def genic(src='data/diabetes.csv',opt=None):
   w = o(num=[], sym=[], dep=[], indep=[],
