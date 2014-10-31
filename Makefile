@@ -24,4 +24,4 @@ listing:
 	evince etc/pdf/$F.pdf &
 
 demo:
-	python genic.py | column -t
+	python genic.py 

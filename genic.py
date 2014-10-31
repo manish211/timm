@@ -2,14 +2,29 @@ from __future__ import division,print_function
 import sys,random,re
 sys.dont_write_bytecode =True
 
+def cached(f=None,cache={}):
+  if f:
+    def wrapper(**d):
+      tmp = cache[f.__name__] = f(**d)
+      return tmp
+    return wrapper
+  else:
+    for x in cache: print(x,cache[x])
+    
 ###################################################
-def genic0(**d): return o(
-  k=16,
-  era=5000,
-  num='$',
-  klass='=',
-  seed=1).update(**d)
+@cached
+def genic0(**d): 
+  def tiny(u,w): 
+    return u <  w.opt.era/w.opt.k/2
+  return o(
+    k=10,
+    era=1000,
+    tiny= tiny,
+    num='$',
+    klass='=',
+    seed=1).update(**d)
 
+@cached
 def rows0(**d): return o(
   skip="?",
   sep  = ',',
@@ -23,6 +38,9 @@ seed= random.seed
 def say(c):
   sys.stdout.write(str(c))
  
+def fun(x):
+  return x.__class__.__name__ == 'function'
+
 def g(lst,n=3):
   for col,val in enumerate(lst):
     if isinstance(val,float): 
@@ -30,17 +48,29 @@ def g(lst,n=3):
     lst[col] = val
   return lst
 
+def printm(matrix):
+  s = [[str(e) for e in row] for row in matrix]
+  lens = [max(map(len, col)) for col in zip(*s)]
+  fmt = '\t'.join('{{:{}}}'.format(x) for x in lens)
+  for row in [fmt.format(*row) for row in s]:
+    print(row)
+
+
 class o:
   "Define a bag of names slots with no methods."
   def __init__(i,**d): i.update(**d)
   def update(i,**d): 
     i.__dict__.update(**d); return i
   def __repr__(i)   : 
+    def name(x):
+      return x.__name__ if fun(x) else x
     d    = i.__dict__
-    show = [':%s %s' % (k,d[k]) 
+    show = [':%s=%s' % (k,name(d[k])) 
             for k in sorted(d.keys() ) 
             if k[0] is not "_"]
     return '{'+' '.join(show)+'}'
+
+
 
 ###################################################
 def rows(file,w=None):
@@ -69,8 +99,6 @@ def rows(file,w=None):
                     in enumerate(line) 
                     if not w.skip in name]
     yield n, [ line[col] for col in todo ]
-
-
 
 def header(w,row):
   def numOrSym(val):
@@ -111,14 +139,15 @@ def nearest(w,row):
       n    += 1
     return d**0.5 / n**0.5
   lo, out = 10**32, None
-  for n,(_,centroid) in enumerate(w.centroids):
+  for n,(_,_,_,centroid) in enumerate(w.centroids):
     d = dist(centroid)
     if d < lo:
       lo,out = d,n
   return out
 
+
 def move(w,new,n):
-  u0,old = w.centroids[n]
+  u0,u,age,old = w.centroids[n]
   u1 = 1
   out = [None]*len(old)
   for col in w.sym:
@@ -127,56 +156,58 @@ def move(w,new,n):
   for col in w.num:
     x0,x1= old[col], new[col]
     out[col] = (u0*x0 + u1*x1)/ (u0+u1)
-  w.centroids[n] = (u0 + u1, out)
+  w.centroids[n] = (u0 + u1,u+u1, age+1, out)
 
 def less(w) :
   b4 = len(w.centroids)
-  rare = w.opt.era/w.opt.k  
-  w.centroids = [(1,row) for u,row in 
-                 w.centroids if u < rare]
-  now=len(w.centroids)
-  print(" - ",b4 - now)
-
-
-
-
-
-
-
-
-
+  w.centroids = [(1,u,dob,row) 
+                 for u0,u,dob,row in 
+                 w.centroids 
+                 if not w.opt.tiny(u0,w)]
+  say("\tdeaths=%s\t" % (b4 - len(w.centroids)))
 
 def genic(src='data/diabetes.csv',opt=None):
   w = o(num=[], sym=[], dep=[], indep=[],
         centroids=[],
         min={}, max={}, name={},index={},
-        opt=None or genic0())
+        opt=opt or genic0())
   for n,row in rows(src):
     if n == 0: 
       header(w,row)
-      continue
-    data(w,row)
-    if len(w.centroids) < w.opt.k:
-      say("+")
-      w.centroids += [(1,row)]
-      continue
-    move(w,row,nearest(w,row))
-    if 0 == (n % w.opt.era):
-      say(n)
-      less(w)
-  return sorted(w.centroids,reverse=True)
+    else:
+      data(w,row)
+      if len(w.centroids) < w.opt.k:
+        say("+")
+        w.centroids += [(1,1,n,row)]
+      else:
+        move(w,row,nearest(w,row))
+        if 0 == (n % w.opt.era):
+          say('\nn=%s'%n)
+          less(w)
+  return w,sorted(w.centroids,reverse=True)
+
+def report(w,clusters):
+  print("")
+  cols = w.index.keys()
+  header = sorted(w.name.keys())
+  header= [w.name[i] for i in header]
+  matrix = [['id','lastGen','allGen','dob'] + header]
+  caught=0
+  for m,(u0,u,age,centroid) in enumerate(clusters):
+    if not w.opt.tiny(u0,w):
+      caught += u0
+      matrix += [[m+1,u0,u,age] + g(centroid,2)]
+  print("\n%caught in last gen =",
+        int(100*caught/w.opt.era))
+  printm(matrix)
 
 if __name__ == '__main__':
   src='data/diabetes.csv'
   if len(sys.argv) == 2:
     src= sys.argv[1]
-  opt=genic0(era=10)
+  opt=genic0(era=100,k=8)
   seed(opt.seed)
-  clusters = genic(src,opt)
-  print("")
-  for m,(n,centroid) in enumerate(clusters):
-    rare = opt.era/opt.k
-    if n > rare:
-      print(m+1,n,":",g(centroid,2))
+  report(*genic(src,opt)) 
         
       
+cached()
