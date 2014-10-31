@@ -3,7 +3,7 @@ import sys,random,re
 sys.dont_write_bytecode =True
 
 def genic0(**d): return o(
-    k=20,
+    k=10,
     era=100,
     num='$',
     klass='=',
