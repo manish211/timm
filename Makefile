@@ -22,3 +22,6 @@ listing:
 	ps2pdf  ~/tmp/listing.ps	
 	mv listing.pdf etc/pdf/$F.pdf
 	evince etc/pdf/$F.pdf &
+
+demo:
+	python genic.py | column -t

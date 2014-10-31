@@ -8,7 +8,7 @@ def genic0(**d): return o(
   era=5000,
   num='$',
   klass='=',
-    seed=113).update(**d)
+  seed=1).update(**d)
 
 def rows0(**d): return o(
   skip="?",
@@ -154,24 +154,24 @@ def genic(src='data/diabetes.csv',opt=None):
   for n,row in rows(src):
     if n == 0: 
       header(w,row)
-    else:
-      data(w,row)
-      if len(w.centroids) < w.opt.k:
-        say("+")
-        w.centroids += [(1,row)]
-        continue
-      move(w,row,nearest(w,row))
-      if 0 == (n % w.opt.era):
-        say(n)
-        less(w)
+      continue
+    data(w,row)
+    if len(w.centroids) < w.opt.k:
+      say("+")
+      w.centroids += [(1,row)]
+      continue
+    move(w,row,nearest(w,row))
+    if 0 == (n % w.opt.era):
+      say(n)
+      less(w)
   return sorted(w.centroids,reverse=True)
 
 if __name__ == '__main__':
-  src='data/diabetes2.csv'
+  src='data/diabetes.csv'
   if len(sys.argv) == 2:
     src= sys.argv[1]
-  opt=genic0()
-  clusters = genic(src)
+  opt=genic0(era=10)
+  clusters = genic(src,opt)
   seed(opt.seed)
   print("")
   for m,(n,centroid) in enumerate(clusters):
