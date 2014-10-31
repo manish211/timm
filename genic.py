@@ -3,21 +3,20 @@ import sys,random,re
 sys.dont_write_bytecode =True
 
 def cached(f=None,cache={}):
-  """To know the active options, cache their 
+  """To access the active options, cache their 
      most recent setting."""
-  if f:
-    def wrapper(**d):
-      tmp = cache[f.__name__] = f(**d)
-      return tmp
-    return wrapper
-  else:
-    for x in cache: print(x,cache[x])
+  if not f: 
+    return cache
+  def wrapper(**d):
+    tmp = cache[f.__name__] = f(**d)
+    return tmp
+  return wrapper
     
 ###################################################
 @cached
 def genic0(**d): 
-  def halfEraDivK(u,w): 
-    return u <  w.opt.era/w.opt.k/2
+  def halfEraDivK(w): 
+    return w.opt.era/w.opt.k/2
   return o(
     k=10,
     era=1000,
@@ -53,7 +52,7 @@ def g(lst,n=3):
 def printm(matrix):
   s = [[str(e) for e in row] for row in matrix]
   lens = [max(map(len, col)) for col in zip(*s)]
-  fmt = '\t'.join('{{:{}}}'.format(x) for x in lens)
+  fmt = ' | '.join('{{:{}}}'.format(x) for x in lens)
   for row in [fmt.format(*row) for row in s]:
     print(row)
 
@@ -166,8 +165,8 @@ def less(w,n) :
   w.centroids = [(1,u,dob,row) 
                  for u0,u,dob,row in 
                  w.centroids 
-                 if not w.opt.tiny(u0,w)]
-  print("n=%s deaths=%s%%" % (
+                 if u0 > w.opt.tiny(w)]
+  print("at n=%s, pruning %s%% of clusters" % (
          n,  int(100*(b4 - len(w.centroids))/b4)))
 
 def genic(src='data/diabetes.csv',opt=None):
@@ -192,15 +191,18 @@ def report(w,clusters):
   cols = w.index.keys()
   header = sorted(w.name.keys())
   header= [w.name[i] for i in header]
-  matrix = [['gen','caughtLast','caughtAll','dob'] + header]
+  matrix = [['gen','caughtLast',
+              'caughtAll','dob'] + header]
   caught=0
   for m,(u0,u,age,centroid) in enumerate(clusters):
-    if not w.opt.tiny(u0,w):
+    if u0 > w.opt.tiny(w):
       caught += u0
       matrix += [[m+1,u0,u,age] + g(centroid,2)]
   print("\ncaught in last gen =%s%%\n" %
         int(100*caught/w.opt.era))
   printm(matrix)
+  options = cached()
+  for x in options: print(x,options[x])
 
 if __name__ == '__main__':
   src='data/diabetes.csv'
