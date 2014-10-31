@@ -2,6 +2,19 @@ from __future__ import division,print_function
 import sys,random,re
 sys.dont_write_bytecode =True
 
+def genic0(**d): return o(
+    k=20,
+    era=100,
+    num='$',
+    klass='=',
+    seed=1).update(**d)
+
+rand= random.random
+seed= random.seed
+
+def say(c):
+  sys.stdout.write(c); sys.stdout.flush()
+
 def rows(file):
   """Leaps over any columns marked 'skip'.
   Turn strings to numbers or strings. 
@@ -30,6 +43,8 @@ def rows(file):
     yield n, [ line[col] for col in todo ]
 
 class o:
+  """Standard trick for defining a bag of names slots
+  that have no methods."""
   def __init__(i,**d): i.update(**d)
   def update(i,**d): i.__dict__.update(**d); return i
   def __repr__(i)   : 
@@ -39,31 +54,26 @@ class o:
             if k[0] is not "_"]
     return '{'+' '.join(show)+'}'
 
-def genic0(**d): return o(
-    k=10,
-    era=100,
-    num='$',
-    klass='=',
-    seed=1).update(**d)
-
 def header(w,row):
+  def numOrSym(val):
+    return w.num if w.opt.num in val else w.sym
+  def indepOrDep(val):
+    return w.dep if w.opt.klass in val else w.indep
   for col,val in enumerate(row):
-    ako = w.num if w.opt.num in val else w.sym
-    ako.append(col)
-    what= w.dep if w.opt.klass in val else w.indep
-    what.append(col)
+    numOrSym(val).append(col)
+    indepOrDep(val).append(col)
     w.name[col] = val
     w.index[val] = col
 
 def data(w,row):
   for col in w.num:
     val = row[col]
-    o.min[col] = min(val, o.min.get(col,10**32))
-    o.max[col] = max(val, o.max.get(col,-10**32))
+    w.min[col] = min(val, w.min.get(col,val))
+    w.max[col] = max(val, w.max.get(col,val))
     
 def nearest(w,row):
   def norm(val,col):
-    lo, hi = w.min[col], w.max[old]
+    lo, hi = w.min[col], w.max[col]
     return (val - lo ) / (hi - lo + 0.00001)
   def dist(a,b,w):
     n,d = 0,0
@@ -85,8 +95,28 @@ def nearest(w,row):
   return out
 
 def move(w,row1,n):
-  w2,row2 = w.centroids[n]
-  w1 = 1
+  u0,row0 = w.centroids[n]
+  u1 = 1
+  out = [None]*len(row1)
+  for col in w.sym:
+    x0,x1 = row0[col], row1[col]
+    out[col] = x1 if rand() < 1/(u0+u1) else x0
+  for col in w.num:
+    x0,x1= row0[col], row1[col]
+    out[col] = (u0*x0 + u1*x1)/ (u0+u1)
+  w.centroids[n] = (u0 + u1, out)
+
+def less(w) :
+  b4 = len(w.centroids)
+  all = normu(w)
+  w.centroids = [(1,row) for u,row in all if u >= rand()]
+  now=len(w.centroids)
+  print(" - ",b4 - now)
+
+def normu(w):
+  all  = sorted([(u,row) for u,row in w.centroids])
+  most = all[-1][0]
+  return [(u/most,row) for u,row in all]
 
 def genic(datafile='data/diabetes.csv',opt=None):
   w = o(num=[], sym=[], dep=[], indep=[],
@@ -98,12 +128,23 @@ def genic(datafile='data/diabetes.csv',opt=None):
       header(w,row)
     else:
       data(w,row)
-      if len(o.centroids) < o.opt.k:
+      if len(w.centroids) < w.opt.k:
+        say("+")
         w.centroids += [(1,row)]
       else:
         move(w,row,nearest(w,row))
-        
+      if 0 == (n % w.opt.era):
+        less(w)
+  return sorted(normu(w),reverse=True)
 
-genic()
+def g3(row):
+  for col,val in enumerate(row):
+    if isinstance(val,float): 
+      val = round(n,3)
+    row[col] = val
+  return row
+
+for n,row in genic():
+  print(n,":",g3(row))
         
       
