@@ -158,6 +158,9 @@ def move(w,new,n):
     out[col] = (u0*x0 + u1*x1)/ (u0+u1)
   w.centroids[n] = (u0 + u1,u+u1, age, out)
 
+def more(w,n,row):
+  w.centroids += [(1,1,n,row)]
+
 def less(w,n) :
   b4 = len(w.centroids)
   w.centroids = [(1,u,dob,row) 
@@ -178,7 +181,7 @@ def genic(src='data/diabetes.csv',opt=None):
     else:
       data(w,row)
       if len(w.centroids) < w.opt.k:
-        w.centroids += [(1,1,n,row)]
+        more(w,n,row)
       else:
         move(w,row,nearest(w,row))
         if 0 == (n % w.opt.era):
