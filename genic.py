@@ -16,12 +16,12 @@ def cached(f=None,cache={}):
 ###################################################
 @cached
 def genic0(**d): 
-  def tiny(u,w): 
+  def halfEraDivK(u,w): 
     return u <  w.opt.era/w.opt.k/2
   return o(
     k=10,
     era=1000,
-    tiny= tiny,
+    tiny= halfEraDivK,
     num='$',
     klass='=',
     seed=1).update(**d)
