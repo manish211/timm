@@ -3,8 +3,8 @@ import sys,random,re
 sys.dont_write_bytecode =True
 
 def cached(f=None,cache={}):
-  """To access the active options, cache their 
-     most recent setting."""
+  """To access the active options, cache the 
+     results of the function that set them."""
   if not f: 
     return cache
   def wrapper(**d):
