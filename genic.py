@@ -80,7 +80,7 @@ def rows(file,w=None):
     except ValueError:
        try : return float(x)
        except ValueError : return x
-  def worker(): 
+  def lines(): 
     n,kept = 0,""
     for line in open(file):
       now   = re.sub(w.bad,"",line)
@@ -91,7 +91,7 @@ def rows(file,w=None):
           n += 1
           kept = "" 
   todo = None
-  for n,line in worker():
+  for n,line in lines():
     todo = todo or [col for col,name in enumerate(line) 
                     if not w.skip in name]
     yield n, [ line[col] for col in todo ]
