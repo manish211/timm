@@ -71,7 +71,37 @@ class o:
     return '{'+' '.join(show)+'}'
 
 
+
 ###################################################
+def table(file,w):
+  for n,row in rows(file):
+    if n==0:
+      header(w,row)
+    else:
+      data(w,row)
+      yield n,row
+
+def header(w,row):
+  def numOrSym(val):
+    return w.num if w.opt.num in val else w.sym
+  def indepOrDep(val):
+    return w.dep if w.opt.klass in val else w.indep
+  for col,val in enumerate(row):
+    numOrSym(val).append(col)
+    indepOrDep(val).append(col)
+    w.name[col] = val
+    w.index[val] = col
+
+def indep(w,cols):
+  for col in cols:
+    if col in w.indep: yield col
+
+def data(w,row):
+  for col in w.num:
+    val = row[col]
+    w.min[col] = min(val, w.min.get(col,val))
+    w.max[col] = max(val, w.max.get(col,val))
+    
 def rows(file,w=None):
   """Leaps over any columns marked 'skip'.
   Turn strings to numbers or strings. 
@@ -99,28 +129,32 @@ def rows(file,w=None):
                     if not w.skip in name]
     yield n, [ line[col] for col in todo ]
 
-def header(w,row):
-  def numOrSym(val):
-    return w.num if w.opt.num in val else w.sym
-  def indepOrDep(val):
-    return w.dep if w.opt.klass in val else w.indep
-  for col,val in enumerate(row):
-    numOrSym(val).append(col)
-    indepOrDep(val).append(col)
-    w.name[col] = val
-    w.index[val] = col
-
-def data(w,row):
-  for col in w.num:
-    val = row[col]
-    w.min[col] = min(val, w.min.get(col,val))
-    w.max[col] = max(val, w.max.get(col,val))
-    
-def indep(w,cols):
-  for col in cols:
-    if col in w.indep: yield col
-
 ##################################################
+def fuse(w,new,n):
+  u0,u,age,old = w.centroids[n]
+  u1 = 1
+  out = [None]*len(old)
+  for col in w.sym:
+    x0,x1 = old[col], new[col]
+    out[col] = x1 if rand() < 1/(u0+u1) else x0
+  for col in w.num:
+    x0,x1= old[col], new[col]
+    out[col] = (u0*x0 + u1*x1)/ (u0+u1)
+  w.centroids[n] = (u0 + u1,u+u1, age, out)
+
+def more(w,n,row):
+  w.centroids += [(1,1,n,row)]
+
+
+
+def less(w,n) :
+  b4 = len(w.centroids)
+  w.centroids = [(1,u,dob,row) 
+                 for u0,u,dob,row in w.centroids 
+                 if u0 > w.opt.tiny(w)]
+  print("at n=%s, pruning %s%% of clusters" % (
+         n,  int(100*(b4 - len(w.centroids))/b4)))
+
 def nearest(w,row):
   def norm(val,col):
     lo, hi = w.min[col], w.max[col]
@@ -144,49 +178,6 @@ def nearest(w,row):
       lo,out = d,n
   return out
 
-
-def move(w,new,n):
-  u0,u,age,old = w.centroids[n]
-  u1 = 1
-  out = [None]*len(old)
-  for col in w.sym:
-    x0,x1 = old[col], new[col]
-    out[col] = x1 if rand() < 1/(u0+u1) else x0
-  for col in w.num:
-    x0,x1= old[col], new[col]
-    out[col] = (u0*x0 + u1*x1)/ (u0+u1)
-  w.centroids[n] = (u0 + u1,u+u1, age, out)
-
-def more(w,n,row):
-  w.centroids += [(1,1,n,row)]
-
-def less(w,n) :
-  b4 = len(w.centroids)
-  w.centroids = [(1,u,dob,row) 
-                 for u0,u,dob,row in 
-                 w.centroids 
-                 if u0 > w.opt.tiny(w)]
-  print("at n=%s, pruning %s%% of clusters" % (
-         n,  int(100*(b4 - len(w.centroids))/b4)))
-
-def genic(src='data/diabetes.csv',opt=None):
-  w = o(num=[], sym=[], dep=[], indep=[],
-        centroids=[],
-        min={}, max={}, name={},index={},
-        opt=opt or genic0())
-  for n,row in rows(src):
-    if n == 0: 
-      header(w,row)
-    else:
-      data(w,row)
-      if len(w.centroids) < w.opt.k:
-        more(w,n,row)
-      else:
-        move(w,row,nearest(w,row))
-        if 0 == (n % w.opt.era):
-          less(w,n)
-  return w,sorted(w.centroids,reverse=True)
-
 def report(w,clusters):
   cols = w.index.keys()
   header = sorted(w.name.keys())
@@ -204,12 +195,28 @@ def report(w,clusters):
   options = cached()
   for x in options: print(x,options[x])
 
-if __name__ == '__main__':
-  src='data/diabetes.csv'
-  if len(sys.argv) == 2:
+##################################################
+def genic(src='data/diabetes.csv',opt=None):
+  w = o(num=[], sym=[], dep=[], indep=[],
+        centroids=[],
+        min={}, max={}, name={},index={},
+        opt=opt or genic0())
+  for n,row in table(src,w):
+    if len(w.centroids) < w.opt.k:
+      more(w,n,row)
+    else:
+      fuse(w,row,nearest(w,row))
+      if not (n % w.opt.era):
+        less(w,n)
+  return w,sorted(w.centroids,reverse=True)
+
+def _genic( src='data/diabetes.csv'):
+   if len(sys.argv) == 2:
     src= sys.argv[1]
   print("")
   opt=genic0(era=100,k=8)
   seed(opt.seed)
   report(*genic(src,opt)) 
   cached()
+
+if __name__ == '__main__': _genic()
