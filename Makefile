@@ -1,6 +1,6 @@
 typo:
 	- git status
-	- git commit -am "fixing a typo"
+	- git commit -am "fixing minor typo"
 	- git push origin master
 
 commit:
