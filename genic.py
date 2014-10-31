@@ -3,6 +3,8 @@ import sys,random,re
 sys.dont_write_bytecode =True
 
 def cached(f=None,cache={}):
+  """To know the active options, cache their 
+     most recent setting."""
   if f:
     def wrapper(**d):
       tmp = cache[f.__name__] = f(**d)
@@ -55,7 +57,6 @@ def printm(matrix):
   for row in [fmt.format(*row) for row in s]:
     print(row)
 
-
 class o:
   "Define a bag of names slots with no methods."
   def __init__(i,**d): i.update(**d)
@@ -69,7 +70,6 @@ class o:
             for k in sorted(d.keys() ) 
             if k[0] is not "_"]
     return '{'+' '.join(show)+'}'
-
 
 
 ###################################################
@@ -156,15 +156,16 @@ def move(w,new,n):
   for col in w.num:
     x0,x1= old[col], new[col]
     out[col] = (u0*x0 + u1*x1)/ (u0+u1)
-  w.centroids[n] = (u0 + u1,u+u1, age+1, out)
+  w.centroids[n] = (u0 + u1,u+u1, age, out)
 
-def less(w) :
+def less(w,n) :
   b4 = len(w.centroids)
   w.centroids = [(1,u,dob,row) 
                  for u0,u,dob,row in 
                  w.centroids 
                  if not w.opt.tiny(u0,w)]
-  say("\tdeaths=%s\t" % (b4 - len(w.centroids)))
+  print("n=%s deaths=%s%%" % (
+         n,  int(100*(b4 - len(w.centroids))/b4)))
 
 def genic(src='data/diabetes.csv',opt=None):
   w = o(num=[], sym=[], dep=[], indep=[],
@@ -177,27 +178,24 @@ def genic(src='data/diabetes.csv',opt=None):
     else:
       data(w,row)
       if len(w.centroids) < w.opt.k:
-        say("+")
         w.centroids += [(1,1,n,row)]
       else:
         move(w,row,nearest(w,row))
         if 0 == (n % w.opt.era):
-          say('\nn=%s'%n)
-          less(w)
+          less(w,n)
   return w,sorted(w.centroids,reverse=True)
 
 def report(w,clusters):
-  print("")
   cols = w.index.keys()
   header = sorted(w.name.keys())
   header= [w.name[i] for i in header]
-  matrix = [['id','lastGen','allGen','dob'] + header]
+  matrix = [['gen','caughtLast','caughtAll','dob'] + header]
   caught=0
   for m,(u0,u,age,centroid) in enumerate(clusters):
     if not w.opt.tiny(u0,w):
       caught += u0
       matrix += [[m+1,u0,u,age] + g(centroid,2)]
-  print("\n%caught in last gen =",
+  print("\ncaught in last gen =%s%%\n" %
         int(100*caught/w.opt.era))
   printm(matrix)
 
@@ -205,9 +203,8 @@ if __name__ == '__main__':
   src='data/diabetes.csv'
   if len(sys.argv) == 2:
     src= sys.argv[1]
+  print("")
   opt=genic0(era=100,k=8)
   seed(opt.seed)
   report(*genic(src,opt)) 
-        
-      
-cached()
+  cached()
