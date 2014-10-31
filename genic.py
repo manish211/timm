@@ -2,6 +2,9 @@ from __future__ import division,print_function
 import sys,random,re
 sys.dont_write_bytecode =True
 
+
+# 5min 33secs for 1.5M rows. using 0.2% of my memory
+
 ####################################################
 def genic0(**d): return o(
   _logo=
@@ -27,11 +30,11 @@ def genic0(**d): return o(
                \___,,---''           pb
 The beginning, the end, the one who is many. 
 I bring order to chaos.""",
-  k=10,
-  era=100,
+  k=16,
+  era=5000,
   num='$',
   klass='=',
-  seed=1).update(**d)
+    seed=113).update(**d)
 
 def rows0(**d): return o(
   skip="?",
@@ -44,12 +47,12 @@ rand= random.random
 seed= random.seed
 
 def say(c):
-  sys.stdout.write(c); sys.stdout.flush()
+  sys.stdout.write(str(c))
  
-def g3(lst):
+def g(lst,n=3):
   for col,val in enumerate(lst):
     if isinstance(val,float): 
-      val = round(n,3)
+      val = round(val,n)
     lst[col] = val
   return lst
 
@@ -112,8 +115,7 @@ def data(w,row):
     
 def indep(w,cols):
   for col in cols:
-    if col in w.indep:
-      yield col
+    if col in w.indep: yield col
 
 ####################################################
 def nearest(w,row):
@@ -153,8 +155,9 @@ def move(w,new,n):
 
 def less(w) :
   b4 = len(w.centroids)
-  all = normu(w)
-  w.centroids = [(1,row) for u,row in all if u >= rand()]
+  #all = normu(w)
+  rare = w.opt.era/w.opt.k  
+  w.centroids = [(1,row) for u,row in w.centroids if u < rare]
   now=len(w.centroids)
   print(" - ",b4 - now)
 
@@ -179,14 +182,21 @@ def genic(src='data/diabetes.csv',opt=None):
         continue
       move(w,row,nearest(w,row))
       if 0 == (n % w.opt.era):
+        say(n)
         less(w)
-  return sorted(normu(w),reverse=True)
+  return sorted(w.centroids,reverse=True)
 
 if __name__ == '__main__':
-  clusters = genic()
-  seed(113)
+  src='data/diabetes2.csv'
+  if len(sys.argv) == 2:
+    src= sys.argv[1]
+  opt=genic0()
+  clusters = genic(src)
+  seed(opt.seed)
   print("")
-  for n,centroid in clusters:
-    print(int(100*n),":",g3(centroid))
+  for m,(n,centroid) in enumerate(clusters):
+    rare = opt.era/opt.k
+    if n > rare:
+      print(m+1,n,":",g(centroid,2))
         
       
