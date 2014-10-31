@@ -171,8 +171,8 @@ if __name__ == '__main__':
   if len(sys.argv) == 2:
     src= sys.argv[1]
   opt=genic0(era=10)
-  clusters = genic(src,opt)
   seed(opt.seed)
+  clusters = genic(src,opt)
   print("")
   for m,(n,centroid) in enumerate(clusters):
     rare = opt.era/opt.k
