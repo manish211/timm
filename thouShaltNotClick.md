@@ -1,4 +1,4 @@
-# Gudeilines for Writing data minign scripts
+# Gudeilines for Writing data mining scripts
 
 ## Share and Enjoy
 
