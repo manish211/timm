@@ -26,4 +26,4 @@ etc/pdf/$F.pdf: $F.py
 	mv listing.pdf etc/pdf/$F.pdf
 
 demo:
-	python genic.py 
+	/usr/bin/time -p python genic.py 

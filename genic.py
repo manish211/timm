@@ -131,7 +131,7 @@ def rows(file,w=None):
     yield n, [ line[col] for col in todo ]
 
 def fuse(w,new,n):
-  u0,u,age,old = w.centroids[n]
+  u0,u,dob,old = w.centroids[n]
   u1 = 1
   out = [None]*len(old)
   for col in w.sym:
@@ -140,7 +140,7 @@ def fuse(w,new,n):
   for col in w.num:
     x0,x1= old[col], new[col]
     out[col] = (u0*x0 + u1*x1)/ (u0+u1)
-  w.centroids[n] = (u0 + u1,u+u1, age, out)
+  w.centroids[n] = (u0 + u1,u+u1, dob, out)
 
 def more(w,n,row):
   w.centroids += [(1,1,n,row)]
@@ -184,15 +184,16 @@ def report(w,clusters):
   matrix = [['gen','caughtLast',
               'caughtAll','dob'] + header]
   caught=0
-  for m,(u0,u,age,centroid) in enumerate(clusters):
+  for m,(u0,u,dob,centroid) in enumerate(clusters):
     if u0 > w.opt.tiny(w):
       caught += u0
-      matrix += [[m+1,u0,u,age] + g(centroid,2)]
+      matrix += [[m+1,u0,u,dob] + g(centroid,2)]
   print("\ncaught in last gen =%s%%\n" %
         int(100*caught/w.opt.era))
   printm(matrix)
   options = cached()
   for x in options: print(x,options[x])
+  print("")
 
 def genic(src='data/diabetes.csv',opt=None):
   w = o(num=[], sym=[], dep=[], indep=[],
@@ -212,11 +213,9 @@ def genic(src='data/diabetes.csv',opt=None):
 def _genic( src='data/diabetes.csv'):
   if len(sys.argv) == 2:
     src= sys.argv[1]
-  print("")
   opt=genic0(k=8)
   seed(opt.seed)
   report(*genic(src,opt)) 
-  cached()
 
 if __name__ == '__main__': _genic()
 
