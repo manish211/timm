@@ -75,11 +75,11 @@ def data(w,row):
 def table(file,w):
   def chunks():
     chunk = []
-    for m,row1 in rows(file):
+    for m,row in rows(file):
       if m==0:
-        header(w,row1)
+        header(w,row)
       else:
-        chunk += [row1]
+        chunk += [row]
         if len(chunk) > w.opt.buffer: 
           yield chunk
           chunk=[]
