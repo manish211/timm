@@ -27,3 +27,9 @@ etc/pdf/$F.pdf: $F.py
 
 demo:
 	/usr/bin/time -p python genic.py 
+
+demo2:
+	/usr/bin/time -p python genic2.py 
+
+demo3:
+	/usr/bin/time -p python genic2.py mfeat-karhunen.csv 
