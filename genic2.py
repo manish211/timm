@@ -67,6 +67,46 @@ class o:
             if k[0] is not "_"]
     return '{'+' '.join(show)+'}'
 
+class Col:
+  def __iadd__(i,x):
+    if x != "?": 
+      i.n += 1
+      i.add(x)
+    return i
+
+class S(Col):
+  def __init__(i,tag='',col=None):
+    i.tag,i.col = tag,col
+    i.n, i.cnt  = 0,  {}
+    i.most, i.mode = 0, None
+  def xpect(i): return i.mode
+  def add(i,x): 
+    tmp  = i.cnt[x] = i.cnt.get(x,0) + 1
+    if tmp > i.most:
+      i.most, i.mode = tmp,x
+  def norm(i,x): return x
+
+class N(Col):
+  def __init__(i,tag='',col=None):
+    i.col, i.tag = col, tag
+    i.lo,  i.hi  = 10**32, -1*10**32
+  def add(i,x):
+    i.lo  = min(i.lo,x)
+    i.hi  = max(i.hi,x)
+    delta = x - i.mu
+    i.mu += delta/(1.0*i.n)
+    i.m2 += delta*(x - i.mu)
+  def xpect(i): return i.mu
+  def sd(i)  : 
+    if i.n < 2: return 0
+     else:       
+       return (max(0,i.m2)*1.0/(i.n - 1))**0.5
+  def norm(i,x):
+    tmp = (x - x.lo)/ (x.hi - x.lo + 0.00001)
+    return max(0,min(1,tmp))
+
+
+
 def zipped(filezip, pattern='*'):
   with zipfile.ZipFile(filezip,'r') as ark:
     for file in ark.namelist():
