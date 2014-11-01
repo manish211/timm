@@ -29,7 +29,7 @@ def rows0(**d): return o(
   skip="?",
   sep  = ',',
   bad = r'(["\' \t\r\n]|#.*)',
-  zip='data/data.zip'
+  zip='data/data.zip' #if None, read text files
   ).update(**d)
 
 rand= random.random
@@ -68,6 +68,9 @@ class o:
     return '{'+' '.join(show)+'}'
 
 class Col:
+  def __init__(i,tag='',col=None):
+    i.tag,i.col,i.n = tag,col,1
+    i.setup()
   def __iadd__(i,x):
     if x != "?": 
       i.n += 1
@@ -75,45 +78,45 @@ class Col:
     return i
 
 class S(Col):
-  def __init__(i,tag='',col=None):
-    i.tag,i.col = tag,col
-    i.n, i.cnt  = 0,  {}
-    i.most, i.mode = 0, None
+  def setup(i): i.cnt,i.most,i.mode = {},0,None
   def xpect(i): return i.mode
+  def norm(i,x): return x
+  def str2col(x): return x
   def add(i,x): 
     tmp  = i.cnt[x] = i.cnt.get(x,0) + 1
     if tmp > i.most:
       i.most, i.mode = tmp,x
-  def norm(i,x): return x
 
 class N(Col):
-  def __init__(i,tag='',col=None):
-    i.col, i.tag = col, tag
-    i.lo,  i.hi  = 10**32, -1*10**32
-  def add(i,x):
-    i.lo  = min(i.lo,x)
-    i.hi  = max(i.hi,x)
-    delta = x - i.mu
-    i.mu += delta/(1.0*i.n)
-    i.m2 += delta*(x - i.mu)
   def xpect(i): return i.mu
+  def str2col(x): return float(x)
+  def setup(i): 
+    i.mu = i.m2 = 0
+    i.lo,i.hi = 10**32,-1*10**32
+  def add(i,x):
+    i.lo, i.hi = min(i.lo,x), max(i.hi,x)
+    delta = x - i.mu
+    i.mu += delta/i.n
+    i.m2 += delta*(x - i.mu)
   def sd(i)  : 
     if i.n < 2: return 0
      else:       
-       return (max(0,i.m2)*1.0/(i.n - 1))**0.5
+       return (max(0,i.m2)/(i.n - 1))**0.5
   def norm(i,x):
     tmp = (x - x.lo)/ (x.hi - x.lo + 0.00001)
     return max(0,min(1,tmp))
 
-
-
-def zipped(filezip, pattern='*'):
-  with zipfile.ZipFile(filezip,'r') as ark:
-    for file in ark.namelist():
-      if fnmatch.fnmatch(file, pattern):
-        with ark.open(file,'r') as lines:
-          for line in lines:
-            yield line.rstrip()
+def content(pattern='*',filezip=None):
+  if filezip:
+    with zipfile.ZipFile(filezip,'r') as ark:
+      for file in ark.namelist():
+        if fnmatch.fnmatch(file, pattern):
+          with ark.open(file,'r') as lines:
+            for line in lines:
+              yield file,line
+  else:
+    for line in open(pattern,'r'):
+      yield pattern,line
 
 def data(w,row):
   for col in w.num:
@@ -164,7 +167,7 @@ def rows(src, w=None):
        except ValueError : return x
   def lines(): 
     n,kept = 0,""
-    for line in zipped(w.zip, src):
+    for _,line in content(src,zip=w.zip):
       now   = re.sub(w.bad,"",line)
       kept += now
       if kept:
