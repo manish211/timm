@@ -3,16 +3,14 @@ import sys,random,re
 sys.dont_write_bytecode =True
 
 def cached(f=None,cache={}):
-  """To access the active options, cache the 
-     results of the function that set them."""
+  "To keep the options, cache their last setting."
   if not f: 
     return cache
   def wrapper(**d):
     tmp = cache[f.__name__] = f(**d)
     return tmp
   return wrapper
-    
-###################################################
+
 @cached
 def genic0(**d): 
   def halfEraDivK(w): 
@@ -20,6 +18,7 @@ def genic0(**d):
   return o(
     k=10,
     era=1000,
+    buffer= 500,
     tiny= halfEraDivK,
     num='$',
     klass='=',
@@ -32,20 +31,19 @@ def rows0(**d): return o(
   bad = r'(["\' \t\r\n]|#.*)'
   ).update(**d)
 
-###################################################
 rand= random.random
 seed= random.seed
 
-def say(c):
-  sys.stdout.write(str(c))
+def shuffle(lst): random.shuffle(lst); return lst
+
+def say(c): sys.stdout.write(str(c))
  
-def fun(x):
+def fun(x): 
   return x.__class__.__name__ == 'function'
 
 def g(lst,n=3):
   for col,val in enumerate(lst):
-    if isinstance(val,float): 
-      val = round(val,n)
+    if isinstance(val,float): val = round(val,n)
     lst[col] = val
   return lst
 
@@ -57,27 +55,39 @@ def printm(matrix):
     print(row)
 
 class o:
-  "Define a bag of names slots with no methods."
   def __init__(i,**d): i.update(**d)
   def update(i,**d): 
     i.__dict__.update(**d); return i
   def __repr__(i)   : 
-    def name(x):
-      return x.__name__ if fun(x) else x
+    def name(x): return x.__name__ if fun(x) else x
     d    = i.__dict__
     show = [':%s=%s' % (k,name(d[k])) 
             for k in sorted(d.keys() ) 
             if k[0] is not "_"]
     return '{'+' '.join(show)+'}'
 
+def data(w,row):
+  for col in w.num:
+    val = row[col]
+    w.min[col] = min(val, w.min.get(col,val))
+    w.max[col] = max(val, w.max.get(col,val))
 
-
-###################################################
 def table(file,w):
-  for n,row in rows(file):
-    if n==0:
-      header(w,row)
-    else:
+  def chunks():
+    chunk = []
+    for m,row1 in rows(file):
+      if m==0:
+        header(w,row1)
+      else:
+        chunk += [row1]
+        if len(chunk) > w.opt.buffer: 
+          yield chunk
+          chunk=[]
+    if chunk: yield chunk
+  n=0
+  for chunk in chunks():
+    for row in shuffle(chunk):
+      n += 1
       data(w,row)
       yield n,row
 
@@ -96,16 +106,7 @@ def indep(w,cols):
   for col in cols:
     if col in w.indep: yield col
 
-def data(w,row):
-  for col in w.num:
-    val = row[col]
-    w.min[col] = min(val, w.min.get(col,val))
-    w.max[col] = max(val, w.max.get(col,val))
-    
 def rows(file,w=None):
-  """Leaps over any columns marked 'skip'.
-  Turn strings to numbers or strings. 
-  Kill comments. Join lines that end in 'sep'."""
   w = w or rows0()
   def atom(x):
     try : return int(x)
@@ -129,7 +130,6 @@ def rows(file,w=None):
                     if not w.skip in name]
     yield n, [ line[col] for col in todo ]
 
-##################################################
 def fuse(w,new,n):
   u0,u,age,old = w.centroids[n]
   u1 = 1
@@ -144,7 +144,6 @@ def fuse(w,new,n):
 
 def more(w,n,row):
   w.centroids += [(1,1,n,row)]
-
 
 
 def less(w,n) :
@@ -195,13 +194,13 @@ def report(w,clusters):
   options = cached()
   for x in options: print(x,options[x])
 
-##################################################
 def genic(src='data/diabetes.csv',opt=None):
   w = o(num=[], sym=[], dep=[], indep=[],
         centroids=[],
         min={}, max={}, name={},index={},
         opt=opt or genic0())
-  for n,row in table(src,w):
+  for n, row in table(src,w):
+    data(w,row)
     if len(w.centroids) < w.opt.k:
       more(w,n,row)
     else:
@@ -211,12 +210,31 @@ def genic(src='data/diabetes.csv',opt=None):
   return w,sorted(w.centroids,reverse=True)
 
 def _genic( src='data/diabetes.csv'):
-   if len(sys.argv) == 2:
+  if len(sys.argv) == 2:
     src= sys.argv[1]
   print("")
-  opt=genic0(era=100,k=8)
+  opt=genic0(k=8)
   seed(opt.seed)
   report(*genic(src,opt)) 
   cached()
 
 if __name__ == '__main__': _genic()
+
+"""
+data/diabetes2.csv (1.5M records).
+caught in last gen =77%
+
+gen | caughtLast | caughtAll | dob     | $preg | $plas  | $pres | $skin | $insu  | $mass | $pedi | $age  | =class        
+1   | 205        | 390       | 1571001 | 2.04  | 97.08  | 65.03 | 23.25 | 52.6   | 29.19 | 0.35  | 24.14 | testednegative
+2   | 146        | 2408      | 1560001 | 3.77  | 117.73 | 74.08 | 0.79  | 3.86   | 31.04 | 0.4   | 31.84 | testedpositive
+3   | 119        | 824       | 1566001 | 7.54  | 142.17 | 78.47 | 7.53  | 16.58  | 29.72 | 0.46  | 52.1  | testednegative
+4   | 109        | 252       | 1571002 | 2.39  | 145.63 | 73.09 | 30.13 | 201.47 | 34.58 | 0.35  | 28.57 | testednegative
+5   | 106        | 2690      | 1554001 | 8.03  | 106.6  | 76.56 | 32.07 | 64.18  | 34.63 | 0.41  | 40.84 | testednegative
+6   | 85         | 654       | 1569002 | 1.62  | 118.5  | 70.76 | 33.44 | 119.23 | 36.16 | 0.93  | 26.23 | testedpositive
+genic0 {:buffer=500 :era=1000 :k=8 :klass== :num=$ :seed=1 :tiny=halfEraDivK}
+rows0 {:bad=(["\' \t\r\n]|#.*) :sep=, :skip=?}
+
+real	3m25.949s
+user	3m7.403s
+sys	0m2.315s
+"""
