@@ -1,20 +1,43 @@
-# Gudeilines for Writing data mining scripts
+# Guidelines for Writing data mining scripts
 
 ## Share and Enjoy
 
-+ Place the scripts in a repo others can comment on, raise issues, contribute to,  fork and make their own.
-+ Do unto others as you wish they do unto you. When commenting on other people's code, be kind. One day, it will be your turn to receive comments and then...
++ Place the scripts in a repo others can comment on, 
+  raise issues, contribute to,  fork and make their own.
++ Do unto others as you wish they do unto you. When 
+  commenting on other people's code, be kind. One day, 
+  it will be your turn to receive comments and then...
 
 ## Know Thy Parameters
 
 At the end of each run
 
-+ Print the parameter settings that were in force during that run.
-+ Also print out the source of the data (some unique string) and the date.
++ Print the parameter settings that were in force
+  during that run.
++ Also print out the source of the data (some unique 
+  string) and the date.
 
 ## Write to Run
 
 + Demo Scripts
+
+## Control Thy Randomness
+
++ Keep Seed control why?blah blab
++ Reset seed at the right level:
++ 
+```
+mySeed=1
+#resetSeed(mySeed) # wrong1
+for data in [file1,file2,file3,...]:
+  #resetSeed(mySeed) # wrong2 
+  for algorithm in [alg1,alg2,alg3,...]
+     resetSeed(mySeed) # right!
+     for repeats in range(20):
+        # resetSeed(mySeed) # wrong3
+        algorithm(model)
+        
+```
 
 ## Write to Test
 
