@@ -1,186 +1,20 @@
 from __future__ import division,print_function
-import re, os, sys, random, fnmatch, zipfile
+import sys
 sys.dont_write_bytecode =True
 
-def cached(f=None,cache={}):
-  "To keep the options, cache their last setting."
-  if not f: 
-    return cache
-  def wrapper(**d):
-    tmp = cache[f.__name__] = f(**d)
-    return tmp
-  return wrapper
+from table2 import *
 
-@cached
+@the
 def genic0(**d): 
   def halfEraDivK(w): 
-    return w.opt.era/w.opt.k/20
+    return w.the.era/w.the.k/2.5
   return o(
-    k=10,
-    era=67,
-    buffer= 250,
-    tiny= halfEraDivK,
-    num='$',
-    klass='=',
-    seed=1).update(**d)
-
-@cached
-def rows0(**d): return o(
-  skip="?",
-  sep  = ',',
-  bad = r'(["\' \t\r\n]|#.*)',
-  zip='data/data.zip' #if None, read text files
-  ).update(**d)
-
-rand= random.random
-seed= random.seed
-
-def shuffle(lst): random.shuffle(lst); return lst
-
-def say(c): sys.stdout.write(str(c))
- 
-def fun(x): 
-  return x.__class__.__name__ == 'function'
-
-def g(lst,n=3):
-  for col,val in enumerate(lst):
-    if isinstance(val,float): val = round(val,n)
-    lst[col] = val
-  return lst
-
-def printm(matrix):
-  s = [[str(e) for e in row] for row in matrix]
-  lens = [max(map(len, col)) for col in zip(*s)]
-  fmt = ' | '.join('{{:{}}}'.format(x) for x in lens)
-  for row in [fmt.format(*row) for row in s]:
-    print(row)
-
-class o:
-  def __init__(i,**d): i.update(**d)
-  def update(i,**d): 
-    i.__dict__.update(**d); return i
-  def __repr__(i)   : 
-    def name(x): return x.__name__ if fun(x) else x
-    d    = i.__dict__
-    show = [':%s=%s' % (k,name(d[k])) 
-            for k in sorted(d.keys() ) 
-            if k[0] is not "_"]
-    return '{'+' '.join(show)+'}'
-
-class Col:
-  def __init__(i,tag='',col=None):
-    i.tag,i.col,i.n = tag,col,1
-    i.setup()
-  def __iadd__(i,x):
-    if x != "?": 
-      i.n += 1
-      i.add(x)
-    return i
-
-class S(Col):
-  def setup(i): i.cnt,i.most,i.mode = {},0,None
-  def xpect(i): return i.mode
-  def norm(i,x): return x
-  def str2col(x): return x
-  def add(i,x): 
-    tmp  = i.cnt[x] = i.cnt.get(x,0) + 1
-    if tmp > i.most:
-      i.most, i.mode = tmp,x
-
-class N(Col):
-  def xpect(i): return i.mu
-  def str2col(x): return float(x)
-  def setup(i): 
-    i.mu = i.m2 = 0
-    i.lo,i.hi = 10**32,-1*10**32
-  def add(i,x):
-    i.lo, i.hi = min(i.lo,x), max(i.hi,x)
-    delta = x - i.mu
-    i.mu += delta/i.n
-    i.m2 += delta*(x - i.mu)
-  def sd(i)  : 
-    if i.n < 2: return 0
-     else:       
-       return (max(0,i.m2)/(i.n - 1))**0.5
-  def norm(i,x):
-    tmp = (x - x.lo)/ (x.hi - x.lo + 0.00001)
-    return max(0,min(1,tmp))
-
-def content(pattern='*',filezip=None):
-  if filezip:
-    with zipfile.ZipFile(filezip,'r') as ark:
-      for file in ark.namelist():
-        if fnmatch.fnmatch(file, pattern):
-          with ark.open(file,'r') as lines:
-            for line in lines:
-              yield file,line
-  else:
-    for line in open(pattern,'r'):
-      yield pattern,line
-
-def data(w,row):
-  for col in w.num:
-    val = row[col]
-    w.min[col] = min(val, w.min.get(col,val))
-    w.max[col] = max(val, w.max.get(col,val))
-
-def table(file,w):
-  def chunks():
-    chunk = []
-    for m,row in rows(file):
-      if m==0:
-        header(w,row)
-      else:
-        chunk += [row]
-        if len(chunk) > w.opt.buffer: 
-          yield chunk
-          chunk=[]
-    if chunk: yield chunk
-  n=0
-  for chunk in chunks():
-    for row in shuffle(chunk):
-      n += 1
-      data(w,row)
-      yield n,row
-
-def header(w,row):
-  def numOrSym(val):
-    return w.num if w.opt.num in val else w.sym
-  def indepOrDep(val):
-    return w.dep if w.opt.klass in val else w.indep
-  for col,val in enumerate(row):
-    numOrSym(val).append(col)
-    indepOrDep(val).append(col)
-    w.name[col] = val
-    w.index[val] = col
-
-def indep(w,cols):
-  for col in cols:
-    if col in w.indep: yield col
-
-def rows(src, w=None):
-  w = w or rows0()
-  def atom(x):
-    try : return int(x)
-    except ValueError:
-       try : return float(x)
-       except ValueError : return x
-  def lines(): 
-    n,kept = 0,""
-    for _,line in content(src,zip=w.zip):
-      now   = re.sub(w.bad,"",line)
-      kept += now
-      if kept:
-        if not now[-1] == w.sep:
-          yield n, map(atom, kept.split(w.sep))
-          n += 1
-          kept = "" 
-  todo = None
-  for n,line in lines():
-    todo = todo or [col for col,name 
-                    in enumerate(line) 
-                    if not w.skip in name]
-    yield n, [ line[col] for col in todo ]
+    k     = 20,
+    era   = 100,
+    buffer= 512,
+    tiny  = halfEraDivK,
+    num   = '$',
+    klass = '=').update(**d)
 
 def fuse(w,new,n):
   u0,u,dob,old = w.centroids[n]
@@ -197,12 +31,11 @@ def fuse(w,new,n):
 def more(w,n,row):
   w.centroids += [(1,1,n,row)]
 
-
 def less(w,n) :
   b4 = len(w.centroids)
   w.centroids = [(1,u,dob,row) 
                  for u0,u,dob,row in w.centroids 
-                 if u0 > w.opt.tiny(w)]
+                 if u0 > w.the.tiny(w)]
   print("at n=%s, pruning %s%% of clusters" % (
          n,  int(100*(b4 - len(w.centroids))/b4)))
 
@@ -236,31 +69,27 @@ def report(w,clusters):
   matrix = [['gen','caughtLast',
               'caughtAll','dob'] + header]
   caught=0
-  print(len(clusters))
   for m,(u0,u,dob,centroid) in enumerate(clusters):
-    print(u0)
-    if u0 > w.opt.tiny(w):
+    if u0 > w.the.tiny(w):
       caught += u0
       matrix += [[m+1,u0,u,dob] + g(centroid,2)]
   print("\ncaught in last gen =%s%%\n" %
-        int(100*caught/w.opt.era))
+        int(100*caught/w.the.era))
   printm(matrix)
-  options = cached()
-  for x in options: print(x,options[x])
-  print("")
+  
 
-def genic(src='data/diabetes.csv',opt=None):
+def genic(src='data/diabetes.csv',the=None,zip=None):
   w = o(num=[], sym=[], dep=[], indep=[],
         centroids=[],
         min={}, max={}, name={},index={},
-        opt=opt or genic0())
-  for n, row in table(src,w):
+        the=the or genic0())
+  for n, row in table(src,w,zip=zip):
     data(w,row)
-    if len(w.centroids) < w.opt.k:
+    if len(w.centroids) < w.the.k:
       more(w,n,row)
     else:
       fuse(w,row,nearest(w,row))
-      if not (n % w.opt.era):
+      if not (n % w.the.era):
         less(w,n)
   return w,sorted(w.centroids,reverse=True)
 
@@ -268,9 +97,10 @@ def _genic(src='diabetes.csv'):
   if len(sys.argv) == 2:
     src= sys.argv[1]
   print(src)
-  opt=genic0(k=8,era=67)
-  seed(opt.seed)
-  report(*genic(src,opt)) 
+  the=genic0(k=8,era=67)
+  seed(the.seed)
+  report(*genic(src,the=the,
+                zip='data/data.zip')) 
 
 if __name__ == '__main__': _genic()
 
