@@ -5,8 +5,8 @@ sys.dont_write_bytecode =True
 from lib2 import *
 from col2 import *
 
-@the
-def rows0(**d): return o(
+@THE
+def ROWS(**d): return o(
   skip = "?",
   sep  = ',',
   bad  = r'(["\' \t\r\n]|#.*)',
@@ -47,7 +47,7 @@ def indep(w,cols):
     if col in w.indep: yield col
 
 def rows(src, zip=None):
-  w = rows0()
+  w = ROWS()
   def atom(x):
     try : return int(x)
     except ValueError:

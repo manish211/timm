@@ -4,8 +4,8 @@ sys.dont_write_bytecode =True
 
 from table2 import *
 
-@the
-def genic0(**d): 
+@THE
+def GENIC(**d): 
   def halfEraDivK(w): 
     return w.the.era/w.the.k/2.5
   return o(
@@ -76,13 +76,12 @@ def report(w,clusters):
   print("\ncaught in last gen =%s%%\n" %
         int(100*caught/w.the.era))
   printm(matrix)
-  
 
 def genic(src='data/diabetes.csv',the=None,zip=None):
   w = o(num=[], sym=[], dep=[], indep=[],
         centroids=[],
         min={}, max={}, name={},index={},
-        the=the or genic0())
+        the=the or GENIC())
   for n, row in table(src,w,zip=zip):
     data(w,row)
     if len(w.centroids) < w.the.k:
@@ -97,7 +96,7 @@ def _genic(src='diabetes.csv'):
   if len(sys.argv) == 2:
     src= sys.argv[1]
   print(src)
-  the=genic0(k=8,era=67)
+  the=GENIC(k=8,era=67)
   seed(the.seed)
   report(*genic(src,the=the,
                 zip='data/data.zip')) 

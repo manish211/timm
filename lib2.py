@@ -4,13 +4,15 @@ sys.dont_write_bytecode =True
 
 from base2 import *
 
-@the
-def lib0(**d): return o(
+@THE
+def LIB(**d): return o(
     seed=1
     ).update(**d)
 
 rand= random.random
 seed= random.seed
+
+print(THE().LIB)
 
 def shuffle(lst): random.shuffle(lst); return lst
 
@@ -48,8 +50,7 @@ def study(f):
     t1 = time.time()
     f(*lst,**dic)          # run the function
     t2 = time.time() # show how long it took to run
-    options = the()
-    for x in options: print(x,options[x])
+    THOSE()
     print("\n# Runtime: %.3f secs" % (t2-t1))
   return wrapper
 
