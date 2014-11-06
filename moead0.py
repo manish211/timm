@@ -14,8 +14,8 @@ def THE(f=None,cache={}):
 @THE
 def TILE(**d): 
   return o(
-    cf = 0.5
-    f  = 0.3
+    cf = 0.5,
+    f  = 0.3,
   ).update(**d)
 
 def THAT(this,s=""):
@@ -27,6 +27,21 @@ def THAT(this,s=""):
      
 rand= random.random
 seed= random.seed
+
+class Cache:
+  def __init__(i,max=128): i.n,i.lst = 0,[None]*max
+  def tell(i,x):
+    i.n, l = i.n + 1, len(i.lst)
+    if rand() <= l/i.n: i.lst[ int(rand()*l) ] = x
+  def kept(i): 
+    return [x for x in i.lst if not x is None]
+  def cliff(i,j):
+    more, less, l1, l2 = 0, 0, i.kept(), j.kept()
+    for x in l1:
+      for y in l2:
+        if x > y : more += 1
+        if x < y : less += 1
+    return (more - less)/(len(l1)*len(l2))
 
 def shuffle(lst): random.shuffle(lst); return lst
 
