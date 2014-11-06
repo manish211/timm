@@ -29,19 +29,25 @@ rand= random.random
 seed= random.seed
 
 class Cache:
-  def __init__(i,max=128): i.n,i.lst = 0,[None]*max
+  def __init__(i,some=[],max=128): 
+    i.n,i.lst = 0,[None]*max
+    map(i.tell,some)
   def tell(i,x):
     i.n, l = i.n + 1, len(i.lst)
     if rand() <= l/i.n: i.lst[ int(rand()*l) ] = x
   def kept(i): 
     return [x for x in i.lst if not x is None]
-  def cliff(i,j):
+  def cliffsDelta(i,j):
     more, less, l1, l2 = 0, 0, i.kept(), j.kept()
     for x in l1:
       for y in l2:
         if x > y : more += 1
         if x < y : less += 1
-    return (more - less)/(len(l1)*len(l2))
+    d = (more - less) / (len(l1)*len(l2))
+    if abs(d) < 0.147  : return 0 #negligible
+    elif abs(d) < 0.33 : return 0  #small
+    elif abs(d) < 0.474: return 2 #medium
+    else:                return 3 #large
 
 def shuffle(lst): random.shuffle(lst); return lst
 
@@ -105,12 +111,13 @@ class Col:
   def interpolate(self, x, y, z): return None
 
 class N(Col):
-  def __init__(i,lo=0,hi=1):
+  def __init__(i,lo=0,hi=0):
     i.lo, i.hi = lo,hi
-  def __iadd__(i,x):
+    i.cache=Cache()
+  def tell(i,x):
     i.lo = min(i.lo,x)
     i.hi = max(i.hi,x)
-    return i
+    i.cache.tell(x)
   def dist(i,x,y): return (x - y)**2
   def any(i): return i.lo + rand()*(i.hi - i.lo)
   def interpolate(i,x,y,z,w):
