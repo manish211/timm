@@ -4,8 +4,7 @@ sys.dont_write_bytecode =True
 
 def THE(f=None,cache={}):
   "To keep the options, cache their last setting."
-  if not f: 
-    return cache
+  if not f: return cache
   def wrapper(**d):
     tmp = cache[f.__name__] = f(**d)
     return tmp
@@ -27,14 +26,12 @@ def THAT(this,s=""):
      
 rand= random.random
 seed= random.seed
+any = random.choice
 
 def shuffle(lst): random.shuffle(lst); return lst
 
-def prin(*l): 
-  sys.stdout.write(', '.join(map(str,l)))
- 
-def fun(x): 
-  return x.__class__.__name__ == 'function'
+def say(*l):sys.stdout.write(', '.join(map(str,l))) 
+def fun(x): return x.__class__.__name__=='function'
 
 def g(lst,n=3):
   for col,val in enumerate(lst):
@@ -83,49 +80,60 @@ def indep(w,cols):
   for col in cols:
     if col in w.indep: yield col
 
-class Col:
-  def any(self): return None
-  def dist(self, x, y): return 0
-  def norm(self, x) : return x
-  def interpolate(self, x, y, z): return None
-
-class N(Col):
-  def __init__(i,lo=0,hi=1):
-    i.lo, i.hi = lo,hi
-  def __iadd__(i,x):
-    i.lo = min(i.lo,x)
-    i.hi = max(i.hi,x)
-    return i
-  def dist(i,x,y): return (x - y)**2
-  def any(i): return i.lo + rand()*(i.hi - i.lo)
-  def interpolate(i,x,y,z,w):
-    return x + w.f*(y-z) if rand() < w.cf else x
+class N(Col): # nums
+  def __init__(i,txt,lo=0,hi=1): 
+    i.txt, i.lo,i.hi = txt, 0,1
+  def tell(i,x) : i.lo,i.hi= min(i.lo,x),max(i.hi,x)
+  def ask(i)    : return i.lo + rand()*(i.hi-i.lo)
+  def dist(i,x,y): 
+    n1 = i.norm(x)
+    n2 = i.norm(y)
+    return n1 - n2
   def norm(i,x):
     tmp = (i - i.lo) / (i.hi - i.lo + 0.00001)
     return max(0,min(tmp,1))
+  def smear(i,x,y,z):
+    f, cf = THE().tile.f, THE().tile.cf
+    return x + f*(y-z) if rand() < cf else x
+  
+def W(Col): # words
+  def __init__(i,txt,all=None): i.all = all or {}
+  def tell(i,x)  : i.all[x] = True
+  def ask(i)     : return(any(i.cnt.keys()))
+  def dist(i,x,y): return 0 if x==y else 1
+  def norm(i,x)  : return x
+  def smear(i,x,y,z):
+    f, cf = THE().tile.f, THE().tile.cf
+    if rand() >= cf:  return x
+    w = y if rand() <= f else z 
+    return x if rand() <= 0.5 else w
 
-def nearest(w,row):
-  def norm(val,col):
-    lo, hi = w.min[col], w.max[col]
-    return (val - lo ) / (hi - lo + 0.00001)
-  def dist(centroid):
-    n,d = 0,0
-    for col in indep(w, w.num):
-      x1,x2 = row[col], centroid[col]
-      n1,n2 = norm(x1,col), norm(x2,col)
-      d    += (n1 - n2)**2
-      n    += 1
-    for col in indep(w, w.sym):
-      x1,x2 = row[col],centroid[col]
-      d    += (0 if x1 == x2 else 1)
-      n    += 1
-    return d**0.5 / n**0.5
-  lo, out = 10**32, None
-  for n,(_,_,_,centroid) in enumerate(w.centroids):
-    d = dist(centroid)
-    if d < lo:
-      lo,out = d,n
-  return out
+def Row:
+  def __init__(i,lst,of=None): 
+    i.of = of; i.to={}
+    i.x0,i.y0,i.to,i.lst = None,None,None,lst
+  def iter(i): return iter(i.lst)
+  def __getattr__(i,x): return i.lst[x]
+  def __setattr__(i,x,y): i.lst[x] = y
+  def abx(i,west,east,c):
+    a = i - west
+    b = i - east
+    x = (a**2 + c**2 - b**2)/ (2**c)
+    if i.x0 is None:
+      i.x0 = x
+      i.y0 = max(0,min(1,(a**2 - x**2)))**0.5
+    return a,b,x
+  def dist(i,j):
+    d = sum(c.dist(i[c.pos],j[c.pos]) 
+            for c in i.of.ins)
+    return d**0.5 / len(i.of.ins)**0.5
+  def __sub__(i,j):
+    if id(j) in i.to:
+      return i.to[id(j)][0]
+    d = i.dist(i,j)
+    i.to[id(j)] = (d,j)
+    j.to[id(i)] = (d,i)
+    return d
 
 if __name__ == '__main__': _genic()
 
