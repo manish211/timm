@@ -2,39 +2,54 @@ from __future__ import division,print_function
 import sys,random,re
 sys.dont_write_bytecode =True
 
+"""
+　 　／￣￣￣￣￣＼ 　　　　　　　 ／￣￣￣￣￣＼
+　 ／＼＿＿＿＿＿／＼ 　　　　　 ／＼＿＿＿＿＿／＼
+   |　｜　　　　 |　｜　　　　　|　｜　  　　　| ｜
+   |　｜　　　　 |　｜　　　　　|　｜　  　　　| ｜
+   |　｜　　　　 |　｜　　　　　|　｜　  　　　| ｜
+   |　｜　　　　 |　｜　　　　　|　｜　  　　　| ｜
+　 ＼／ 　 :　　 ＼／　　　　　 ＼／　　  . 　 ＼／　
+　 ／＼ 　 :　　 ／＼　　　　　 ／＼　　  . 　 ／＼　
+   |　｜　　　　 |　｜　　　　　|　｜　  　　　| ｜
+   |　｜　　　　 |　｜　　　　　|　｜　  　　　| ｜
+   |　｜　　　　 |　｜　　　　　|　｜　  　　　| ｜
+   |　｜　　　　 |　｜　　　　　|　｜　  　　　| ｜
+ 　＼／￣￣￣￣￣＼／ 　　　　　 ＼／￣￣￣￣￣＼／　. 　○ ／
+　   ＼＿＿＿＿＿／ 　　　　　　　 ＼＿＿＿＿＿／　　　 　／ ○
+"""
+
 class o:
+  def d(i)           : return i.__dict__
+  def update(i,**d)  : i.d().update(**d); return i
   def __init__(i,**d): i.update(**d)
-  def update(i,**d): 
-    i.dict().update(**d); return i
-  def dict(i): return i.__dict__
-  def __repr__(i)   : 
-    def name(x): return x.__name__ if fun(x) else x
-    d    = i.dict()
-    show = [':%s=%s' % (k,name(d[k])) 
-            for k in sorted(d.keys() ) 
+  def __repr__(i)    :
+    f= lambda x: x.__class__.__name_ == 'function'
+    n= lambda x: x.__name__ if f(x) else x
+    show = [':%s=%s' % (k, n(i.d()[k])) 
+            for k in sorted(i.d().keys() ) 
             if k[0] is not "_"]
     return '{'+' '.join(show)+'}'
 
-def THE(f=None,cache=o()):
-  "To keep the options, cache their last setting."
-  if not f: return cache
+THE=o()
+def the(f):
   def wrapper(**d):
-    tmp = cache[f.__name__] = f(**d)
+    tmp = THE.dict()[f.__name__] = f(**d)
     return tmp
-  print(f.__name__,cache)
   return wrapper
-
-@THE
+#---------#---------#---------#---------#---------
+@the
 def MOEAD0(**d): return o(
     cf = 0.5,
     f  = 0.3,
   ).update(**d)
 
-@THE
+@the
 def LIB(**d): return o(
     buffer = 128
   ).update(**d)
 
+#---------#---------#---------#---------#---------
 def say(*l):
   sys.stdout.write(', '.join(map(str,l))) 
 
@@ -70,7 +85,7 @@ def cliffsDelta(lst1, lst2):
   else:                 return 3 # large
 
 def shuffle(lst): random.shuffle(lst); return lst
-def fun(x): return x.__class__.__name__=='function'
+
 
 def g(lst,n=3):
   for col,val in enumerate(lst):
