@@ -4,9 +4,9 @@ sys.dont_write_bytecode =True
 
 """
 "I would not give a fig for the simplicity this side
- of complexity, but I would give my life for the
- simplicity on the other side of complexity."
- -- Oliver Wendell Holmes Jr.
+of complexity, but I would give my life for the
+simplicity on the other side of complexity."
+-- Oliver Wendell Holmes Jr.
 """
 
 def name(x):
@@ -54,7 +54,7 @@ def LIB(**d): return o(
 def say(*l):sys.stdout.write(', '.join(map(str,l))) 
 def ako(x,y): return isinstance(x,y)
 
-def THAT(x=tje,s="",pre=""):
+def THAT(x=the,s="",pre=""):
   d = x.d()
   say(pre)
   for x in sorted(d.keys()):
@@ -81,7 +81,6 @@ def cliffsDelta(lst1, lst2):
 
 def shuffle(lst): random.shuffle(lst); return lst
 
-
 def g(lst,n=3):
   for col,val in enumerate(lst):
     if isinstance(val,float): val = round(val,n)
@@ -94,7 +93,6 @@ def printm(matrix):
   fmt = ' | '.join('{{:{}}}'.format(x) for x in lens)
   for row in [fmt.format(*row) for row in s]:
     print(row)
-
 
 def data(w,row):
   for col in w.num: col.tell(row[col])
@@ -125,6 +123,7 @@ class N:
     i.lo, i.hi = min(i.lo,x), max(i.hi,x)
     l = len(i._kept)
     if r() <= l/i.n: i._kept[ int(r()*l) ]= x
+    return x
   def kept(i): 
     return [x for x in i._kept if x is not None]
   def interpolate(i,x,y,z,w):
@@ -140,7 +139,9 @@ class W: # words
   def __init__(i,all=None,name=''): 
     i.all = all or {}
     i.name=name
-  def tell(i,x)  : i.all[x] = i.all.get(x,0) + 1
+  def tell(i,x)  : 
+    i.all[x] = i.all.get(x,0) + 1
+    return x
   def ask(i)     : return(ask(i.all.keys()))
   def dist(i,x,y): return 0 if x==y else 1
   def norm(i,x)  : return x
@@ -151,60 +152,80 @@ class W: # words
     w =    y if r() <= m.f else z 
     return x if r() <= 0.5 else w
 
+def  facet(f):
+  n = f.__name__
+  def wrapper(i,*lst): 
+    old = i.facets
+    k = (n,tuple(map(id,lst))) if lst else n 
+    x = old[k] = old[k] if k in old else f(i,*lst)
+    return x
+  return wrapper
+
 class Row:
   def __init__(i,of,lst=None): 
-    i.to={}
-    i.of.i._objs=of,None
-    i.x0,i.y0,i.to,i.lst = None,None,None,lst or []
+    i.facets={}
+    i.of, i.lst = of, lst or []
   def iter(i) : return iter(i.lst)
   def __getattr__(i,x) : return i.lst[x]
   def abx(i,west,east,c):
-    a = i - west
-    b = i - east
+    a = i.dist(west)
+    b = i.dist(east)
     x = (a**2 + c**2 - b**2)/ (2**c)
-    if i.x0 is None:
-      i.x0 = x
-      i.y0 = max(0,min(1,(a**2 - x**2)))**0.5
+    i.x0y0(a,x)
     return a,b,x
-  def dist(i,j):
-    d = sum(c.dist(i[c.pos],j[c.pos]) 
-            for c in i.of.ins)
-    return d**0.5 / len(i.of.ins)**0.5
+  @facet
+  def x0y0(i,a,x):
+    return x, max(0,min(1,(a**2 - x**2)))**0.5
+  @facet
   def objs(i):
-    i._objs= i._objs or [out1(i) 
-                         for out1 in i.of.outs]
-    return i._objs
-  def __sub__(i,j):
-    if id(j) in i.to:
-      return i.to[id(j)][0]
-    d = i.dist(i,j)
-    i.to[id(j)] = (d,j)
-    j.to[id(i)] = (d,i)
-    return d
+    all=  [obj(i) for obj in i.of.m.objs()]
+    for one, tell in zip(all,i.of.tells.outs):
+      tell.tell(one)
+  def dist(i,j,other=True):
+    return j.dist(i,False) if other else i.d(i,j)
+  @facet
+  def d(i,j):
+      total = sum(c.dist(i[c.pos],j[c.pos]) 
+                  for c in i.of.ins)
+      return total**0.5 / len(i.of.ins)**0.5
+ 
+class Feeling:
+  def __init__(f)   : i.f = f
+  def __call__(i,*l): return i.f(*l)
+  def __repr__(i)   : return '%s(%s)' % x(
+      i.__class__.__name__,
+      i.f.__name__)
 
-class Schaffer:
-  def ins(i) : return [N(name="x1",lo=-4,hi=4)],
-  def outs(i): return [i.f1,i.f2]
-  def f1(i,x): return x[0]**2
-  def f2(i,x): return (x[0]-2)**2
+class Hate(Feeling): 
+  def howBad(i,x): return x
+class Love(Feeling): 
+  def howBad(i,x): return 1 - x
 
+def Schaffer():
+  def f1(x): return x[0]**2
+  def f2(x): return (x[0]-2)**2
+  return o(
+    ins = [N(name="x1",lo=-4,hi=4)],
+    outs= [Hate(f1),Hate(f2)])
+  
 class Table:
-  def __init__(i,m):
-    i.m = m
-    i.tell(m)              
-    i.rows = []
+  def __init__(i,model):
+    i.factory = model
+    i.m = model()
+    i.asks, i.tells, i.rows = o(),o(),[]
+    i.tell(i.m)              
   def tell(i,m):
-    def out1(i,f): return N(name=name(f))
-    i.b4  = o(ins = m.ins()
-              outs= m.outs())
-    i.log = o(ins = [x.log()   for x in m.ins],
-              outs= [out1(f) for f in m.outs])
+    i.asks  = o(ins  = m.ins(),
+                outs = m.outs())
+    i.tells = o(
+      ins= [x.log() for x in m.ins ],
+      outs=[N(name=name(f)) for f in m.objs])
   def ask(i):
-    def ask1(b4,log):
-      val = b4.ask()
-      log.tell(val)
-      return val
-    row = Row(i, [ask1(b4,log) for b4,log 
-                  in zip(i.before.ins,i.log.ins)])
+    row = Row(i,[tell.tell(ask.ask())
+                 for ask, tell in
+                 zip(i.asks.ins,i.tells.ins)])
     rows += [row]
     return row
+
+    
+    
