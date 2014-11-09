@@ -177,10 +177,12 @@ class Row:
   def x0y0(i,a,x):
     return x, max(0,min(1,(a**2 - x**2)))**0.5
   @facet
-  def objs(i):
-    all=  [obj(i) for obj in i.of.m.objs()]
-    for one, tell in zip(all,i.of.tells.outs):
-      tell.tell(one)
+  def objs(i,keep=True):
+    those = [obj(i) for obj in i.of.m.objs()]
+    if keep:
+      for one, tell in zip(those,i.of.tells.objs): # XXX position
+        tell.tell(one)
+    return those 
   def dist(i,j,other=True):
     return j.dist(i,False) if other else i.d(i,j)
   @facet
@@ -188,44 +190,51 @@ class Row:
       total = sum(c.dist(i[c.pos],j[c.pos]) 
                   for c in i.of.ins)
       return total**0.5 / len(i.of.ins)**0.5
- 
-class Feeling:
-  def __init__(f)   : i.f = f
-  def __call__(i,*l): return i.f(*l)
-  def __repr__(i)   : return '%s(%s)' % x(
-      i.__class__.__name__,
-      i.f.__name__)
+  def smear(i,j,k): # somethimes want a zombie row XXX
+    return Row(of,
 
-class Hate(Feeling): 
-  def howBad(i,x): return x
-class Love(Feeling): 
-  def howBad(i,x): return 1 - x
+class Feeling:
+  def __init__(f,love=True) : 
+    i.f,i.name,i.love = f,f.__name__,love
+  def __call__(i,*l) : return i.f(*l)
+  def __repr__(i)    : return '%s(%s)' % x(
+      ('Love' if i.love else 'Hate'),
+       i.name)
+  def howBad(i,x): 
+    return 1 - x if i.love else x
+
+def love(f):return Feeling(f,i.love=True)
+def hate(f):return Feeling(f,i.love=False)
+
+def model(**d):
+  return o(ins=[],outs=[],objs=[]).update(**d)
 
 def Schaffer():
   def f1(x): return x[0]**2
   def f2(x): return (x[0]-2)**2
-  return o(
-    ins = [N(name="x1",lo=-4,hi=4)],
-    outs= [Hate(f1),Hate(f2)])
+  return model(
+    ins  = [N(name="x1",lo=-4,hi=4)],
+    objs = [hate(f1),hate(f2)])
   
 class Table:
   def __init__(i,model):
-    i.factory = model
-    i.m = model()
-    i.asks, i.tells, i.rows = o(),o(),[]
-    i.tell(i.m)              
-  def tell(i,m):
-    i.asks  = o(ins  = m.ins(),
-                outs = m.outs())
-    i.tells = o(
-      ins= [x.log() for x in m.ins ],
-      outs=[N(name=name(f)) for f in m.objs])
+    i.rows, i.factory, i.m = [], model, model()
+    i.asks=o(ins = i.m.ins(),
+             outs= i.m.outs() + i.m.objs())
+    i.tells=o(ins= [x.log() for x in i.m.ins ],
+             outs= [x.log() for x in i.m.outs] + [
+                   N(name=f.name) for f in i.m.objs
+                   ])
   def ask(i):
-    row = Row(i,[tell.tell(ask.ask())
-                 for ask, tell in
-                 zip(i.asks.ins,i.tells.ins)])
+    row = Row(i, [remember.tell(generate.ask())
+                  for generate, remember in
+                  zip(i.asks.ins, i.tells.ins)])
     rows += [row]
     return row
+  def smear(i):
+    one,two,three = any(rows),any(rows),any(rows)
+    for one.
+    
 
     
     
