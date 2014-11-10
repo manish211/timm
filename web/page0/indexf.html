@@ -1,0 +1,3725 @@
+<!-- saved from url=(0070)http://www.danieldavis.com/quantitatively-analysing-parametric-models/ -->
+
+<html>
+<head>
+  <meta name="generator" content=
+  "HTML Tidy for Linux (vers 25 March 2009), see www.w3.org">
+  <meta http-equiv="Content-Type" content=
+  "text/html; charset=us-ascii">
+
+  <title></title>
+</head>
+
+<body>
+  <div class="webkit-line-gutter-backdrop"></div>
+
+  <table>
+    <tbody>
+      <tr>
+        <td class="webkit-line-number" value="1"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-doctype">&lt;!DOCTYPE html&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="2"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-comment">&lt;!--For
+        Modernizr--&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="3"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-comment">&lt;!--[if lt IE 7 ]&gt; &lt;html
+        class="no-js ie6" lang="en"&gt;
+        &lt;![endif]--&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="4"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-comment">&lt;!--[if IE 7 ]&gt; &lt;html
+        class="no-js ie7" lang="en"&gt;
+        &lt;![endif]--&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="5"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-comment">&lt;!--[if IE 8 ]&gt; &lt;html
+        class="no-js ie8" lang="en"&gt;
+        &lt;![endif]--&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="6"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-comment">&lt;!--[if (gte IE
+        9)|!(IE)]&gt;&lt;!--&gt;</span> <span class=
+        "webkit-html-tag">&lt;html <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">no-js</span>" <span class=
+        "webkit-html-attribute-name">lang</span>="<span class=
+        "webkit-html-attribute-value">en</span>"&gt;</span>
+        <span class=
+        "webkit-html-comment">&lt;!--&lt;![endif]--&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="7"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="8"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;head&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="9"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;meta <span class=
+        "webkit-html-attribute-name">charset</span>="<span class=
+        "webkit-html-attribute-value">UTF-8</span>"&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="10"></td>
+
+        <td class="webkit-line-content"></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="11"></td>
+
+        <td class="webkit-line-content"></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="12"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;title&gt;</span> Quantitatively
+        Analysing Parametric Models &#226;&#8364;&#8220; Daniel
+        Davis<span class=
+        "webkit-html-tag">&lt;/title&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="13"></td>
+
+        <td class="webkit-line-content"></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="14"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;meta <span class=
+        "webkit-html-attribute-name">name</span>="<span class=
+        "webkit-html-attribute-value">title</span>" <span class=
+        "webkit-html-attribute-name">content</span>=" <span class=
+        "webkit-html-attribute-value">Quantitatively Analysing
+        Parametric Models &#226;&#8364;&#8220; Daniel
+        Davis</span>"&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="15"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;meta <span class=
+        "webkit-html-attribute-name">name</span>="<span class=
+        "webkit-html-attribute-value">description</span>"
+        <span class=
+        "webkit-html-attribute-name">content</span>=""&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="16"></td>
+
+        <td class="webkit-line-content"></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="17"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;meta <span class=
+        "webkit-html-attribute-name">name</span>="<span class=
+        "webkit-html-attribute-value">author</span>" <span class=
+        "webkit-html-attribute-name">content</span>="<span class=
+        "webkit-html-attribute-value">Daniel
+        Davis</span>"&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="18"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;meta <span class=
+        "webkit-html-attribute-name">name</span>="<span class=
+        "webkit-html-attribute-value">Copyright</span>"
+        <span class="webkit-html-attribute-name">content</span>="<span class="webkit-html-attribute-value">Copyright
+        Daniel Davis 2013. All Rights
+        Reserved.</span>"&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="19"></td>
+
+        <td class="webkit-line-content"></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="20"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;meta <span class=
+        "webkit-html-attribute-name">http-equiv</span>="<span class="webkit-html-attribute-value">cleartype</span>"
+        <span class=
+        "webkit-html-attribute-name">content</span>="<span class=
+        "webkit-html-attribute-value">on</span>"&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="21"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;meta <span class=
+        "webkit-html-attribute-name">http-equiv</span>="<span class="webkit-html-attribute-value">X-UA-Compatible</span>"
+        <span class=
+        "webkit-html-attribute-name">content</span>="<span class=
+        "webkit-html-attribute-value">IE=edge,chrome=1</span>"&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="22"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;meta <span class=
+        "webkit-html-attribute-name">name</span>="<span class=
+        "webkit-html-attribute-value">viewport</span>" <span class=
+        "webkit-html-attribute-name">content</span>="<span class=
+        "webkit-html-attribute-value">width=device-width,
+        initial-scale=1.0</span>"&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="23"></td>
+
+        <td class="webkit-line-content"></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="24"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;link <span class=
+        "webkit-html-attribute-name">rel</span>="<span class=
+        "webkit-html-attribute-value">shortcut icon</span>"
+        <span class=
+        "webkit-html-attribute-name">href</span>="<a class=
+        "webkit-html-attribute-value webkit-html-resource-link"
+        target="_blank" href=
+        "http://www.danieldavis.com/favicon.ico">http://www.danieldavis.com/favicon.ico</a>"&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="25"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;link <span class=
+        "webkit-html-attribute-name">rel</span>="<span class=
+        "webkit-html-attribute-value">apple-touch-icon</span>"
+        <span class=
+        "webkit-html-attribute-name">href</span>="<a class=
+        "webkit-html-attribute-value webkit-html-resource-link"
+        target="_blank" href=
+        "http://www.danieldavis.com/apple-touch-icon.png">http://www.danieldavis.com/apple-touch-icon.png</a>"&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="26"></td>
+
+        <td class="webkit-line-content"></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="27"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;script <span class=
+        "webkit-html-attribute-name">type</span>="<span class=
+        "webkit-html-attribute-value">text/javascript</span>"
+        <span class=
+        "webkit-html-attribute-name">src</span>="<a class=
+        "webkit-html-attribute-value webkit-html-resource-link"
+        target="_blank" href=
+        "http://use.typekit.net/iuw0nyk.js">//use.typekit.net/iuw0nyk.js</a>"&gt;</span><span class="webkit-html-tag">&lt;/script&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="28"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;script <span class=
+        "webkit-html-attribute-name">type</span>="<span class=
+        "webkit-html-attribute-value">text/javascript</span>"&gt;</span>try{Typekit.load();}catch(e){}<span class="webkit-html-tag">&lt;/script&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="29"></td>
+
+        <td class="webkit-line-content"></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="30"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;link <span class=
+        "webkit-html-attribute-name">rel</span>="<span class=
+        "webkit-html-attribute-value">stylesheet</span>"
+        <span class=
+        "webkit-html-attribute-name">href</span>="<a class=
+        "webkit-html-attribute-value webkit-html-resource-link"
+        target="_blank" href=
+        "http://www.danieldavis.com/wp-content/themes/daniel/css/global.css">http://www.danieldavis.com/wp-content/themes/daniel/css/global.css</a>"
+        <span class=
+        "webkit-html-attribute-name">media</span>="<span class=
+        "webkit-html-attribute-value">all</span>"&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="31"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;link <span class=
+        "webkit-html-attribute-name">rel</span>="<span class=
+        "webkit-html-attribute-value">stylesheet</span>"
+        <span class=
+        "webkit-html-attribute-name">href</span>="<a class=
+        "webkit-html-attribute-value webkit-html-resource-link"
+        target="_blank" href=
+        "http://www.danieldavis.com/wp-content/themes/daniel/css/layout.css">http://www.danieldavis.com/wp-content/themes/daniel/css/layout.css</a>"
+        <span class=
+        "webkit-html-attribute-name">media</span>="<span class=
+        "webkit-html-attribute-value">all and (min-width:
+        33.236em)</span>"&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="32"></td>
+
+        <td class="webkit-line-content"></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="33"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;script <span class=
+        "webkit-html-attribute-name">src</span>="<a class=
+        "webkit-html-attribute-value webkit-html-resource-link"
+        target="_blank" href=
+        "http://www.danieldavis.com/wp-content/themes/daniel/js/modernizr-1.7.min.js">http://www.danieldavis.com/wp-content/themes/daniel/js/modernizr-1.7.min.js</a>"&gt;</span><span class="webkit-html-tag">&lt;/script&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="34"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="35"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;meta <span class=
+        "webkit-html-attribute-name">property</span>="<span class=
+        "webkit-html-attribute-value">fb:admins</span>"
+        <span class="webkit-html-attribute-name">content</span>="<span class="webkit-html-attribute-value">738439514</span>"
+        /&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="36"></td>
+
+        <td class="webkit-line-content"></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="37"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;link <span class=
+        "webkit-html-attribute-name">rel</span>="<span class=
+        "webkit-html-attribute-value">pingback</span>" <span class=
+        "webkit-html-attribute-name">href</span>="<a class=
+        "webkit-html-attribute-value webkit-html-resource-link"
+        target="_blank" href=
+        "http://www.danieldavis.com/xmlrpc.php">http://www.danieldavis.com/xmlrpc.php</a>"
+        /&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="38"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="39"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="40"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;link <span class=
+        "webkit-html-attribute-name">rel</span>="<span class=
+        "webkit-html-attribute-value">alternate</span>"
+        <span class="webkit-html-attribute-name">type</span>="<span class="webkit-html-attribute-value">application/rss+xml</span>"
+        <span class=
+        "webkit-html-attribute-name">title</span>="<span class=
+        "webkit-html-attribute-value">Daniel Davis &amp;raquo;
+        Feed</span>" <span class=
+        "webkit-html-attribute-name">href</span>="<a class=
+        "webkit-html-attribute-value webkit-html-resource-link"
+        target="_blank" href=
+        "http://www.danieldavis.com/feed/">http://www.danieldavis.com/feed/</a>"
+        /&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="41"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;link <span class=
+        "webkit-html-attribute-name">rel</span>="<span class=
+        "webkit-html-attribute-value">alternate</span>"
+        <span class="webkit-html-attribute-name">type</span>="<span class="webkit-html-attribute-value">application/rss+xml</span>"
+        <span class=
+        "webkit-html-attribute-name">title</span>="<span class=
+        "webkit-html-attribute-value">Daniel Davis &amp;raquo;
+        Comments Feed</span>" <span class=
+        "webkit-html-attribute-name">href</span>="<a class=
+        "webkit-html-attribute-value webkit-html-resource-link"
+        target="_blank" href=
+        "http://www.danieldavis.com/comments/feed/">http://www.danieldavis.com/comments/feed/</a>"
+        /&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="42"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;link <span class=
+        "webkit-html-attribute-name">rel</span>="<span class=
+        "webkit-html-attribute-value">alternate</span>"
+        <span class="webkit-html-attribute-name">type</span>="<span class="webkit-html-attribute-value">application/rss+xml</span>"
+        <span class=
+        "webkit-html-attribute-name">title</span>="<span class=
+        "webkit-html-attribute-value">Daniel Davis &amp;raquo;
+        Quantitatively Analysing Parametric Models Comments
+        Feed</span>" <span class=
+        "webkit-html-attribute-name">href</span>="<a class=
+        "webkit-html-attribute-value webkit-html-resource-link"
+        target="_blank" href=
+        "http://www.danieldavis.com/quantitatively-analysing-parametric-models/feed/">http://www.danieldavis.com/quantitatively-analysing-parametric-models/feed/</a>"
+        /&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="43"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;link <span class=
+        "webkit-html-attribute-name">rel</span>='<span class=
+        "webkit-html-attribute-value">prev</span>' <span class=
+        "webkit-html-attribute-name">title</span>='<span class=
+        "webkit-html-attribute-value">How to Draw a
+        Hyperboloid</span>' <span class=
+        "webkit-html-attribute-name">href</span>='<a class=
+        "webkit-html-attribute-value webkit-html-resource-link"
+        target="_blank" href=
+        "http://www.danieldavis.com/how-to-draw-a-hyperboloid/">http://www.danieldavis.com/how-to-draw-a-hyperboloid/</a>'
+        /&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="44"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;link <span class=
+        "webkit-html-attribute-name">rel</span>='<span class=
+        "webkit-html-attribute-value">next</span>' <span class=
+        "webkit-html-attribute-name">title</span>='<span class=
+        "webkit-html-attribute-value">Gender Inequity and Design
+        Technology</span>' <span class=
+        "webkit-html-attribute-name">href</span>='<a class=
+        "webkit-html-attribute-value webkit-html-resource-link"
+        target="_blank" href=
+        "http://www.danieldavis.com/gender-inequity-and-design-technology/">http://www.danieldavis.com/gender-inequity-and-design-technology/</a>'
+        /&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="45"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;link <span class=
+        "webkit-html-attribute-name">rel</span>='<span class=
+        "webkit-html-attribute-value">canonical</span>'
+        <span class="webkit-html-attribute-name">href</span>='<a class="webkit-html-attribute-value webkit-html-resource-link"
+        target="_blank" href=
+        "./index_files/index.html">http://www.danieldavis.com/quantitatively-analysing-parametric-models/</a>'
+        /&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="46"></td>
+
+        <td class="webkit-line-content"></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="47"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;/head&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="48"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="49"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;body <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">single single-post
+        postid-3977 single-format-standard</span>"&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="50"></td>
+
+        <td class="webkit-line-content"></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="51"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;div <span class=
+        "webkit-html-attribute-name">id</span>="<span class=
+        "webkit-html-attribute-value">container</span>"
+        <span class="webkit-html-attribute-name">class</span>="<span class="webkit-html-attribute-value">cf</span>"&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="52"></td>
+
+        <td class="webkit-line-content"></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="53"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;header&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="54"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;h2&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="55"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;a <span class=
+        "webkit-html-attribute-name">href</span>="<a class=
+        "webkit-html-attribute-value webkit-html-external-link"
+        target="_blank" href=
+        "http://www.danieldavis.com/">http://www.danieldavis.com</a>"
+        <span class=
+        "webkit-html-attribute-name">id</span>="<span class=
+        "webkit-html-attribute-value">header-logo</span>"&gt;</span><span class="webkit-html-tag">&lt;img
+        <span class=
+        "webkit-html-attribute-name">src</span>="<a class=
+        "webkit-html-attribute-value webkit-html-resource-link"
+        target="_blank" href=
+        "http://www.danieldavis.com/wp-content/themes/daniel/img/daniel_blue.png">http://www.danieldavis.com/wp-content/themes/daniel/img/daniel_blue.png</a>"
+        <span class=
+        "webkit-html-attribute-name">alt</span>="<span class=
+        "webkit-html-attribute-value">Daniel
+        Davis</span>"&gt;</span><span class=
+        "webkit-html-tag">&lt;/a&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="56"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;/h2&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="57"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;div <span class=
+        "webkit-html-attribute-name">role</span>="<span class=
+        "webkit-html-attribute-value">navigation</span>"
+        <span class=
+        "webkit-html-attribute-name">id</span>="<span class=
+        "webkit-html-attribute-value">nav</span>"&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="58"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;ul&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="59"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;li <span class=
+        "webkit-html-attribute-name">class</span>=""&gt;</span><span class="webkit-html-tag">&lt;a
+        <span class=
+        "webkit-html-attribute-name">href</span>="<a class=
+        "webkit-html-attribute-value webkit-html-external-link"
+        target="_blank" href=
+        "http://www.danieldavis.com/">http://www.danieldavis.com</a>"&gt;</span>Blog<span class="webkit-html-tag">&lt;/a&gt;</span><span class="webkit-html-tag">&lt;/li&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="60"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;li <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">selected</span>"&gt;</span><span class="webkit-html-tag">&lt;a
+        <span class=
+        "webkit-html-attribute-name">href</span>="<a class=
+        "webkit-html-attribute-value webkit-html-external-link"
+        target="_blank" href=
+        "http://www.danieldavis.com/d/portfolio/">http://www.danieldavis.com/d/portfolio/</a>"&gt;</span>Portfolio<span class="webkit-html-tag">&lt;/a&gt;</span><span class="webkit-html-tag">&lt;/li&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="61"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;li <span class=
+        "webkit-html-attribute-name">class</span>=""&gt;</span><span class="webkit-html-tag">&lt;a
+        <span class=
+        "webkit-html-attribute-name">href</span>="<a class=
+        "webkit-html-attribute-value webkit-html-external-link"
+        target="_blank" href=
+        "http://www.danieldavis.com/about/">http://www.danieldavis.com/about/</a>"&gt;</span>About<span class="webkit-html-tag">&lt;/a&gt;</span><span class="webkit-html-tag">&lt;/li&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="62"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;li <span class=
+        "webkit-html-attribute-name">class</span>=""&gt;</span><span class="webkit-html-tag">&lt;a
+        <span class=
+        "webkit-html-attribute-name">href</span>="<a class=
+        "webkit-html-attribute-value webkit-html-external-link"
+        target="_blank" href=
+        "http://www.danieldavis.com/subscribe/">http://www.danieldavis.com/subscribe/</a>"&gt;</span>Subscribe<span class="webkit-html-tag">&lt;/a&gt;</span><span class="webkit-html-tag">&lt;/li&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="63"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;/ul&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="64"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;/div&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="65"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;/header&gt;</span> <span class=
+        "webkit-html-tag">&lt;div <span class=
+        "webkit-html-attribute-name">id</span>="<span class=
+        "webkit-html-attribute-value">main</span>" <span class=
+        "webkit-html-attribute-name">role</span>="<span class=
+        "webkit-html-attribute-value">main</span>"&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="66"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;article <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">post-3977 post type-post
+        status-publish format-standard hentry category-2014p
+        category-papers category-portfolio</span>" <span class=
+        "webkit-html-attribute-name">id</span>="<span class=
+        "webkit-html-attribute-value">post-3977</span>"&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="67"></td>
+
+        <td class="webkit-line-content"></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="68"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;h1 <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">entry-title</span>"&gt;</span>Quantitatively
+        Analysing Parametric Models<span class=
+        "webkit-html-tag">&lt;/h1&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="69"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;p <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">banner</span>"&gt;</span><span class="webkit-html-tag">&lt;img
+        <span class=
+        "webkit-html-attribute-name">width</span>="<span class=
+        "webkit-html-attribute-value">480</span>" <span class=
+        "webkit-html-attribute-name">height</span>="<span class=
+        "webkit-html-attribute-value">238</span>" <span class=
+        "webkit-html-attribute-name">src</span>="<a class=
+        "webkit-html-attribute-value webkit-html-resource-link"
+        target="_blank" href=
+        "http://www.danieldavis.com/wp-content/uploads/2014/10/comparison-480x238.jpg">http://www.danieldavis.com/wp-content/uploads/2014/10/comparison-480x238.jpg</a>"
+        <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">attachment-banner-uncropped</span>"
+        <span class=
+        "webkit-html-attribute-name">alt</span>="<span class=
+        "webkit-html-attribute-value">Cyclomatic complexity and
+        dimensionality vs size.</span>" /&gt;</span><span class=
+        "webkit-html-tag">&lt;/p&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="70"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;h3&gt;</span>Daniel Davis
+        &#226;&#8364;&#8220; October 2014<span class=
+        "webkit-html-tag">&lt;/h3&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="71"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="72"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;div <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">entry-content</span>"&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="73"></td>
+
+        <td class="webkit-line-content"></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="74"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;div <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">pre</span>"&gt;</span><span class="webkit-html-tag">&lt;p&gt;</span><span class="webkit-html-tag">&lt;strong&gt;</span>Cite
+        as:<span class=
+        "webkit-html-tag">&lt;/strong&gt;</span>&nbsp;Davis,
+        Daniel. 2014. &#226;&#8364;&#339;Quantitatively Analysing
+        Parametric Models.&#226;&#8364; <span class=
+        "webkit-html-tag">&lt;em&gt;</span>International Journal of
+        Architectural Computing<span class=
+        "webkit-html-tag">&lt;/em&gt;</span>&nbsp;12 (3):
+        307&#226;&#8364;&#8220;319.<span class=
+        "webkit-html-tag">&lt;/p&gt;</span><span class=
+        "webkit-html-tag">&lt;/div&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="75"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;h4&gt;</span>Abstract<span class=
+        "webkit-html-tag">&lt;/h4&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="76"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;p&gt;</span>Architectural practices
+        regularly work with parametric models, yet almost nothing
+        is known about the general properties of these models. We
+        do not know how large a typical model is, or how
+        complicated, or even what the typical parametric model
+        does. These knowledge gaps are the focus of this article,
+        which documents the first large-scale quantitative
+        parametric model survey. In this paper three key
+        quantitative metrics &#226;&#8364;&#8220; dimensionality,
+        size, and cyclomatic complexity &#226;&#8364;&#8220; are
+        applied to a collection of 2002 parametric models created
+        by 575 designers. The results show that parametric models
+        generally exhibit a number of strong correlations, which
+        reveal a practice of parametric modelling that has as much
+        to do with the management of data as it does with the
+        modelling of geometry. These findings demonstrate the
+        utility of software engineering metrics in the description
+        and analysis of parametric models.<span class=
+        "webkit-html-tag">&lt;/p&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="77"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;h2&gt;</span>1.
+        Introduction<span class=
+        "webkit-html-tag">&lt;/h2&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="78"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;p&gt;</span><span class=
+        "webkit-html-tag">&lt;span <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">dropcap</span>"&gt;</span>O<span class="webkit-html-tag">&lt;/span&gt;</span>ur
+        current understanding of parametric modelling is largely
+        confined to firsthand accounts of individuals working with
+        specific parametric models. These accounts have proved
+        useful both in illustrating new methods of parametric
+        modelling (such as [1, 2]) and in demonstrating the
+        application of parametric modelling in practice (such as
+        [3, 4]). In these previous studies, the subject of
+        investigation has often been exceptional parametric models
+        &#226;&#8364;&#8220; the models worthy of study because
+        they constitute a novel method of working or an original
+        application. This focus on the exceptional has left
+        significant gaps in our understanding of the ordinary. Many
+        basic questions have either gone unasked or unanswered. For
+        instance, we do not know how large a typical model is, or
+        how complicated, or even what the typical parametric model
+        does.<span class="webkit-html-tag">&lt;/p&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="79"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;p&gt;</span>Software engineers have
+        asked similar questions of the computer programs they
+        write. In an attempt to understand software quality,
+        software engineers have invented numerous quantitative
+        methods for evaluating various aspects of their code. In
+        the following pages I take three key quantitative metrics
+        from software engineering &#226;&#8364;&#8220; size,
+        dimensionality, cyclomatic complexity &#226;&#8364;&#8220;
+        and explain their applicability to parametric modelling. I
+        use these metrics to measure 2002 parametric models created
+        by 575 designers. By aggregating these measurements
+        together I am able to identify general trends in the
+        sampled population that help reveal the customary practices
+        of parametric modelling.<span class=
+        "webkit-html-tag">&lt;/p&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="80"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;h2&gt;</span>2. Quantifying Software
+        Engineering<span class=
+        "webkit-html-tag">&lt;/h2&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="81"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;p&gt;</span>For decades software
+        engineers have sought to study computer code with elegant,
+        repeatable, statistical studies [5]. A significant product
+        of this prior research has been the formalisation of key
+        metrics for measuring software quality. There are at least
+        twenty-three unique measures of software quality
+        categorised in the Compendium of Software Quality Standards
+        and Metrics [6], and over one hundred in the ISO/IEC 9126
+        standard for Software Product Quality [7]. Together these
+        metrics constitute a vocabulary of software quality that
+        software engineers commonly use for project planning, cost
+        estimation, quality assurance, defect identification, the
+        management of programmers, and software engineering
+        research [8]. Two particularly fundamental metrics are the
+        measurement of code size using the lines of code, and the
+        measurement of code complexity with
+        McCabe&#226;&#8364;&#8482;s cyclomatic complexity measure
+        [8]. Since digital parametric models are essentially a type
+        of computer program [9], there is reason to suspect that
+        the metrics software engineers use to quantify code quality
+        may also be applicable to architects wanting to measure
+        their parametric models. Of particular interest are the
+        measurements of code size (both lines of code and
+        dimensionality) as well as code complexity (cyclomatic
+        complexity). These metrics constitute the focus of this
+        article.<span class=
+        "webkit-html-tag">&lt;/p&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="82"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;h2&gt;</span>3. Method<span class=
+        "webkit-html-tag">&lt;/h2&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="83"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;p&gt;</span>Quantitative metrics have
+        never been applied to a large group of parametric models.
+        This is probably because it has been difficult for
+        architectural researchers to amass large, representative
+        collections of parametric models. Instead, researchers
+        generally only have access to parametric models created by
+        themselves or their colleagues, which is a sample too
+        idiosyncratic to draw any general conclusions from. The
+        problem of gathering a collection of parametric models has
+        been somewhat solved by the advent of websites enabling
+        communities of designers to share parametric models
+        publicly. One such website is McNeel&#226;&#8364;&#8482;s
+        Grasshopper online forum (grasshopper3d.com) where, between
+        8 May 2009 and 22 August 2011, 575 designers shared 2041
+        parametric models.<span class=
+        "webkit-html-tag">&lt;/p&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="84"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;p&gt;</span>The collection of
+        parametric models on the Grasshopper forum is not entirely
+        representative. Most evidently, there are no models created
+        in parametric modelling software other than Grasshopper.
+        Numerous studies have shown that the modelling environment
+        influences the model produced [10-13]. Even if the designer
+        has a degree of agency that ensures the model is not
+        entirely the product of its environment, it must be assumed
+        that the collection of Grasshopper parametric models is not
+        entirely representative of models created in other
+        modelling environments. A further complication is that the
+        models uploaded to the Grasshopper forum often focus on
+        specific problems or solutions (generally architectural
+        problems and solutions), which means they can often be
+        simplifications of larger models. The implications this
+        presents are discussed along with the results in each of
+        the following sections of this article. Even though the
+        collection of 2041 Grasshopper models is not a perfectly
+        representative collection, it is a significant advancement
+        over any previous study to be able to analyse how hundreds
+        of designers organise models created in one popular
+        parametric modelling environment.<span class=
+        "webkit-html-tag">&lt;/p&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="85"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;p&gt;</span>To analyse the parametric
+        models from the Grasshopper forum, I first download the
+        2041 models. The oldest model was from 8 May 2009 and
+        created with Grasshopper 0.6.12, and the most recent model
+        was from 22 August 2011 and created with Grasshopper
+        0.8.0050. All the models were uploaded to the forum in the
+        proprietary .ghx file format. I reverse engineered this
+        format and wrote a script that extracted the parametric
+        relationships from each file and parsed them into a
+        directed acyclic graph. Thirty-nine models were excluded in
+        this process, either because the file was corrupted or
+        because the model only contained one node (which distorted
+        measurements like cyclomatic complexity). The graphs of the
+        remaining 2002 models were then each evaluated with the
+        quantitative metrics discussed in the remainder of this
+        article. The measurements were then exported to an Excel
+        spreadsheet and analysed. In the analysis I have favoured
+        using the median since the mean is distorted by a few large
+        outliers. Each of the key quantitative metrics is discussed
+        in the following sections.<span class=
+        "webkit-html-tag">&lt;/p&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="86"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;h2&gt;</span>4. Size<span class=
+        "webkit-html-tag">&lt;/h2&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="87"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;p&gt;</span>Code size is one of the
+        critical measures of software quality. Software engineers
+        commonly measure a program&#226;&#8364;&#8482;s size by
+        counting the lines of code (LOC). This is a quick
+        calculation that proves useful in understanding the
+        software&#226;&#8364;&#8482;s relative size. Barry
+        Boehm&#226;&#8364;&#8482;s seminal work on the economics of
+        software engineering demonstrates that LOC is correlated
+        with development effort [14]. In other words, programs with
+        more LOC generally take more time to produce. Boehm uses
+        this correlation as the basis for the COCOMO estimation
+        method, which suggests that the months required to develop
+        a typical project is roughly equivalent to 2.4
+        &#195;&#8212; KLOC1.06 (where KLOC is thousands of LOC)
+        [14]. Other research has shown that the LOC measurement
+        correlates highly with both code complexity [15], and the
+        number of coding errors (more lines of code provide more
+        opportunities for things to go wrong) [16]. These
+        correlations make the LOC measure a valuable instrument for
+        quickly establishing a project&#226;&#8364;&#8482;s size
+        and estimating its potential cost, complexity, and error
+        proneness.<span class=
+        "webkit-html-tag">&lt;/p&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="88"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;p&gt;</span>While the LOC measure is
+        quick to calculate, it is also crude. Steven McConnell has
+        said &#226;&#8364;&#339;the LOC measure is a terrible way
+        to measure software size, except all other ways to measure
+        size are worse&#226;&#8364; [17]. The major limitation of
+        the LOC measure is that it doesn&#226;&#8364;&#8482;t take
+        into consideration the programming language or the
+        programming style. A program may take up more or fewer
+        lines of code depending on who programmed it and what
+        programming language they used. For this reason, orders of
+        magnitude matter more than the exact LOC measurement, with
+        software engineers often rounding the LOC to the nearest
+        thousand.<span class=
+        "webkit-html-tag">&lt;/p&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="89"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;p&gt;</span>In a visual programming
+        language like Grasshopper, a node can be considered roughly
+        equivalent to a line of code (but given the differences
+        between textual lines of code and visual nodes, direct
+        comparisons generally cannot be made between the sizes of
+        textual and visual programs). The size of a Grasshopper
+        model can therefore be measured by simply counting the
+        number of nodes in the model.<span class=
+        "webkit-html-tag">&lt;/p&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="90"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;div <span class=
+        "webkit-html-attribute-name">id</span>="<span class=
+        "webkit-html-attribute-value">attachment_3984</span>"
+        <span class=
+        "webkit-html-attribute-name">style</span>="<span class=
+        "webkit-html-attribute-value">width: 490px</span>"
+        <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">wp-caption
+        alignnone</span>"&gt;</span><span class=
+        "webkit-html-tag">&lt;a <span class=
+        "webkit-html-attribute-name">href</span>="<a class=
+        "webkit-html-attribute-value webkit-html-external-link"
+        target="_blank" href=
+        "http://www.danieldavis.com/wp-content/uploads/2014/10/distrablution_size.jpg">http://www.danieldavis.com/wp-content/uploads/2014/10/distrablution_size.jpg</a>"&gt;</span><span class="webkit-html-tag">&lt;img
+        <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">size-banner-uncropped
+        wp-image-3984</span>" <span class=
+        "webkit-html-attribute-name">src</span>="<a class=
+        "webkit-html-attribute-value webkit-html-resource-link"
+        target="_blank" href=
+        "http://www.danieldavis.com/wp-content/uploads/2014/10/distrablution_size-480x280.jpg">http://www.danieldavis.com/wp-content/uploads/2014/10/distrablution_size-480x280.jpg</a>"
+        <span class=
+        "webkit-html-attribute-name">alt</span>="<span class=
+        "webkit-html-attribute-value">Graph showing distribution of
+        parametric model size.</span>" <span class=
+        "webkit-html-attribute-name">width</span>="<span class=
+        "webkit-html-attribute-value">480</span>" <span class=
+        "webkit-html-attribute-name">height</span>="<span class=
+        "webkit-html-attribute-value">280</span>"
+        /&gt;</span><span class=
+        "webkit-html-tag">&lt;/a&gt;</span><span class=
+        "webkit-html-tag">&lt;p <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">wp-caption-text</span>"&gt;</span>Figure
+        1: Distribution of model size in population of 2002
+        Grasshopper models.<span class=
+        "webkit-html-tag">&lt;/p&gt;</span><span class=
+        "webkit-html-tag">&lt;/div&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="91"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;p&gt;</span>The sizes of the 2002
+        sampled Grasshopper models vary by a number of orders of
+        magnitude. The smallest model contains just two nodes while
+        the largest model contains 2207 nodes. The distribution of
+        sizes has a positive skew (Figure 1) with the median sized
+        model containing twenty-three nodes. I suspect the skew is
+        partly because many of the models uploaded to the
+        Grasshopper forum are snippets of larger models. The median
+        may therefore be slightly higher in practice. Even with a
+        slightly higher median, the Grasshopper models (including
+        the three models that contain more than one thousand nodes)
+        are small relative to those seen in the context of software
+        engineering &#226;&#8364;&#8220; where LOC is often
+        measured in multiples of thousands. This is a difference in
+        scale that may be the product either of architects not
+        requiring larger models, or of Grasshopper being unsuitable
+        for producing models of a larger scale. In either case, the
+        findings show that the challenges software engineers face
+        when managing large software projects are unlikely to be
+        felt as acutely by architects, possibly replaced by
+        discipline specific concerns of working at this
+        scale.<span class="webkit-html-tag">&lt;/p&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="92"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;div <span class=
+        "webkit-html-attribute-name">id</span>="<span class=
+        "webkit-html-attribute-value">attachment_3987</span>"
+        <span class=
+        "webkit-html-attribute-name">style</span>="<span class=
+        "webkit-html-attribute-value">width: 490px</span>"
+        <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">wp-caption
+        alignnone</span>"&gt;</span><span class=
+        "webkit-html-tag">&lt;a <span class=
+        "webkit-html-attribute-name">href</span>="<a class=
+        "webkit-html-attribute-value webkit-html-external-link"
+        target="_blank" href=
+        "http://www.danieldavis.com/wp-content/uploads/2014/10/pie_chart_2.jpg">http://www.danieldavis.com/wp-content/uploads/2014/10/pie_chart_2.jpg</a>"&gt;</span><span class="webkit-html-tag">&lt;img
+        <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">wp-image-3987
+        size-banner-uncropped</span>" <span class=
+        "webkit-html-attribute-name">src</span>="<a class=
+        "webkit-html-attribute-value webkit-html-resource-link"
+        target="_blank" href=
+        "http://www.danieldavis.com/wp-content/uploads/2014/10/pie_chart_2-480x195.jpg">http://www.danieldavis.com/wp-content/uploads/2014/10/pie_chart_2-480x195.jpg</a>"
+        <span class=
+        "webkit-html-attribute-name">alt</span>="<span class=
+        "webkit-html-attribute-value">Pie chart showing typical
+        node functions in a parametric model.</span>" <span class=
+        "webkit-html-attribute-name">width</span>="<span class=
+        "webkit-html-attribute-value">480</span>" <span class=
+        "webkit-html-attribute-name">height</span>="<span class=
+        "webkit-html-attribute-value">195</span>"
+        /&gt;</span><span class=
+        "webkit-html-tag">&lt;/a&gt;</span><span class=
+        "webkit-html-tag">&lt;p <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">wp-caption-text</span>"&gt;</span>Figure
+        2: Typical function of nodes in population of 2002
+        Grasshopper models.<span class=
+        "webkit-html-tag">&lt;/p&gt;</span><span class=
+        "webkit-html-tag">&lt;/div&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="93"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;p&gt;</span>Given the numbers of
+        nodes in a model, it is telling to see the typical function
+        of these nodes (Figure 2). 32% of the nodes do something
+        related directly to creating, evaluating, or manipulating
+        geometry &#226;&#8364;&#8220; the core competency of
+        Grasshopper. A further 8% of nodes perform mathematic
+        functions. Somewhat unexpectedly, the remaining nodes have
+        nothing to do with either maths or geometry, they instead
+        work to manage data (26%), manipulate lists (20%), or
+        explain what is happening in the model (13%). This
+        demonstrates that parametric modelling, at least within
+        Grasshopper, is as much about managing lists and wrangling
+        data as it is about modelling geometry.<span class=
+        "webkit-html-tag">&lt;/p&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="94"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;h2&gt;</span>5.
+        Dimensionality<span class=
+        "webkit-html-tag">&lt;/h2&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="95"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;p&gt;</span>An important subset of a
+        parametric model&#226;&#8364;&#8482;s overall size is the
+        size of the inputs (the number of nodes without parents).
+        This tally of the model&#226;&#8364;&#8482;s parameters is
+        termed the dimensionality since it determines the number of
+        dimensions in the model&#226;&#8364;&#8482;s search space.
+        Ideally a model has a dimensionality large enough that the
+        designer can change the model by changing a parameter
+        instead of changing the underlying structure of the model.
+        A high dimensionality would therefore seem desirable since
+        it gives the designer more parameters to work with. But
+        parameters come at a cost. They require work upfront to
+        implement, and they require even more work to change. This
+        investment may not pay off if the parameter is rarely used.
+        Therefore, the skill of creating a parametric model is
+        getting the balance right between too much and too little
+        flexibility; between a large dimensionality and a small one
+        [18].<span class="webkit-html-tag">&lt;/p&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="96"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;div <span class=
+        "webkit-html-attribute-name">id</span>="<span class=
+        "webkit-html-attribute-value">attachment_3989</span>"
+        <span class=
+        "webkit-html-attribute-name">style</span>="<span class=
+        "webkit-html-attribute-value">width: 490px</span>"
+        <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">wp-caption
+        alignnone</span>"&gt;</span><span class=
+        "webkit-html-tag">&lt;a <span class=
+        "webkit-html-attribute-name">href</span>="<a class=
+        "webkit-html-attribute-value webkit-html-external-link"
+        target="_blank" href=
+        "http://www.danieldavis.com/wp-content/uploads/2014/10/distrablution_dim.jpg">http://www.danieldavis.com/wp-content/uploads/2014/10/distrablution_dim.jpg</a>"&gt;</span><span class="webkit-html-tag">&lt;img
+        <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">size-banner-uncropped
+        wp-image-3989</span>" <span class=
+        "webkit-html-attribute-name">src</span>="<a class=
+        "webkit-html-attribute-value webkit-html-resource-link"
+        target="_blank" href=
+        "http://www.danieldavis.com/wp-content/uploads/2014/10/distrablution_dim-480x275.jpg">http://www.danieldavis.com/wp-content/uploads/2014/10/distrablution_dim-480x275.jpg</a>"
+        <span class=
+        "webkit-html-attribute-name">alt</span>="<span class=
+        "webkit-html-attribute-value">Graph showing typical
+        dimensionality of parametric models.</span>" <span class=
+        "webkit-html-attribute-name">width</span>="<span class=
+        "webkit-html-attribute-value">480</span>" <span class=
+        "webkit-html-attribute-name">height</span>="<span class=
+        "webkit-html-attribute-value">275</span>"
+        /&gt;</span><span class=
+        "webkit-html-tag">&lt;/a&gt;</span><span class=
+        "webkit-html-tag">&lt;p <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">wp-caption-text</span>"&gt;</span>Figure
+        3: Distribution of model dimensionality in population of
+        2002 Grasshopper models.<span class=
+        "webkit-html-tag">&lt;/p&gt;</span><span class=
+        "webkit-html-tag">&lt;/div&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="97"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;p&gt;</span>The vast majority of
+        models have a similar dimensionally; 75% possess between
+        one and eleven inputs with the median being six inputs
+        (Figure 3). There is no correlation between model size and
+        the percentage of inputs (Pearson&#226;&#8364;&#8482;s r =
+        &#226;&#710;&#8217;0.175). A small model with many inputs
+        is just as likely as a large model with relatively few
+        inputs. I suspect the comparatively low dimensionality
+        shown in the vast majority of models may be because
+        designers can only comfortably manipulate a few parameters
+        at a time. When examining the models with a high
+        dimensionality (seventeen models have more then one hundred
+        inputs) it is strikingly difficult to understand what each
+        input does and even more difficult to change the inputs
+        meaningfully en masse. Therefore, while parameters are a
+        key component of parametric modelling (some would say the
+        defining component) the majority of designers use
+        parameters sparingly in their models.<span class=
+        "webkit-html-tag">&lt;/p&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="98"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;div <span class=
+        "webkit-html-attribute-name">id</span>="<span class=
+        "webkit-html-attribute-value">attachment_3990</span>"
+        <span class=
+        "webkit-html-attribute-name">style</span>="<span class=
+        "webkit-html-attribute-value">width: 490px</span>"
+        <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">wp-caption
+        alignnone</span>"&gt;</span><span class=
+        "webkit-html-tag">&lt;a <span class=
+        "webkit-html-attribute-name">href</span>="<a class=
+        "webkit-html-attribute-value webkit-html-external-link"
+        target="_blank" href=
+        "http://www.danieldavis.com/wp-content/uploads/2014/10/cyclomatic_explained_v2_2.jpg">http://www.danieldavis.com/wp-content/uploads/2014/10/cyclomatic_explained_v2_2.jpg</a>"&gt;</span><span class="webkit-html-tag">&lt;img
+        <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">size-banner-uncropped
+        wp-image-3990</span>" <span class=
+        "webkit-html-attribute-name">src</span>="<a class=
+        "webkit-html-attribute-value webkit-html-resource-link"
+        target="_blank" href=
+        "http://www.danieldavis.com/wp-content/uploads/2014/10/cyclomatic_explained_v2_2-480x160.jpg">http://www.danieldavis.com/wp-content/uploads/2014/10/cyclomatic_explained_v2_2-480x160.jpg</a>"
+        <span class=
+        "webkit-html-attribute-name">alt</span>="<span class=
+        "webkit-html-attribute-value">Diagram showing differences
+        between cyclomatic complexity</span>" <span class=
+        "webkit-html-attribute-name">width</span>="<span class=
+        "webkit-html-attribute-value">480</span>" <span class=
+        "webkit-html-attribute-name">height</span>="<span class=
+        "webkit-html-attribute-value">160</span>"
+        /&gt;</span><span class=
+        "webkit-html-tag">&lt;/a&gt;</span><span class=
+        "webkit-html-tag">&lt;p <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">wp-caption-text</span>"&gt;</span>Figure
+        4: Top: A directed acyclic graph comprised of a single
+        path, which gives it a cyclomatic complexity of one.
+        Bottom: A graph with the same number of nodes as the top
+        model but with three distinct paths (each colour coded).
+        This graph therefore has a cyclomatic complexity of
+        three.<span class=
+        "webkit-html-tag">&lt;/p&gt;</span><span class=
+        "webkit-html-tag">&lt;/div&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="99"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;h2&gt;</span>6. Cyclomatic
+        Complexity<span class=
+        "webkit-html-tag">&lt;/h2&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="100"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;p&gt;</span>Cyclomatic complexity is
+        a core software engineering metric for measuring code
+        structure. The metric works by decomposing textual code
+        into a graph and then counting the number of independent
+        paths through the graph (Grasshopper models are already a
+        graph, which makes them ideally suited for this metric).
+        The number of paths is important since it indicates how
+        much work is involved in understanding a piece of code. For
+        instance, a graph that comprises of a single sequence of
+        nodes can be understood by reading sequentially along the
+        line (Figure 4). But understanding a more complicated
+        graph, where chains of nodes diverge and converge back
+        together, requires simultaneously reading many different
+        paths (Figure 4). This becomes evermore difficult as the
+        number of paths increases. A high cyclomatic complexity
+        therefore indicates that a piece of code has a high number
+        of independent paths, which potentially requires more
+        cognitive energy to understand.<span class=
+        "webkit-html-tag">&lt;/p&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="101"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;p&gt;</span>The original cyclomatic
+        complexity formula is as follows [19]:<span class=
+        "webkit-html-tag">&lt;/p&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="102"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;p&gt;</span><span class=
+        "webkit-html-tag">&lt;a <span class=
+        "webkit-html-attribute-name">href</span>="<a class=
+        "webkit-html-attribute-value webkit-html-external-link"
+        target="_blank" href=
+        "http://www.danieldavis.com/wp-content/uploads/2013/09/cyclomatic_formula1.jpg">http://www.danieldavis.com/wp-content/uploads/2013/09/cyclomatic_formula1.jpg</a>"&gt;</span><span class="webkit-html-tag">&lt;img
+        <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">alignnone size-full
+        wp-image-3291</span>" <span class=
+        "webkit-html-attribute-name">src</span>="<a class=
+        "webkit-html-attribute-value webkit-html-resource-link"
+        target="_blank" href=
+        "http://www.danieldavis.com/wp-content/uploads/2013/09/cyclomatic_formula1.jpg">http://www.danieldavis.com/wp-content/uploads/2013/09/cyclomatic_formula1.jpg</a>"
+        <span class=
+        "webkit-html-attribute-name">alt</span>="<span class=
+        "webkit-html-attribute-value">cyclomatic_formula</span>"
+        <span class=
+        "webkit-html-attribute-name">width</span>="<span class=
+        "webkit-html-attribute-value">274</span>" <span class=
+        "webkit-html-attribute-name">height</span>="<span class=
+        "webkit-html-attribute-value">33</span>"
+        /&gt;</span><span class=
+        "webkit-html-tag">&lt;/a&gt;</span><span class=
+        "webkit-html-tag">&lt;/p&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="103"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;p&gt;</span>Where:<span class=
+        "webkit-html-tag">&lt;/p&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="104"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;ul&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="105"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;li&gt;</span>G: the
+        graph.<span class="webkit-html-tag">&lt;/li&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="106"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;li&gt;</span>e: number of edges
+        (connections between nodes).<span class=
+        "webkit-html-tag">&lt;/li&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="107"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;li&gt;</span>n: number of
+        nodes.<span class="webkit-html-tag">&lt;/li&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="108"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;li&gt;</span>p: number of independent
+        graphs.<span class=
+        "webkit-html-tag">&lt;/li&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="109"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;/ul&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="110"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;p&gt;</span>This formula assumes the
+        graph has only one input node and one output node, which is
+        infrequently the case with parametric models. In an
+        appraisal of common modifications to the original formula,
+        Henderson-Seller and Tegarden show that
+        &#226;&#8364;&#339;additional (fictitious)
+        edges&#226;&#8364; can be introduced to deal with multiple
+        inputs and outputs [20]. In these circumstances, the
+        cyclomatic complexity formula becomes:<span class=
+        "webkit-html-tag">&lt;/p&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="111"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;p&gt;</span><span class=
+        "webkit-html-tag">&lt;a <span class=
+        "webkit-html-attribute-name">href</span>="<a class=
+        "webkit-html-attribute-value webkit-html-external-link"
+        target="_blank" href=
+        "http://www.danieldavis.com/wp-content/uploads/2013/09/cyclomatic_formula_v3.jpg">http://www.danieldavis.com/wp-content/uploads/2013/09/cyclomatic_formula_v3.jpg</a>"&gt;</span><span class="webkit-html-tag">&lt;img
+        <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">alignnone size-full
+        wp-image-3290</span>" <span class=
+        "webkit-html-attribute-name">src</span>="<a class=
+        "webkit-html-attribute-value webkit-html-resource-link"
+        target="_blank" href=
+        "http://www.danieldavis.com/wp-content/uploads/2013/09/cyclomatic_formula_v3.jpg">http://www.danieldavis.com/wp-content/uploads/2013/09/cyclomatic_formula_v3.jpg</a>"
+        <span class=
+        "webkit-html-attribute-name">alt</span>="<span class=
+        "webkit-html-attribute-value">cyclomatic_formula_v3</span>"
+        <span class=
+        "webkit-html-attribute-name">width</span>="<span class=
+        "webkit-html-attribute-value">304</span>" <span class=
+        "webkit-html-attribute-name">height</span>="<span class=
+        "webkit-html-attribute-value">32</span>"
+        /&gt;</span><span class=
+        "webkit-html-tag">&lt;/a&gt;</span><span class=
+        "webkit-html-tag">&lt;/p&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="112"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;p&gt;</span>Where:<span class=
+        "webkit-html-tag">&lt;/p&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="113"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;ul&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="114"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;li&gt;</span>i: number of inputs
+        (dimensionality).<span class=
+        "webkit-html-tag">&lt;/li&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="115"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;li&gt;</span>u: number of
+        outputs.<span class=
+        "webkit-html-tag">&lt;/li&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="116"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;li&gt;</span>While assuming that
+        there is only one graph (p = 1).<span class=
+        "webkit-html-tag">&lt;/li&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="117"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;/ul&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="118"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;p&gt;</span>In the Grasshopper models
+        I counted parallel edges between identical nodes (duplicate
+        edges) as a single edge and I did not count non-functional
+        nodes such as comments in text boxes.<span class=
+        "webkit-html-tag">&lt;/p&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="119"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;div <span class=
+        "webkit-html-attribute-name">id</span>="<span class=
+        "webkit-html-attribute-value">attachment_3994</span>"
+        <span class=
+        "webkit-html-attribute-name">style</span>="<span class=
+        "webkit-html-attribute-value">width: 490px</span>"
+        <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">wp-caption
+        alignnone</span>"&gt;</span><span class=
+        "webkit-html-tag">&lt;a <span class=
+        "webkit-html-attribute-name">href</span>="<a class=
+        "webkit-html-attribute-value webkit-html-external-link"
+        target="_blank" href=
+        "http://www.danieldavis.com/wp-content/uploads/2014/10/distrablution_complexity.jpg">http://www.danieldavis.com/wp-content/uploads/2014/10/distrablution_complexity.jpg</a>"&gt;</span><span class="webkit-html-tag">&lt;img
+        <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">size-banner-uncropped
+        wp-image-3994</span>" <span class=
+        "webkit-html-attribute-name">src</span>="<a class=
+        "webkit-html-attribute-value webkit-html-resource-link"
+        target="_blank" href=
+        "http://www.danieldavis.com/wp-content/uploads/2014/10/distrablution_complexity-480x274.jpg">http://www.danieldavis.com/wp-content/uploads/2014/10/distrablution_complexity-480x274.jpg</a>"
+        <span class=
+        "webkit-html-attribute-name">alt</span>="<span class=
+        "webkit-html-attribute-value">Graph showing</span> "
+        <span class=
+        "webkit-html-attribute-name">width</span>="<span class=
+        "webkit-html-attribute-value">480</span>" <span class=
+        "webkit-html-attribute-name">height</span>="<span class=
+        "webkit-html-attribute-value">274</span>"
+        /&gt;</span><span class=
+        "webkit-html-tag">&lt;/a&gt;</span><span class=
+        "webkit-html-tag">&lt;p <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">wp-caption-text</span>"&gt;</span>Figure
+        5: Distribution of model cyclomatic complexity in
+        population of 2002 Grasshopper models.<span class=
+        "webkit-html-tag">&lt;/p&gt;</span><span class=
+        "webkit-html-tag">&lt;/div&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="120"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;p&gt;</span>There is a high variance
+        in the cyclomatic complexity of the sampled models. The
+        median complexity is thirteen (Figure 5) but the range
+        extends from simple models with a complexity of just one,
+        to extremely complex models with a complexity of 1566. The
+        difference between complex and simple models is visually
+        apparent. The simple models have orderly chains of commands
+        while the models of a similar size with a higher cyclomatic
+        complexity have interwoven lines of influence that
+        obfuscate the relationships between nodes. This seems to
+        indicate that cyclomatic complexity is effective in
+        classifying parametric models based on the intricacy of
+        their structure.<span class=
+        "webkit-html-tag">&lt;/p&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="121"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;div <span class=
+        "webkit-html-attribute-name">id</span>="<span class=
+        "webkit-html-attribute-value">attachment_3995</span>"
+        <span class=
+        "webkit-html-attribute-name">style</span>="<span class=
+        "webkit-html-attribute-value">width: 490px</span>"
+        <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">wp-caption
+        alignnone</span>"&gt;</span><span class=
+        "webkit-html-tag">&lt;a <span class=
+        "webkit-html-attribute-name">href</span>="<a class=
+        "webkit-html-attribute-value webkit-html-external-link"
+        target="_blank" href=
+        "http://www.danieldavis.com/wp-content/uploads/2014/10/comparison.jpg">http://www.danieldavis.com/wp-content/uploads/2014/10/comparison.jpg</a>"&gt;</span><span class="webkit-html-tag">&lt;img
+        <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">size-banner-uncropped
+        wp-image-3995</span>" <span class=
+        "webkit-html-attribute-name">src</span>="<a class=
+        "webkit-html-attribute-value webkit-html-resource-link"
+        target="_blank" href=
+        "http://www.danieldavis.com/wp-content/uploads/2014/10/comparison-480x238.jpg">http://www.danieldavis.com/wp-content/uploads/2014/10/comparison-480x238.jpg</a>"
+        <span class=
+        "webkit-html-attribute-name">alt</span>="<span class=
+        "webkit-html-attribute-value">Cyclomatic complexity and
+        dimensionality vs size.</span>" <span class=
+        "webkit-html-attribute-name">width</span>="<span class=
+        "webkit-html-attribute-value">480</span>" <span class=
+        "webkit-html-attribute-name">height</span>="<span class=
+        "webkit-html-attribute-value">238</span>"
+        /&gt;</span><span class=
+        "webkit-html-tag">&lt;/a&gt;</span><span class=
+        "webkit-html-tag">&lt;p <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">wp-caption-text</span>"&gt;</span>Figure
+        6: Left: Model complexity plotted against size for 2002
+        parametric models. These two factors are strongly
+        correlated. Right: Model complexity plotted against
+        dimensionality and number of outputs for 2002 parametric
+        models. The distribution shows inputs correlate more highly
+        with complexity (the blue dots are more linear and less
+        vertically spread) than outputs (the vertical spread of red
+        dots).<span class=
+        "webkit-html-tag">&lt;/p&gt;</span><span class=
+        "webkit-html-tag">&lt;/div&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="122"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;p&gt;</span>A
+        model&#226;&#8364;&#8482;s cyclomatic complexity and size
+        are strongly correlated (Person&#226;&#8364;&#8482;s r =
+        0.98; Figure 6). This correlation is significant because it
+        indicates that while a parametric model can theoretically
+        be both large and simple, in actuality, large models tend
+        to be complex. A similar correlation exists in software
+        engineering. One such example is van der Meulen and
+        Revilla&#226;&#8364;&#8482;s survey of fifty-nine textual
+        programs that found cyclomatic complexity and LOC to have a
+        correlation of r = 0.95 [15]. This correlation suggests
+        that complexity is an inevitable by-product of size in both
+        software engineering and parametric modelling. Similar
+        relationships exist for a model&#226;&#8364;&#8482;s
+        dimensionality (r = 0.91) and outputs (r = 0.71), although
+        neither correlates with complexity to the same degree as a
+        model&#226;&#8364;&#8482;s size (Figure 6).<span class=
+        "webkit-html-tag">&lt;/p&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="123"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;p&gt;</span>McCabe recommends
+        restructuring any code with a cyclomatic complexity greater
+        than ten [19], a number that has been reaffirmed by many
+        subsequent studies [21]. Essentially, large, complicated
+        programs should get restructured into smaller, simpler
+        modules [19]. Grasshopper supports such modularisation
+        using the cluster feature [22]. Of the sampled models, 1553
+        were created in a version of Grasshopper that supported
+        clusters (either below version 0.6.12 or above version
+        0.8.0). Of these, only 39 contained one or more clusters
+        &#226;&#8364;&#8220; 97.5% were unstructured. Even if the
+        definition of structure is expanded to include models that
+        are organised without the clusters feature, 48% of models
+        have no clusters, no groups, no explanation of what they
+        do, and no naming on any of the parameters: by even the
+        most generous of definitions these models are completely
+        unstructured. In this context &#226;&#8364;&#8220; with
+        architects creating parametric models that are generally
+        unstructured &#226;&#8364;&#8220; complexity seems an
+        inevitable by-product of model size. Complexity may even a
+        limiting factor in the scale of parametric models,
+        particularly if large models are always highly
+        complicated.<span class=
+        "webkit-html-tag">&lt;/p&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="124"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;h2&gt;</span>7.
+        Discussion<span class="webkit-html-tag">&lt;/h2&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="125"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;p&gt;</span>This research has
+        demonstrated that three metrics borrowed from software
+        engineering &#226;&#8364;&#8220; size, dimensionality, and
+        cyclomatic complexity &#226;&#8364;&#8220; can be used to
+        analyse parametric models. A potential direction for
+        subsequent research would be the application of other
+        software engineering metrics to parametric models. There
+        are hundreds of potential candidates [6, 7], although many
+        metrics will not be suitable since they are too specific to
+        software engineering (in the ISO/IEC 9126 standard for
+        Software Product Quality there are metrics for everything
+        from &#226;&#8364;&#732;ease of use of help
+        system&#226;&#8364;&#8482; to &#226;&#8364;&#732;I/O
+        devices utilisation satisfaction&#226;&#8364;&#8482; [7]).
+        Of those potentially suitable, three promising quantitative
+        metrics are construction time, modification time, and
+        latency. I suspect there are many more.<span class=
+        "webkit-html-tag">&lt;/p&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="126"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;p&gt;</span>While this research has
+        looked at quantitative measures of code, software engineers
+        also use a variety of qualitative measures. Bertrand Meyer
+        defines &#226;&#8364;&#339;software quality&#226;&#8364; as
+        having ten qualitative aspects: correctness, robustness,
+        extendability, reusability, compatibility, efficiency,
+        portability, ease of use, functionality, and timelessness
+        [23]. For software engineers, these terms become a
+        vocabulary through which they can begin to describe the
+        nuances of what makes their code successful. There is
+        certainly potential for architects to borrow from software
+        engineering in order to develop a more rigorous vocabulary,
+        quantitative and qualitative, to further describe
+        parametric models.<span class=
+        "webkit-html-tag">&lt;/p&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="127"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;p&gt;</span>Another direction for
+        future research would be in the application of these
+        metrics to the practice of architecture. In software
+        engineering, attempts to use quantitative metrics to manage
+        programmers have largely failed. Paying a programmer based
+        on how many lines of code they produce
+        doesn&#226;&#8364;&#8482;t make them write faster but
+        instead tends to incentivise them to write longer programs.
+        Having said that, software engineers have developed a
+        number of management techniques to help generate better
+        code in practice. At CASE we have been experimenting with
+        one method, agile development, in the production of design
+        documents. The research is too preliminary to definitively
+        report upon, but early results suggest that there is
+        significant potential to quantitatively improve the quality
+        of architectural work through the management practices of
+        software engineers.<span class=
+        "webkit-html-tag">&lt;/p&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="128"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;h2&gt;</span>8.
+        Conclusion<span class="webkit-html-tag">&lt;/h2&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="129"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;p&gt;</span>This study is an
+        important first step towards understanding the properties
+        and variations of a typical parametric model. The 2002
+        Grasshopper models surveyed show that parametric models are
+        generally small and complex. The average model contains
+        twenty-three nodes and even the largest models, with just
+        over one thousand nodes, are modest in the context of
+        software engineering. The size of the model is strongly
+        correlated with the model&#226;&#8364;&#8482;s complexity,
+        which tends to be very high overall. While one may
+        intuitively expect that the majority of a parametric model
+        consists of parameters and geometry, this study shows that
+        organising the graph and managing data are often the most
+        common components of parametric models created in
+        Grasshopper. Parameters tend to be used surprisingly
+        sparingly, with the vast majority of models only containing
+        between one and eleven parameters.<span class=
+        "webkit-html-tag">&lt;/p&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="130"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;p&gt;</span>Another important outcome
+        from this survey is the validation of the three
+        quantitative metrics. The study demonstrates that nodes are
+        a good proxy for a model&#226;&#8364;&#8482;s size and that
+        the dimensionality can reveal unintuitive insights
+        regarding the use of parameters in parametric models.
+        Furthermore, the cyclomatic complexity seems to fairly
+        accurately differentiate between simple and complex models.
+        These three quantitative metrics are some of the first
+        words in an emerging vocabulary for articulating the
+        qualities of parametric models. Hopefully this vocabulary
+        will allow us to move our discussion of parametric
+        modelling beyond discussions of individual models and into
+        discussions of how populations of models relate and compare
+        to one another.<span class=
+        "webkit-html-tag">&lt;/p&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="131"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;h4&gt;</span>Acknowledgements<span class="webkit-html-tag">&lt;/h4&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="132"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;p&gt;</span>This research was carried
+        out as part of my PhD at RMIT University, Melbourne. My
+        supervisors, Mark Burry and Jane Burry, both helped in
+        setting the direction for this research. The research was
+        funded by the Australian Research Council discovery grant
+        &#226;&#8364;&#339;Challenging the Inflexibility of the
+        Flexible Digital Model&#226;&#8364;, which was led by Mark
+        Burry and Jane Burry.<span class=
+        "webkit-html-tag">&lt;/p&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="133"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;h2&gt;</span>References<span class=
+        "webkit-html-tag">&lt;/h2&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="134"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;ol&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="135"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;li&gt;</span>Williams, C., The
+        analytic and numerical definition of the geometry of the
+        British Museum Great Court Roof, in: Burry, M., Datta, S.,
+        Dawson, A., Rollo, A., eds., <span class=
+        "webkit-html-tag">&lt;em&gt;</span>Mathematics
+        Design<span class="webkit-html-tag">&lt;/em&gt;</span>,
+        Deakin University, Geelong, 2001, 434-440.<span class=
+        "webkit-html-tag">&lt;/li&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="136"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;li&gt;</span>Eigensatz, M., Kilian,
+        M., Schiftner, A., Mitra, N., Pottmann, H., and Pauly, M.,
+        Paneling Architectural Freeform Surfaces, <span class=
+        "webkit-html-tag">&lt;em&gt;</span>ACM Trans.
+        Graphics<span class="webkit-html-tag">&lt;/em&gt;</span>,
+        2010, 29(4).<span class=
+        "webkit-html-tag">&lt;/li&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="137"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;li&gt;</span>Burry, M., Parametric
+        Design and the Sagrada Fam&#195;&#173;lia, <span class=
+        "webkit-html-tag">&lt;em&gt;</span>Architectural Research
+        Quarterly<span class="webkit-html-tag">&lt;/em&gt;</span>,
+        1996, 1(Summer), 70&#226;&#8364;&#8220;80.<span class=
+        "webkit-html-tag">&lt;/li&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="138"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;li&gt;</span>Holzer, D., Hough, R.,
+        and Burry, M., Parametric Design and Structural
+        Optimisation for Early Design Exploration, <span class=
+        "webkit-html-tag">&lt;em&gt;</span>International Journal of
+        Architectural Computing<span class=
+        "webkit-html-tag">&lt;/em&gt;</span>, 2007, 5(4),
+        625&#226;&#8364;&#8220;644.<span class=
+        "webkit-html-tag">&lt;/li&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="139"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;li&gt;</span>Menzies, T., and Shull,
+        F., The Quest for Convincing Evidence, in Oram, A. and
+        Wilson, G. eds., <span class=
+        "webkit-html-tag">&lt;em&gt;</span>Making Software: What
+        really works, and why we believe it, California<span class=
+        "webkit-html-tag">&lt;/em&gt;</span>,
+        O&#226;&#8364;&#8482;Reilly Media, 2010,
+        3&#226;&#8364;&#8220;11.<span class=
+        "webkit-html-tag">&lt;/li&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="140"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;li&gt;</span>Lincke, R., and Lowe,
+        W., <span class=
+        "webkit-html-tag">&lt;em&gt;</span>Compendium of Software
+        Quality Standards and Metrics<span class=
+        "webkit-html-tag">&lt;/em&gt;</span>, Self published,
+        2007.<span class="webkit-html-tag">&lt;/li&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="141"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;li&gt;</span>International
+        Organisation for Standards, <span class=
+        "webkit-html-tag">&lt;em&gt;</span>ISO/IEC 9126:
+        Information Technology &#226;&#8364;&#8220; Software
+        Product Quality<span class=
+        "webkit-html-tag">&lt;/em&gt;</span>, 2000.<span class=
+        "webkit-html-tag">&lt;/li&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="142"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;li&gt;</span>M&#195;&#182;ller, K.,
+        and Paulish, D., <span class=
+        "webkit-html-tag">&lt;em&gt;</span>Software Metrics: A
+        Practitioner&#226;&#8364;&#8482;s Guide to Improved Product
+        Development<span class=
+        "webkit-html-tag">&lt;/em&gt;</span>, London, Chapman
+        &amp;amp; Hall, 1993.<span class=
+        "webkit-html-tag">&lt;/li&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="143"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;li&gt;</span>Dino, &#196;&#176;.,
+        Creative Design Exploration by Parametric Generative
+        Systems in Architecture, <span class=
+        "webkit-html-tag">&lt;em&gt;</span>METU Journal of Faculty
+        of Architecture<span class=
+        "webkit-html-tag">&lt;/em&gt;</span>, 2012, 29(1),
+        207&#226;&#8364;&#8220;224.<span class=
+        "webkit-html-tag">&lt;/li&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="144"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;li&gt;</span>Janssen, P., and Chen,
+        K., Visual Dataflow Modeling&#226;&#8364;&#175;: A
+        Comparison of Three Systems, in Leclercq, P., Heylighen,
+        A., and Martin, G., eds., <span class=
+        "webkit-html-tag">&lt;em&gt;</span>CAAD Futures<span class=
+        "webkit-html-tag">&lt;/em&gt;</span>, Li&#195;&#168;ge: Les
+        &#195;&#8240;ditions de
+        l&#226;&#8364;&#8482;Universit&#195;&#169; de
+        Li&#195;&#168;ge, 2011,
+        801&#226;&#8364;&#8220;816.<span class=
+        "webkit-html-tag">&lt;/li&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="145"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;li&gt;</span>Leit&#195;&#163;o, A.,
+        Santos, L., and Lopes, J., Programming Languages for
+        Generative Design: A Comparative Study, <span class=
+        "webkit-html-tag">&lt;em&gt;</span>International Journal of
+        Architectural Computing<span class=
+        "webkit-html-tag">&lt;/em&gt;</span>, 10(1), 2012,
+        139&#226;&#8364;&#8220;162.<span class=
+        "webkit-html-tag">&lt;/li&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="146"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;li&gt;</span>Celani, G., and Vaz, C.,
+        CAD Scripting And Visual Programming Languages For
+        Implementing Computational Design Concepts: A Comparison
+        From A Pedagogical Point Of View, <span class=
+        "webkit-html-tag">&lt;em&gt;</span>International Journal of
+        Architectural Computing<span class=
+        "webkit-html-tag">&lt;/em&gt;</span>, 10(1), 2012,
+        121&#226;&#8364;&#8220;138.<span class=
+        "webkit-html-tag">&lt;/li&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="147"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;li&gt;</span>Davis, D., Burry, J.,
+        and Burry, M., Yeti: Designing geometric tools with
+        interactive programming, in Chen, L., Djajadiningrat, T.,
+        Feijs, L., Fraser, S., Kyffin, S., and Steffen, D., eds.,
+        <span class="webkit-html-tag">&lt;em&gt;</span>Meaning,
+        Matter, Making: Proceedings of the 7th International
+        Workshop on the Design and Semantics of Form and
+        Movement<span class="webkit-html-tag">&lt;/em&gt;</span>,
+        Wellington, Victoria University of Wellington, 2012,
+        196&#226;&#8364;&#8220;202.<span class=
+        "webkit-html-tag">&lt;/li&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="148"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;li&gt;</span>Boehm,
+        B.,&nbsp;<span class=
+        "webkit-html-tag">&lt;em&gt;</span>Software Engineering
+        Economics<span class="webkit-html-tag">&lt;/em&gt;</span>,
+        New Jersey, Prentice-Hall, 1981.<span class=
+        "webkit-html-tag">&lt;/li&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="149"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;li&gt;</span>Van der Meulen, M., and
+        Revilla, M., Correlations between Internal Software Metrics
+        and Software Dependability in a Large Population of Small
+        C/C++ Programs, in <span class=
+        "webkit-html-tag">&lt;em&gt;</span>The 18th IEEE
+        International Symposium on Software Reliability<span class=
+        "webkit-html-tag">&lt;/em&gt;</span>, Sweden, IEEE Computer
+        Society Press, 2007,
+        203&#226;&#8364;&#8220;208.<span class="webkit-html-tag">&lt;/li&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="150"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;li&gt;</span>El Emam, K., Benlarbi,
+        S., Goel, N., and Rai, S., The Confounding Effect of Class
+        Size on the Validity of Object-Oriented Metrics,
+        <span class="webkit-html-tag">&lt;em&gt;</span>IEEE
+        Transactions on Software Engineering<span class=
+        "webkit-html-tag">&lt;/em&gt;</span>, 27(7), 2001,
+        630&#226;&#8364;&#8220;650.<span class=
+        "webkit-html-tag">&lt;/li&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="151"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;li&gt;</span>McConnell,
+        S.,&nbsp;<span class=
+        "webkit-html-tag">&lt;em&gt;</span>Software Estimation:
+        Demystifying the Black Art<span class=
+        "webkit-html-tag">&lt;/em&gt;</span>, Redmond, Microsoft
+        Press, 2006.<span class=
+        "webkit-html-tag">&lt;/li&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="152"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;li&gt;</span>Scheurer, F., and
+        Stehling, H., Lost in Parameter Space? <span class=
+        "webkit-html-tag">&lt;em&gt;</span>Architectural
+        Design<span class="webkit-html-tag">&lt;/em&gt;</span>,
+        81(4), 2011, 70&#226;&#8364;&#8220;79.<span class=
+        "webkit-html-tag">&lt;/li&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="153"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;li&gt;</span>McCabe, T., A Complexity
+        Measure, <span class=
+        "webkit-html-tag">&lt;em&gt;</span>IEEE Transactions on
+        Software Engineering<span class=
+        "webkit-html-tag">&lt;/em&gt;</span>, 2(4), 1976,
+        308&#226;&#8364;&#8220;320.<span class=
+        "webkit-html-tag">&lt;/li&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="154"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;li&gt;</span>Henderson-Sellers, B.,
+        and Tegarden, D., The theoretical extension of two versions
+        of cyclomatic complexity to multiple entry/exit modules,
+        <span class="webkit-html-tag">&lt;em&gt;</span>Software
+        Quality Journal<span class=
+        "webkit-html-tag">&lt;/em&gt;</span>, 3(4), 1994,
+        253&#226;&#8364;&#8220;269.<span class=
+        "webkit-html-tag">&lt;/li&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="155"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;li&gt;</span>Watson, A., and McCabe,
+        T., Structured Testing: A Testing Methodology Using the
+        Cyclomatic Complexity Metric, Gaithersburg, <span class=
+        "webkit-html-tag">&lt;em&gt;</span>National Institute of
+        Standards and Technology<span class=
+        "webkit-html-tag">&lt;/em&gt;</span>, 1996.<span class=
+        "webkit-html-tag">&lt;/li&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="156"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;li&gt;</span>Davis, D., Burry, J.,
+        and Burry, M., Understanding Visual Scripts: Improving
+        collaboration through modular programming, <span class=
+        "webkit-html-tag">&lt;em&gt;</span>International Journal of
+        Architectural Computing<span class=
+        "webkit-html-tag">&lt;/em&gt;</span>, 9(4), 2011,
+        361&#226;&#8364;&#8220;376.<span class=
+        "webkit-html-tag">&lt;/li&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="157"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;li&gt;</span>Meyer, B., <span class=
+        "webkit-html-tag">&lt;em&gt;</span>Object-Oriented Software
+        Construction<span class=
+        "webkit-html-tag">&lt;/em&gt;</span>, New Jersey,
+        Prentice-Hall, 1997.<span class=
+        "webkit-html-tag">&lt;/li&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="158"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;/ol&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="159"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="160"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;/div&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="161"></td>
+
+        <td class="webkit-line-content"></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="162"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;/article&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="163"></td>
+
+        <td class="webkit-line-content"></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="164"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;div <span class=
+        "webkit-html-attribute-name">id</span>="<span class=
+        "webkit-html-attribute-value">share</span>"&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="165"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;h1&gt;</span>Share<span class=
+        "webkit-html-tag">&lt;/h1&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="166"></td>
+
+        <td class="webkit-line-content"></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="167"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;div <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">sharebutton</span>"&gt;</span><span class="webkit-html-tag">&lt;a
+        <span class=
+        "webkit-html-attribute-name">href</span>="<a class=
+        "webkit-html-attribute-value webkit-html-external-link"
+        target="_blank" href=
+        "https://twitter.com/share">https://twitter.com/share</a>"
+        <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">twitter-share-button</span>"
+        <span class=
+        "webkit-html-attribute-name">data-via</span>="<span class=
+        "webkit-html-attribute-value">nzarchitecture</span>"
+        <span class=
+        "webkit-html-attribute-name">data-lang</span>="<span class=
+        "webkit-html-attribute-value">en</span>" <span class=
+        "webkit-html-attribute-name">data-count</span>="<span class="webkit-html-attribute-value">vertical</span>"&gt;</span>Tweet<span class="webkit-html-tag">&lt;/a&gt;</span><span class="webkit-html-tag">&lt;/div&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="168"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;div <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">sharebutton</span>"&gt;</span><span class="webkit-html-tag">&lt;iframe
+        <span class=
+        "webkit-html-attribute-name">src</span>="<a class=
+        "webkit-html-attribute-value webkit-html-resource-link"
+        target="_blank" href=
+        "http://www.facebook.com/plugins/like.php?href=http://www.danieldavis.com/quantitatively-analysing-parametric-models/&amp;send=false&amp;layout=box_count&amp;width=450&amp;show_faces=false&amp;font&amp;colorscheme=light&amp;action=like&amp;height=65">//www.facebook.com/plugins/like.php?href=http://www.danieldavis.com/quantitatively-analysing-parametric-models/&amp;send=false&amp;layout=box_count&amp;width=450&amp;show_faces=false&amp;font&amp;colorscheme=light&amp;action=like&amp;height=65</a>"
+        <span class=
+        "webkit-html-attribute-name">scrolling</span>="<span class=
+        "webkit-html-attribute-value">no</span>" <span class=
+        "webkit-html-attribute-name">frameborder</span>="<span class="webkit-html-attribute-value">0</span>"
+        <span class=
+        "webkit-html-attribute-name">style</span>="<span class=
+        "webkit-html-attribute-value">border:none; overflow:hidden;
+        width:450px; height:65px;</span>" <span class=
+        "webkit-html-attribute-name">allowTransparency</span>="<span class="webkit-html-attribute-value">true</span>"&gt;</span><span class="webkit-html-tag">&lt;/iframe&gt;</span><span class="webkit-html-tag">&lt;/div&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="169"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="170"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;script&gt;</span>!function(d,s,id){var
+        js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");<span class="webkit-html-tag">&lt;/script&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="171"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;/div&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="172"></td>
+
+        <td class="webkit-line-content"></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="173"></td>
+
+        <td class="webkit-line-content"></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="174"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="175"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;div <span class=
+        "webkit-html-attribute-name">id</span>="<span class=
+        "webkit-html-attribute-value">comment</span>"&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="176"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="177"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;h1&gt;</span>2 comments<span class=
+        "webkit-html-tag">&lt;/h1&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="178"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="179"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;ul <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">commentlist</span>"&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="180"></td>
+
+        <td class="webkit-line-content"></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="181"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;li <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">pingback even thread-even
+        depth-1</span>" <span class=
+        "webkit-html-attribute-name">id</span>="<span class=
+        "webkit-html-attribute-value">comment-59146</span>"&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="182"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;div <span class=
+        "webkit-html-attribute-name">id</span>="<span class=
+        "webkit-html-attribute-value">div-comment-59146</span>"
+        <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">comment-body</span>"&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="183"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;h2&gt;</span>Mentioned <span class=
+        "webkit-html-tag">&lt;span <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">date</span>"&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="184"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;a <span class=
+        "webkit-html-attribute-name">href</span>="<a class=
+        "webkit-html-attribute-value webkit-html-external-link"
+        target="_blank" href=
+        "http://www.danieldavis.com/quantitatively-analysing-parametric-models/#comment-59146">http://www.danieldavis.com/quantitatively-analysing-parametric-models/#comment-59146</a>"&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="185"></td>
+
+        <td class="webkit-line-content">29 October 2014 at 2:17 am
+        <span class="webkit-html-tag">&lt;/a&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="186"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;/span&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="187"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;/h2&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="188"></td>
+
+        <td class="webkit-line-content"></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="189"></td>
+
+        <td class="webkit-line-content"></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="190"></td>
+
+        <td class="webkit-line-content"></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="191"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;p&gt;</span>[&amp;#8230;]
+        Quantitatively Analysing Parametric Models
+        &#226;&#8364;&#8220; Daniel Davis.
+        [&amp;#8230;]<span class="webkit-html-tag">&lt;/p&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="192"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="193"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;div <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">reply</span>"&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="194"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;a <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">comment-reply-link</span>"
+        <span class=
+        "webkit-html-attribute-name">href</span>="<a class=
+        "webkit-html-attribute-value webkit-html-external-link"
+        target="_blank" href=
+        "http://castroecosta.wordpress.com/2014/10/28/quantitatively-analysing-parametric-models-daniel-davis/">http://castroecosta.wordpress.com/2014/10/28/quantitatively-analysing-parametric-models-daniel-davis/</a>"&gt;</span>Go
+        to website<span class="webkit-html-tag">&lt;/a&gt;</span>
+        <span class="webkit-html-tag">&lt;/div&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="195"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;/div&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="196"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;/li&gt;</span><span class=
+        "webkit-html-comment">&lt;!-- #comment-##
+        --&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="197"></td>
+
+        <td class="webkit-line-content"></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="198"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;li <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">pingback odd alt thread-odd
+        thread-alt depth-1</span>" <span class=
+        "webkit-html-attribute-name">id</span>="<span class=
+        "webkit-html-attribute-value">comment-59147</span>"&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="199"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;div <span class=
+        "webkit-html-attribute-name">id</span>="<span class=
+        "webkit-html-attribute-value">div-comment-59147</span>"
+        <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">comment-body</span>"&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="200"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;h2&gt;</span>Mentioned <span class=
+        "webkit-html-tag">&lt;span <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">date</span>"&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="201"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;a <span class=
+        "webkit-html-attribute-name">href</span>="<a class=
+        "webkit-html-attribute-value webkit-html-external-link"
+        target="_blank" href=
+        "http://www.danieldavis.com/quantitatively-analysing-parametric-models/#comment-59147">http://www.danieldavis.com/quantitatively-analysing-parametric-models/#comment-59147</a>"&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="202"></td>
+
+        <td class="webkit-line-content">29 October 2014 at 2:21 am
+        <span class="webkit-html-tag">&lt;/a&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="203"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;/span&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="204"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;/h2&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="205"></td>
+
+        <td class="webkit-line-content"></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="206"></td>
+
+        <td class="webkit-line-content"></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="207"></td>
+
+        <td class="webkit-line-content"></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="208"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;p&gt;</span>[&amp;#8230;]
+        Quantitatively Analysing Parametric Models
+        &#226;&#8364;&#8220; Daniel Davis.
+        [&amp;#8230;]<span class="webkit-html-tag">&lt;/p&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="209"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="210"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;div <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">reply</span>"&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="211"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;a <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">comment-reply-link</span>"
+        <span class=
+        "webkit-html-attribute-name">href</span>="<a class=
+        "webkit-html-attribute-value webkit-html-external-link"
+        target="_blank" href=
+        "http://dcg.fa.utl.pt/quantitatively-analysing-parametric-models-daniel-davis/">http://dcg.fa.utl.pt/quantitatively-analysing-parametric-models-daniel-davis/</a>"&gt;</span>Go
+        to website<span class="webkit-html-tag">&lt;/a&gt;</span>
+        <span class="webkit-html-tag">&lt;/div&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="212"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;/div&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="213"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;/li&gt;</span><span class=
+        "webkit-html-comment">&lt;!-- #comment-##
+        --&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="214"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;/ul&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="215"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="216"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="217"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="218"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="219"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="220"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;div <span class=
+        "webkit-html-attribute-name">id</span>="<span class=
+        "webkit-html-attribute-value">respond</span>"&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="221"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="222"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;h2&gt;</span>Leave a
+        comment<span class=
+        "webkit-html-tag">&lt;/h2&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="223"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="224"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;div <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">cancel-comment-reply</span>"&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="225"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;a <span class=
+        "webkit-html-attribute-name">rel</span>="<span class=
+        "webkit-html-attribute-value">nofollow</span>" <span class=
+        "webkit-html-attribute-name">id</span>="<span class=
+        "webkit-html-attribute-value">cancel-comment-reply-link</span>"
+        <span class=
+        "webkit-html-attribute-name">href</span>="<a class=
+        "webkit-html-attribute-value webkit-html-external-link"
+        target="_blank" href=
+        "http://www.danieldavis.com/quantitatively-analysing-parametric-models/#respond">/quantitatively-analysing-parametric-models/#respond</a>"
+        <span class=
+        "webkit-html-attribute-name">style</span>="<span class=
+        "webkit-html-attribute-value">display:none;</span>"&gt;</span>Click
+        here to cancel reply.<span class=
+        "webkit-html-tag">&lt;/a&gt;</span> <span class=
+        "webkit-html-tag">&lt;/div&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="226"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="227"></td>
+
+        <td class="webkit-line-content"></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="228"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;form <span class=
+        "webkit-html-attribute-name">action</span>="<span class=
+        "webkit-html-attribute-value">http://www.danieldavis.com/wp-comments-post.php</span>"
+        <span class=
+        "webkit-html-attribute-name">method</span>="<span class=
+        "webkit-html-attribute-value">post</span>" <span class=
+        "webkit-html-attribute-name">id</span>="<span class=
+        "webkit-html-attribute-value">commentform</span>"&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="229"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="230"></td>
+
+        <td class="webkit-line-content"></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="231"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;div&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="232"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;input <span class=
+        "webkit-html-attribute-name">type</span>="<span class=
+        "webkit-html-attribute-value">text</span>" <span class=
+        "webkit-html-attribute-name">name</span>="<span class=
+        "webkit-html-attribute-value">author</span>" <span class=
+        "webkit-html-attribute-name">id</span>="<span class=
+        "webkit-html-attribute-value">author</span>" <span class=
+        "webkit-html-attribute-name">value</span>="" <span class=
+        "webkit-html-attribute-name">size</span>="<span class=
+        "webkit-html-attribute-value">22</span>" <span class=
+        "webkit-html-attribute-name">tabindex</span>="<span class=
+        "webkit-html-attribute-value">1</span>" <span class=
+        "webkit-html-attribute-name">aria-required</span>='<span class="webkit-html-attribute-value">true</span>'
+        /&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="233"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;label <span class=
+        "webkit-html-attribute-name">for</span>="<span class=
+        "webkit-html-attribute-value">author</span>"&gt;</span>Name<span class="webkit-html-tag">&lt;/label&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="234"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;/div&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="235"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="236"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;div&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="237"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;input <span class=
+        "webkit-html-attribute-name">type</span>="<span class=
+        "webkit-html-attribute-value">text</span>" <span class=
+        "webkit-html-attribute-name">name</span>="<span class=
+        "webkit-html-attribute-value">email</span>" <span class=
+        "webkit-html-attribute-name">id</span>="<span class=
+        "webkit-html-attribute-value">email</span>" <span class=
+        "webkit-html-attribute-name">value</span>="" <span class=
+        "webkit-html-attribute-name">size</span>="<span class=
+        "webkit-html-attribute-value">22</span>" <span class=
+        "webkit-html-attribute-name">tabindex</span>="<span class=
+        "webkit-html-attribute-value">2</span>" <span class=
+        "webkit-html-attribute-name">aria-required</span>='<span class="webkit-html-attribute-value">true</span>'
+        /&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="238"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;label <span class=
+        "webkit-html-attribute-name">for</span>="<span class=
+        "webkit-html-attribute-value">email</span>"&gt;</span>Email
+        (will not be published)<span class=
+        "webkit-html-tag">&lt;/label&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="239"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;/div&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="240"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="241"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;div&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="242"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;input <span class=
+        "webkit-html-attribute-name">type</span>="<span class=
+        "webkit-html-attribute-value">text</span>" <span class=
+        "webkit-html-attribute-name">name</span>="<span class=
+        "webkit-html-attribute-value">url</span>" <span class=
+        "webkit-html-attribute-name">id</span>="<span class=
+        "webkit-html-attribute-value">url</span>" <span class=
+        "webkit-html-attribute-name">value</span>="" <span class=
+        "webkit-html-attribute-name">size</span>="<span class=
+        "webkit-html-attribute-value">22</span>" <span class=
+        "webkit-html-attribute-name">tabindex</span>="<span class=
+        "webkit-html-attribute-value">3</span>" /&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="243"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;label <span class=
+        "webkit-html-attribute-name">for</span>="<span class=
+        "webkit-html-attribute-value">url</span>"&gt;</span>Website
+        (optional)<span class=
+        "webkit-html-tag">&lt;/label&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="244"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;/div&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="245"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="246"></td>
+
+        <td class="webkit-line-content"></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="247"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-comment">&lt;!--&lt;p&gt;You can use these
+        tags: &lt;code&gt;&amp;lt;a href=&amp;quot;&amp;quot;
+        title=&amp;quot;&amp;quot;&amp;gt; &amp;lt;abbr
+        title=&amp;quot;&amp;quot;&amp;gt; &amp;lt;acronym
+        title=&amp;quot;&amp;quot;&amp;gt; &amp;lt;b&amp;gt;
+        &amp;lt;blockquote cite=&amp;quot;&amp;quot;&amp;gt;
+        &amp;lt;cite&amp;gt; &amp;lt;code&amp;gt; &amp;lt;del
+        datetime=&amp;quot;&amp;quot;&amp;gt; &amp;lt;em&amp;gt;
+        &amp;lt;i&amp;gt; &amp;lt;q
+        cite=&amp;quot;&amp;quot;&amp;gt; &amp;lt;strike&amp;gt;
+        &amp;lt;strong&amp;gt;
+        &lt;/code&gt;&lt;/p&gt;--&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="248"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="249"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;div&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="250"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;textarea <span class=
+        "webkit-html-attribute-name">name</span>="<span class=
+        "webkit-html-attribute-value">comment</span>" <span class=
+        "webkit-html-attribute-name">id</span>="<span class=
+        "webkit-html-attribute-value">comment</span>" <span class=
+        "webkit-html-attribute-name">cols</span>="<span class=
+        "webkit-html-attribute-value">58</span>" <span class=
+        "webkit-html-attribute-name">rows</span>="<span class=
+        "webkit-html-attribute-value">10</span>" <span class=
+        "webkit-html-attribute-name">tabindex</span>="<span class=
+        "webkit-html-attribute-value">4</span>"&gt;</span><span class="webkit-html-tag">&lt;/textarea&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="251"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;/div&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="252"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="253"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;div&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="254"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;input <span class=
+        "webkit-html-attribute-name">name</span>="<span class=
+        "webkit-html-attribute-value">submit</span>" <span class=
+        "webkit-html-attribute-name">type</span>="<span class=
+        "webkit-html-attribute-value">submit</span>" <span class=
+        "webkit-html-attribute-name">id</span>="<span class=
+        "webkit-html-attribute-value">submit</span>" <span class=
+        "webkit-html-attribute-name">tabindex</span>="<span class=
+        "webkit-html-attribute-value">5</span>" <span class=
+        "webkit-html-attribute-name">value</span>="<span class=
+        "webkit-html-attribute-value">Submit Comment</span>"
+        /&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="255"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;input <span class=
+        "webkit-html-attribute-name">type</span>='<span class=
+        "webkit-html-attribute-value">hidden</span>' <span class=
+        "webkit-html-attribute-name">name</span>='<span class=
+        "webkit-html-attribute-value">comment_post_ID</span>'
+        <span class=
+        "webkit-html-attribute-name">value</span>='<span class=
+        "webkit-html-attribute-value">3977</span>' <span class=
+        "webkit-html-attribute-name">id</span>='<span class=
+        "webkit-html-attribute-value">comment_post_ID</span>'
+        /&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="256"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;input <span class=
+        "webkit-html-attribute-name">type</span>='<span class=
+        "webkit-html-attribute-value">hidden</span>' <span class=
+        "webkit-html-attribute-name">name</span>='<span class=
+        "webkit-html-attribute-value">comment_parent</span>'
+        <span class=
+        "webkit-html-attribute-name">id</span>='<span class=
+        "webkit-html-attribute-value">comment_parent</span>'
+        <span class=
+        "webkit-html-attribute-name">value</span>='<span class=
+        "webkit-html-attribute-value">0</span>' /&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="257"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;/div&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="258"></td>
+
+        <td class="webkit-line-content"></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="259"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;p <span class=
+        "webkit-html-attribute-name">style</span>="<span class=
+        "webkit-html-attribute-value">display:
+        none;</span>"&gt;</span><span class=
+        "webkit-html-tag">&lt;input <span class=
+        "webkit-html-attribute-name">type</span>="<span class=
+        "webkit-html-attribute-value">hidden</span>" <span class=
+        "webkit-html-attribute-name">id</span>="<span class=
+        "webkit-html-attribute-value">akismet_comment_nonce</span>"
+        <span class=
+        "webkit-html-attribute-name">name</span>="<span class=
+        "webkit-html-attribute-value">akismet_comment_nonce</span>"
+        <span class=
+        "webkit-html-attribute-name">value</span>="<span class=
+        "webkit-html-attribute-value">c4e6d31e16</span>"
+        /&gt;</span><span class=
+        "webkit-html-tag">&lt;/p&gt;</span><span class=
+        "webkit-html-comment">&lt;!-- BEGIN: subscribe to comments
+        reloaded --&gt;</span><span class=
+        "webkit-html-tag">&lt;p&gt;</span><span class=
+        "webkit-html-tag">&lt;label <span class=
+        "webkit-html-attribute-name">for</span>='<span class=
+        "webkit-html-attribute-value">subscribe-reloaded</span>'&gt;</span><span class="webkit-html-tag">&lt;input
+        <span class=
+        "webkit-html-attribute-name">style</span>='<span class=
+        "webkit-html-attribute-value">width:30px</span>'
+        <span class=
+        "webkit-html-attribute-name">type</span>='<span class=
+        "webkit-html-attribute-value">checkbox</span>' <span class=
+        "webkit-html-attribute-name">name</span>='<span class=
+        "webkit-html-attribute-value">subscribe-reloaded</span>'
+        <span class=
+        "webkit-html-attribute-name">id</span>='<span class=
+        "webkit-html-attribute-value">subscribe-reloaded</span>'
+        <span class=
+        "webkit-html-attribute-name">value</span>='<span class=
+        "webkit-html-attribute-value">yes</span>' /&gt;</span>
+        Notify me of followup comments via e-mail.<span class=
+        "webkit-html-tag">&lt;br/&gt;</span>You can also
+        <span class="webkit-html-tag">&lt;a <span class=
+        "webkit-html-attribute-name">href</span>='<a class=
+        "webkit-html-attribute-value webkit-html-external-link"
+        target="_blank" href=
+        "http://www.danieldavis.com/comment-subscriptions?srp=3977&amp;sra=s">http://www.danieldavis.com/comment-subscriptions?srp=3977&amp;sra=s</a>'&gt;</span>subscribe<span class="webkit-html-tag">&lt;/a&gt;</span>
+        without commenting.<span class=
+        "webkit-html-tag">&lt;/label&gt;</span><span class=
+        "webkit-html-tag">&lt;/p&gt;</span><span class=
+        "webkit-html-comment">&lt;!-- END: subscribe to comments
+        reloaded --&gt;</span><span class="webkit-html-tag">&lt;p
+        <span class=
+        "webkit-html-attribute-name">style</span>="<span class=
+        "webkit-html-attribute-value">display:
+        none;</span>"&gt;</span><span class=
+        "webkit-html-tag">&lt;input <span class=
+        "webkit-html-attribute-name">type</span>="<span class=
+        "webkit-html-attribute-value">hidden</span>" <span class=
+        "webkit-html-attribute-name">id</span>="<span class=
+        "webkit-html-attribute-value">ak_js</span>" <span class=
+        "webkit-html-attribute-name">name</span>="<span class=
+        "webkit-html-attribute-value">ak_js</span>" <span class=
+        "webkit-html-attribute-name">value</span>="<span class=
+        "webkit-html-attribute-value">148</span>"/&gt;</span><span class="webkit-html-tag">&lt;/p&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="260"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;/form&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="261"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="262"></td>
+
+        <td class="webkit-line-content"></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="263"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;/div&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="264"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="265"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="266"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="267"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;/div&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="268"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="269"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;/div&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="270"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="271"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;footer <span class=
+        "webkit-html-attribute-name">id</span>="<span class=
+        "webkit-html-attribute-value">footer</span>" <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">source-org vcard
+        copyright</span>"&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="272"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;p <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">me</span>"&gt;</span><span class="webkit-html-tag">&lt;a
+        <span class=
+        "webkit-html-attribute-name">href</span>="<a class=
+        "webkit-html-attribute-value webkit-html-external-link"
+        target="_blank" href=
+        "http://www.danieldavis.com/about/">http://www.danieldavis.com/about/</a>"&gt;</span>Daniel
+        Davis<span class="webkit-html-tag">&lt;/a&gt;</span>,
+        2014<span class="webkit-html-tag">&lt;/p&gt;</span>
+        <span class="webkit-html-tag">&lt;p <span class=
+        "webkit-html-attribute-name">class</span>="<span class=
+        "webkit-html-attribute-value">follow</span>"&gt;</span>Connect:
+        <span class="webkit-html-tag">&lt;a <span class=
+        "webkit-html-attribute-name">href</span>="<a class=
+        "webkit-html-attribute-value webkit-html-external-link"
+        target="_blank" href=
+        "http://www.danieldavis.com/feed/">http://www.danieldavis.com/feed/</a>"&gt;</span>RSS<span class="webkit-html-tag">&lt;/a&gt;</span>,
+        <span class="webkit-html-tag">&lt;a <span class=
+        "webkit-html-attribute-name">href</span>="<a class=
+        "webkit-html-attribute-value webkit-html-external-link"
+        target="_blank" href=
+        "https://twitter.com/nzarchitecture">https://twitter.com/nzarchitecture</a>"&gt;</span>Twitter<span class="webkit-html-tag">&lt;/a&gt;</span>,
+        <span class="webkit-html-tag">&lt;a <span class=
+        "webkit-html-attribute-name">href</span>="<a class=
+        "webkit-html-attribute-value webkit-html-external-link"
+        target="_blank" href=
+        "http://www.facebook.com/daniel.davis">http://www.facebook.com/daniel.davis</a>"&gt;</span>Facebook<span class="webkit-html-tag">&lt;/a&gt;</span>,
+        <span class="webkit-html-tag">&lt;a <span class=
+        "webkit-html-attribute-name">href</span>="<a class=
+        "webkit-html-attribute-value webkit-html-external-link"
+        target="_blank" href=
+        "http://www.linkedin.com/pub/daniel-davis/35/697/784">http://www.linkedin.com/pub/daniel-davis/35/697/784</a>"&gt;</span>Linkedin<span class="webkit-html-tag">&lt;/a&gt;</span>,
+        <span class="webkit-html-tag">&lt;a <span class=
+        "webkit-html-attribute-name">href</span>="<a class=
+        "webkit-html-attribute-value webkit-html-external-link"
+        target="_blank" href=
+        "http://instagram.com/deardanieldavis">http://instagram.com/deardanieldavis</a>"&gt;</span>Instagram<span class="webkit-html-tag">&lt;/a&gt;</span><span class="webkit-html-tag">&lt;/p&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="273"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;/footer&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="274"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="275"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;/div&gt;</span><span class=
+        "webkit-html-comment">&lt;!--container--&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="276"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="277"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;script <span class=
+        "webkit-html-attribute-name">type</span>='<span class=
+        "webkit-html-attribute-value">text/javascript</span>'
+        <span class=
+        "webkit-html-attribute-name">src</span>='<a class=
+        "webkit-html-attribute-value webkit-html-resource-link"
+        target="_blank" href=
+        "http://www.danieldavis.com/wp-content/plugins/akismet/_inc/form.js?ver=3.0.2">http://www.danieldavis.com/wp-content/plugins/akismet/_inc/form.js?ver=3.0.2</a>'&gt;</span><span class="webkit-html-tag">&lt;/script&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="278"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;script <span class=
+        "webkit-html-attribute-name">type</span>='<span class=
+        "webkit-html-attribute-value">text/javascript</span>'
+        <span class=
+        "webkit-html-attribute-name">src</span>='<a class=
+        "webkit-html-attribute-value webkit-html-resource-link"
+        target="_blank" href=
+        "http://www.danieldavis.com/wp-includes/js/comment-reply.min.js?ver=4.0">http://www.danieldavis.com/wp-includes/js/comment-reply.min.js?ver=4.0</a>'&gt;</span><span class="webkit-html-tag">&lt;/script&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="279"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="280"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="281"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-comment">&lt;!-- here comes the javascript
+        --&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="282"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="283"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-comment">&lt;!-- jQuery is called via the
+        Wordpress-friendly way via functions.php --&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="284"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="285"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;script <span class=
+        "webkit-html-attribute-name">src</span>="<a class=
+        "webkit-html-attribute-value webkit-html-resource-link"
+        target="_blank" href=
+        "http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js">//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js</a>"&gt;</span><span class="webkit-html-tag">&lt;/script&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="286"></td>
+
+        <td class="webkit-line-content"></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="287"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-comment">&lt;!--TODO: Worry about this
+        later:</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="288"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-comment">&lt;script
+        src="http://www.danieldavis.com/wp-content/themes/daniel/js/jquery.easing.1.3.min.js"&gt;&lt;/script&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="289"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-comment">&lt;script
+        src="http://www.danieldavis.com/wp-content/themes/daniel/js/jquery.quicksand2.js"&gt;&lt;/script&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="290"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-comment">&lt;script
+        src="http://www.danieldavis.com/wp-content/themes/daniel/_/js/functions.js"&gt;&lt;/script&gt;--&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="291"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="292"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;script&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="293"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="294"></td>
+
+        <td class="webkit-line-content">// remap jQuery to $</td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="295"></td>
+
+        <td class="webkit-line-content">
+        (function($){})(window.jQuery);</td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="296"></td>
+
+        <td class="webkit-line-content"></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="297"></td>
+
+        <td class="webkit-line-content">/* trigger when page is
+        ready */</td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="298"></td>
+
+        <td class="webkit-line-content">$(document).ready(function
+        (){</td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="299"></td>
+
+        <td class="webkit-line-content">
+        $("div.synopsis").mouseover(function() {</td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="300"></td>
+
+        <td class="webkit-line-content">
+        $(this).addClass('synopsishover');</td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="301"></td>
+
+        <td class="webkit-line-content">
+        }).mouseout(function(){</td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="302"></td>
+
+        <td class="webkit-line-content">
+        $(this).removeClass('synopsishover');</td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="303"></td>
+
+        <td class="webkit-line-content">}).click(function() {</td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="304"></td>
+
+        <td class="webkit-line-content">var link =
+        $(this).find('.more a').attr('href');</td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="305"></td>
+
+        <td class="webkit-line-content">window.location =
+        link;</td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="306"></td>
+
+        <td class="webkit-line-content">});</td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="307"></td>
+
+        <td class="webkit-line-content">});</td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="308"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="309"></td>
+
+        <td class="webkit-line-content">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){</td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="310"></td>
+
+        <td class="webkit-line-content">
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new
+        Date();a=s.createElement(o),</td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="311"></td>
+
+        <td class="webkit-line-content">
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)</td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="312"></td>
+
+        <td class="webkit-line-content">
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');</td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="313"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="314"></td>
+
+        <td class="webkit-line-content">ga('create',
+        'UA-12083514-6', 'danieldavis.com');</td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="315"></td>
+
+        <td class="webkit-line-content">ga('send',
+        'pageview');</td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="316"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="317"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;/script&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="318"></td>
+
+        <td class="webkit-line-content"></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="319"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;/body&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="320"></td>
+
+        <td class="webkit-line-content"><br></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="321"></td>
+
+        <td class="webkit-line-content"><span class=
+        "webkit-html-tag">&lt;/html&gt;</span></td>
+      </tr>
+
+      <tr>
+        <td class="webkit-line-number" value="322"></td>
+
+        <td class="webkit-line-content"></td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+</html>

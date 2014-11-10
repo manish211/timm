@@ -1,0 +1,8 @@
+body { border: 1px black solid;
+}
+
+.wrapper {}
+.main { 
+    align: center;
+    width: 500px;
+}

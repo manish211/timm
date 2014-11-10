@@ -1,0 +1,254 @@
+/* 8. CUSTOM LAYOUT & TYPOGRAPHY (Daddy bear)
+----------------------------------------------------------------------------------------*/
+
+/* 8.1 HEADER + MAIN MENU
+----------------------------------------------------------------------------------------*/
+
+#header-logo
+{
+	width: 3em;
+}
+
+header
+{
+	height: 2.95em;
+}
+header ul li a
+{
+	margin: 0.95em 0px 0.5em 1em;
+
+}
+
+header .selected a, header .selected a:visited {
+     border-bottom: 3px solid #2F7FA8;
+}
+
+header ul li a, header ul li a:visited {
+	margin-left: 1em;
+}
+
+
+/* 5.2 SUBMENU
+----------------------------------------------------------------------------------------*/
+#secondNav {
+     padding-top: 5rem;
+}
+
+
+/* 5.3 ARTICLE
+----------------------------------------------------------------------------------------*/
+
+#main {
+     padding-top: 5rem;
+}
+
+#container {
+	padding: 1.618em 1.618em 0 1.618em;
+	margin: 0 auto; 
+	max-width: 60em;
+	width: 30em;
+}
+
+.entry-content
+{
+	padding-top: 3rem;
+}
+
+	
+h1 {
+  font-size: 1.5em;
+  line-height: 1.2em;
+}
+
+#main h2 {
+	margin: 3rem 0 1rem 0;
+}
+
+#share h1, #comment h1
+{
+	margin: 4rem 0 1rem 0;
+}
+
+.sharebutton
+{
+	height: 8rem;
+}
+
+
+ul.commentlist
+{
+	margin: 0 0 5rem 0;
+}
+
+.athird
+{
+	float: left;
+	width: 10em;
+}
+
+.space
+{
+	margin-bottom: 3rem;
+}
+
+
+/* 5.4 Synopsis
+----------------------------------------------------------------------------------------*/
+.synopsis {
+	margin-bottom: 6rem;
+}
+
+.synopsis .head .banner {
+	position: absolute;
+	top: 35%;
+}
+
+.more a {
+	display: table;
+}
+
+.more_left
+{
+	display: table-cell;
+	float: none;
+}
+
+.more_right
+{
+	display: table-cell;
+	white-space:nowrap;
+	width: 100%;
+	padding-left: 1rem;
+}
+
+/* 5.5 IMAGES
+----------------------------------------------------------------------------------------*/
+
+.wp-caption
+{
+	position: relative;
+	padding-bottom: 1.618em;
+}
+
+.wp-caption-text
+{
+	position: absolute;
+	left: 31rem;
+	top: 0;
+	width: 10rem;
+	border: none;
+	background: none;
+	border-top: 1px solid #ccc;
+	padding-left: 1rem;
+	padding-top: 0.5rem;
+}
+
+.attachment-banner-small, .size-banner-small
+{
+	width: 30em; /*480px*/
+	height: 15em; /*240px*/
+}
+
+.attachment-banner-med, .size-banner-med
+{
+	width: 30em; /*480px*/
+	height: 20em; /*320px*/
+}
+
+.attachment-banner-square, .size-banner-square
+{
+	width: 30em; /*480px*/
+	height: 30em; /*480px*/
+}
+
+.attachment-banner-uncropped, .size-banner-uncropped
+{
+	width: 30em; /*480px*/
+	height: auto;
+}
+
+/* 5.6 SYNTAX HIGHLIGHTER
+----------------------------------------------------------------------------------------*/
+
+.code pre
+{
+white-space: pre;
+}
+
+/* 5.7 ABOUT PAGE
+----------------------------------------------------------------------------------------*/
+.aboutright
+{
+	float: right;
+	width: 10em;
+}
+.aboutleft
+{
+	float: left;
+	width: 18em;
+	margin-bottom: 3rem;
+}
+
+/* 5.8 SUBSCRIBE PAGE
+----------------------------------------------------------------------------------------*/
+
+.subscribe-page label
+{
+  width: 180px;
+}
+.subscribe-page input
+{
+  width: 300px;
+}
+
+.subscribe-page .button
+{
+  left: 180px;
+}
+
+/* 5.8 FOOTER
+----------------------------------------------------------------------------------------*/
+
+footer
+{
+	height: 1.7em;
+}
+
+footer .me
+{
+	float: left;
+}
+
+footer .follow
+{
+	float: right;
+}
+
+
+
+
+/* 9. CUSTOM LAYOUT & TYPOGRAPHY (Mummy bear)
+---------------------------------------------------------------------------------------- 63.236em*/
+@media screen and (min-width: 30em) and (max-width: 60em) {
+
+.wp-caption
+{
+	padding-bottom: 0;
+}
+.wp-caption-text
+{
+	background-color: #eeeeee;
+	color: #333;
+	padding: 0.3em 1rem 0.2em 1rem;
+	border: 1px solid #ddd;
+	position: relative;
+	left: 0;
+	width: auto;
+}
+
+#container { width: 30em; }
+	
+header h2 {
+left: 0;
+}
+}
