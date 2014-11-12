@@ -18,9 +18,11 @@ class o:
   def update(i,**d)  : i.d().update(**d); return i
   def __init__(i,**d): i.update(**d)
   def __repr__(i)    :  
-    show = [':%s=%s' % (k, name(i.d()[k])) 
-            for k in sorted(i.d().keys() ) 
+    keys = [k for k in sorted(i.d().keys()) 
             if k[0] is not "_"]
+    print(keys)
+    show = [':%s=%s' % (k, name(i.d()[k])) 
+            for k in keys]
     return '{'+' '.join(show)+'}'
 
 the=o()
@@ -57,10 +59,11 @@ def ako(x,y): return isinstance(x,y)
 def THAT(x=the,s="",pre=""):
   d = x.d()
   say(pre)
-  for x in sorted(d.keys()):
-    say(s + (':%s ' % x))
-    y = d[x]
-    THAT(y,s+"   ","\n") if ako(y,o) else print(y)
+  for k in sorted(d.keys()):
+    if k[0] is not "_":
+      say(s + (':%s ' % k))
+      y = d[k]
+      THAT(y,s+"   ","\n") if ako(y,o) else print(y)
 
 r   = random.random
 seed= random.seed
@@ -94,28 +97,14 @@ def printm(matrix):
   for row in [fmt.format(*row) for row in s]:
     print(row)
 
-def data(w,row):
-  for col in w.num: col.tell(row[col])
-
-def header(w,row):
-  def numOrSym(val):
-    return w.num if w.opt.num in val else w.sym
-  def indepOrDep(val):
-    return w.dep if w.opt.klass in val else w.indep
-  for col,val in enumerate(row):
-    numOrSym(val).append(col)
-    indepOrDep(val).append(col)
-    w.name[col] = val
-    w.index[val] = col
-
 class N:
   def __init__(i,init=[],lo=None,hi=None,name=''):
-    i.n,i.lo,i.hi.i.name = 0,lo,hi,name
+    i.n, i.lo, i.hi, i.name = 0,lo,hi,name
     i._kept = [None]*the.LIB.buffer
     map(i.tell,init)
   def ask(i)     : return i.lo + r()*(i.hi - i.lo)
   def dist(i,x,y): return i.norm(x) - i.norm(y)
-  def log(i)  : return N(name=i.name)
+  def log(i): return N(name=i.name,lo=i.lo,hi=i.hi)
   def tell(i,x):
     i.n += 1
     if i.lo is None: i.lo = x
@@ -134,6 +123,9 @@ class N:
   def smear(i,x,y,z):
     m = the.MOEAD0
     return x + m.f*(y-z) if r() < m.cf else x
+  def __repr__(i): 
+    return '{:%s * %s [%s .. %s]}'%(
+      i.name,i.n,i.lo ,i.hi)
 
 class W: # words
   def __init__(i,all=None,name=''): 
@@ -191,49 +183,53 @@ class Row:
                   for c in i.of.ins)
       return total**0.5 / len(i.of.ins)**0.5
   def smear(i,j,k): # somethimes want a zombie row XXX
-    return Row(of,
+    return Row(of,[in1.smear(x,y,z) 
+                   for x,y,z, in1 in
+                   zip(i,j,k, i.of.ins)])
 
 class Feeling:
-  def __init__(f,love=True) : 
-    i.f,i.name,i.love = f,f.__name__,love
+  def __init__(i,f,love=True) : 
+    i.f, i.name, i.love = f, f.__name__, love
   def __call__(i,*l) : return i.f(*l)
-  def __repr__(i)    : return '%s(%s)' % x(
+  def __repr__(i)    : return '%s(%s)' % (
       ('Love' if i.love else 'Hate'),
-       i.name)
+      i.name)
   def howBad(i,x): 
     return 1 - x if i.love else x
 
-def love(f):return Feeling(f,i.love=True)
-def hate(f):return Feeling(f,i.love=False)
+def love(f): return Feeling(f,love=True)
+def hate(f): return Feeling(f,love=False)
 
 def model(**d):
   return o(ins=[],outs=[],objs=[]).update(**d)
 
 def Schaffer():
+  @hate
   def f1(x): return x[0]**2
+  @hate
   def f2(x): return (x[0]-2)**2
   return model(
     ins  = [N(name="x1",lo=-4,hi=4)],
-    objs = [hate(f1),hate(f2)])
+    objs = [f1,f2])
   
 class Table:
   def __init__(i,model):
     i.rows, i.factory, i.m = [], model, model()
-    i.asks=o(ins = i.m.ins(),
-             outs= i.m.outs() + i.m.objs())
-    i.tells=o(ins= [x.log() for x in i.m.ins ],
-             outs= [x.log() for x in i.m.outs] + [
-                   N(name=f.name) for f in i.m.objs
-                   ])
+    i.objs = [N(name=f.name) for f in i.m.objs]
+    i.asks =o(ins = i.m.ins,
+              outs= i.m.outs + i.m.objs)
+    i.tells=o(
+      ins=  [x.log() for x in i.m.ins ],
+      outs= [x.log() for x in i.m.outs] + i.objs)
   def ask(i):
     row = Row(i, [remember.tell(generate.ask())
                   for generate, remember in
                   zip(i.asks.ins, i.tells.ins)])
-    rows += [row]
+    i.rows += [row]
     return row
   def smear(i):
     one,two,three = any(rows),any(rows),any(rows)
-    for one.
+    return one.smear(two,three)
     
 
     

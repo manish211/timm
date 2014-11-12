@@ -23,8 +23,30 @@ def _N():
   c2=N([r()+1 for _ in xrange(10000)])
   print(c2.lo,c2.hi,c2.norm(1.2),c2.dist(1.5,2))
 
+def _cliffsDelta(n=50):
+  seed(1)
+  lst1 = [r() for _ in xrange(n)]
+  for f in [1,0.8,0.6,0.4]:
+    lst2 = [f*r() for _ in xrange(n)]
+    print(f, cliffsDelta(lst1,lst2))
 
-cmd()
+_cliffsDelta()
 
+#THAT()
+
+Schaffer()
+
+@hate
+def f1(x): return x/2 
+
+print(f1(10))
+
+print(f1)
+
+tbl=Table(Schaffer)
+for _ in xrange(100):
+  tbl.ask()
+
+print(tbl.tells)
 
 
