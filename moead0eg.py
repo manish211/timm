@@ -45,7 +45,12 @@ print(f1)
 
 tbl=Table(Schaffer)
 for _ in xrange(100):
-  tbl.ask()
+  r=tbl.ask()
+  print(22)
+  print(r[0])
+  r.objs()
+
+#  r.objs()
 
 print(tbl.tells)
 

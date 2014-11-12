@@ -124,7 +124,7 @@ class N:
     m = the.MOEAD0
     return x + m.f*(y-z) if r() < m.cf else x
   def __repr__(i): 
-    return '{:%s * %s [%s .. %s]}'%(
+    return '{:%s #%s [%s .. %s]}'%(
       i.name,i.n,i.lo ,i.hi)
 
 class W: # words
@@ -158,7 +158,11 @@ class Row:
     i.facets={}
     i.of, i.lst = of, lst or []
   def iter(i) : return iter(i.lst)
-  def __getattr__(i,x) : return i.lst[x]
+  def __repr__(i):
+    return str(i.lst)
+  def __getitem__(i,x) : 
+    print(">",x)
+    return i.lst[x]
   def abx(i,west,east,c):
     a = i.dist(west)
     b = i.dist(east)
@@ -170,9 +174,9 @@ class Row:
     return x, max(0,min(1,(a**2 - x**2)))**0.5
   @facet
   def objs(i,keep=True):
-    those = [obj(i) for obj in i.of.m.objs()]
+    those = [obj(i) for obj in i.of.m.objs]
     if keep:
-      for one, tell in zip(those,i.of.tells.objs): # XXX position
+      for one, tell in zip(those,i.of.objs): # XXX position
         tell.tell(one)
     return those 
   def dist(i,j,other=True):
@@ -187,7 +191,7 @@ class Row:
                    for x,y,z, in1 in
                    zip(i,j,k, i.of.ins)])
 
-class Feeling:
+class Value:
   def __init__(i,f,love=True) : 
     i.f, i.name, i.love = f, f.__name__, love
   def __call__(i,*l) : return i.f(*l)
@@ -197,15 +201,17 @@ class Feeling:
   def howBad(i,x): 
     return 1 - x if i.love else x
 
-def love(f): return Feeling(f,love=True)
-def hate(f): return Feeling(f,love=False)
+def love(f): return Value(f,love=True)
+def hate(f): return Value(f,love=False)
 
 def model(**d):
   return o(ins=[],outs=[],objs=[]).update(**d)
 
 def Schaffer():
   @hate
-  def f1(x): return x[0]**2
+  def f1(x): 
+    print("x")
+    return x[0]**2
   @hate
   def f2(x): return (x[0]-2)**2
   return model(
