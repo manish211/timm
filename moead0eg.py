@@ -43,7 +43,7 @@ print(f1(10))
 
 print(f1)
 
-tbl=Table(Schaffer)
+tbl=Table(Zdt3)
 for _ in xrange(100):
   r=tbl.ask()
   print(22)

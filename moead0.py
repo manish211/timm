@@ -169,16 +169,16 @@ class Row:
     x = (a**2 + c**2 - b**2)/ (2**c)
     i.x0y0(a,x)
     return a,b,x
+  def mutate(i,cf=0.25):
+    return Row(i.of, [ c.ask() if r() < cf else x
+                       for x,c in 
+                       zip(i, i.of.m.ins)])
   @facet
   def x0y0(i,a,x):
     return x, max(0,min(1,(a**2 - x**2)))**0.5
   @facet
-  def objs(i,keep=True):
-    those = [obj(i) for obj in i.of.m.objs]
-    if keep:
-      for one, tell in zip(those,i.of.objs): # XXX position
-        tell.tell(one)
-    return those 
+  def objs(i):
+    return  [obj(i) for obj in i.of.m.objs]
   def dist(i,j,other=True):
     return j.dist(i,False) if other else i.d(i,j)
   @facet
@@ -187,7 +187,7 @@ class Row:
                   for c in i.of.ins)
       return total**0.5 / len(i.of.ins)**0.5
   def smear(i,j,k): # somethimes want a zombie row XXX
-    return Row(of,[in1.smear(x,y,z) 
+    return Row(i.of,[in1.smear(x,y,z) 
                    for x,y,z, in1 in
                    zip(i,j,k, i.of.ins)])
 
@@ -217,10 +217,9 @@ def Schaffer():
     ins  = [N(name="x1",lo=-4,hi=4)],
     objs = [f1,f2])
 
-import math
-pi,sin = math.pi,math.sin
-  
 def Zdt3():
+  import math
+  pi,sin = math.pi,math.sin
   n=30
   @hate
   def f1(z): return z[0]
@@ -232,7 +231,7 @@ def Zdt3():
   return model(
      ins  = [N(name=i,lo=0,hi=1) 
              for i in xrange(n)],
-     outs = [f1,f2])
+     objs = [f1,f2])
 
 class Table:
   def __init__(i,model):
@@ -254,7 +253,3 @@ class Table:
     return one.smear(two,three)
     
 
-    
-r = Row(1,[10,20,30,40,50,60,70,80,90])    
-
-print(r[2:7])
