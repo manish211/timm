@@ -99,7 +99,7 @@ def printm(matrix):
 
 class N:
   def __init__(i,init=[],lo=None,hi=None,name=''):
-    i.n, i.lo, i.hi, i.name = 0,lo,hi,name
+    i.n, i.lo, i.hi, i.name = 0,lo,hi,str(name)
     i._kept = [None]*the.LIB.buffer
     map(i.tell,init)
   def ask(i)     : return i.lo + r()*(i.hi - i.lo)
@@ -130,7 +130,7 @@ class N:
 class W: # words
   def __init__(i,all=None,name=''): 
     i.all = all or {}
-    i.name=name
+    i.name = str(name)
   def tell(i,x)  : 
     i.all[x] = i.all.get(x,0) + 1
     return x
@@ -209,15 +209,31 @@ def model(**d):
 
 def Schaffer():
   @hate
-  def f1(x): 
-    print("x")
-    return x[0]**2
+  def f1(z): 
+    return z[0]**2
   @hate
-  def f2(x): return (x[0]-2)**2
+  def f2(z): return (z[0]-2)**2
   return model(
     ins  = [N(name="x1",lo=-4,hi=4)],
     objs = [f1,f2])
+
+import math
+pi,sin = math.pi,math.sin
   
+def Zdt3():
+  n=30
+  @hate
+  def f1(z): return z[0]
+  @hate
+  def f2(z):
+    g,x = g0(z),z[0]
+    return g*(1 -  (x/g)**0.5 - x/g*sin(10*pi*x))
+  def g0(z): return 1+9*sum(z[1:])/(n-1)
+  return model(
+     ins  = [N(name=i,lo=0,hi=1) 
+             for i in xrange(n)],
+     outs = [f1,f2])
+
 class Table:
   def __init__(i,model):
     i.rows, i.factory, i.m = [], model, model()
@@ -239,4 +255,6 @@ class Table:
     
 
     
-    
+r = Row(1,[10,20,30,40,50,60,70,80,90])    
+
+print(r[2:7])
