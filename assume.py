@@ -20,6 +20,8 @@ def issamp(goal,w=None,retries=5):
 
 def listp(x): return isinstace(x,(list,tuple))
 
+### undo w on failire
+
 def lurch(lst,w={},retries=1):
   def assume(key,val):
     if key in w: 
@@ -31,10 +33,8 @@ def lurch(lst,w={},retries=1):
       good=True
       for y in shuffle(ys):
         good = good and lurch(y,w)
-        if not good:
-          break
-      if good: 
-        return good
+        if  good:
+          return True
     return False
   def ror(ys):
     for _ in range(retries):
