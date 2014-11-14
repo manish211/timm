@@ -7,7 +7,7 @@ def shuffle(lst):
   random.shuffle(lst)
   return lst
 
-def issampe(goal,w=None,retries=5):
+def issamp(goal,w=None,retries=5):
   w = w or {}
   for _ in range(retries):
     try: 
