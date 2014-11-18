@@ -3,7 +3,7 @@ import sys,random
 sys.dont_write_bytecode = True
 
 any = random.choice
-
+rseed = random.seed
 _  = None;  Coc2tunings = dict(
 #              vlow  low   nom   high  vhigh  xhigh   
 sf= dict(
@@ -34,7 +34,7 @@ em= dict(
 def COCOMO2(project = {}, 
             a = 2.94, b = 0.91,  # defaults
             t= Coc2tunings): # defaults, see above
-  val = lambda key,d: any(project.get(key,[d])) - 1
+  val = lambda x,y: project.get(x,y) - 1
   sfs = [ t["sf"][x][ val(x,3) ] for x in t["sf"] ]
   ems = [ t["em"][x][ val(x,3) ] for x in t["em"] ]
   kloc =  val("kloc",10)
@@ -50,16 +50,38 @@ def report(lst):
   q = len(lst) // 4
   return lst[q*2], lst[q*3] - lst[q]
 
-def _coc():
-  d = dict(acap=[4,5], 
-           stor=[3,4],
-           pmat=[1,2],
-           kloc=range(135,150))
+def _coc(seed=1):
+  rseed(seed)
   print(
     report(
-      [COCOMO2(project=d) for _ in xrange(1000)]))
+      [COCOMO2(project= dict(
+        acap=any([4,5]), 
+        stor=any([3,4]),
+        pmat=any([1,2]),
+        kloc=any(range(135,200))
+        )) for _ in xrange(100)]))
 
-_coc()
+def first(lst): return lst[0]
+def second(lst): return lst[1]
+
+def keys(**project):
+  told = []
+  n = 1000
+  n1 = 1000 // 5
+  for _ in xrange(n):
+    one = {key:any(val) for key,val in project.items()}
+    score =  COCOMO2(one)
+    told += [(score,one)]
+  told = sorted(told)
+  best,rest = told[:n1],told[n1:]
+  print(map(second,best))
+  print(report(map(first,best)))
+  print(report(map(first,rest)))
+
+keys(  acap= [4,5], 
+        stor= [3,4],
+        pmat= [1,2],
+        kloc=range(135,200))
 
 def COCONUT(training,          # list of projects
             a=10, b=1,         # initial  (a,b) guess
