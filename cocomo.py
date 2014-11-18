@@ -38,7 +38,7 @@ def COCOMO2(project = {},
   sfs = [ t["sf"][x][ val(x,3) ] for x in t["sf"] ]
   ems = [ t["em"][x][ val(x,3) ] for x in t["em"] ]
   kloc =  val("kloc",10)
-  return a * prod(ems) * kloc ** (b + 0.01*sum(sfs)) 
+  return a * prod(ems) * kloc**(b + 0.01*sum(sfs)) 
 
 def prod(lst):
   x = 1
@@ -50,13 +50,16 @@ def report(lst):
   q = len(lst) // 4
   return lst[q*2], lst[q*3] - lst[q]
 
-print(
-  report(
-    [COCOMO2(project=dict(acap=[4,5], 
-                          stor=[3,4],
-                          pmat=[1,2],
-                          kloc=range(135,150)))
-     for _ in xrange(1000)]))
+def _coc():
+  d = dict(acap=[4,5], 
+           stor=[3,4],
+           pmat=[1,2],
+           kloc=range(135,150))
+  print(
+    report(
+      [COCOMO2(project=d) for _ in xrange(1000)]))
+
+_coc()
 
 def COCONUT(training,          # list of projects
             a=10, b=1,         # initial  (a,b) guess
