@@ -31,6 +31,17 @@ em= dict(
   time=[           _,    _, 1.00, 1.11, 1.29, 1.63],
   tool=[        1.17, 1.09, 1.00, 0.90, 0.78,    _]))
 
+def proj(this={},t=Coc2tunings):
+  def counts(lst): 
+    return [n+1 for n,v in enumerate(lst) if v]
+  out = {}
+  for k1 in ["sf","em"]:
+    out[k1] = {k2:counts(vs) 
+                 for k2,vs in t[k1].items()}
+  out.update(this)
+  out["kloc"]=xrange(2,2000)
+  return out
+ 
 def COCOMO2(project = {}, 
             a = 2.94, b = 0.91,  # defaults
             t= Coc2tunings): # defaults, see above
@@ -38,28 +49,36 @@ def COCOMO2(project = {},
   sfs = [ t["sf"][x][ val(x,3) ] for x in t["sf"] ]
   ems = [ t["em"][x][ val(x,3) ] for x in t["em"] ]
   kloc =  val("kloc",10)
-  return a * prod(ems) * kloc**(b + 0.01*sum(sfs)) 
+  return a * mult(ems) * kloc**(b + 0.01*add(sfs)) 
 
-def prod(lst):
-  x = 1
-  for y in lst: x *= y
-  return y
+def mult(lst): return reduce(lambda x,y:x*y,lst)
+def add( lst): return reduce(lambda x,y:x+y,lst)
 
 def report(lst):
   lst = sorted(lst)
   q = len(lst) // 4
   return lst[q*2], lst[q*3] - lst[q]
 
+def COCOMO2s(n=100, this={}):
+  ranges = proj(this)
+  for _ in xrange(n):
+    out = {}
+    for k1 in ["sf","em"]:
+      out[k1] = {k2:any(v) for k2,v in ranges[k1].items()}
+    yield out
+
+
 def _coc(seed=1):
   rseed(seed)
-  print(
-    report(
-      [COCOMO2(project= dict(
-        acap=any([4,5]), 
-        stor=any([3,4]),
-        pmat=any([1,2]),
-        kloc=any(range(135,200))
-        )) for _ in xrange(100)]))
+  for one in COCOMO2s(10, dict(
+      acap=[4,5], 
+      stor=[3,4],
+      pmat=[1,2],
+      kloc=xrange(135,200))):
+    print("\nsf",one["sf"])
+    print("em",one["em"])
+
+_coc(); exit()
 
 def first(lst): return lst[0]
 def second(lst): return lst[1]
