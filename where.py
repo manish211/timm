@@ -16,7 +16,7 @@ def where0(**d):
   return o(
     div=10,
     keep=20,
-    buffer= 100,
+    buffer= 10000,
     num='$',
     klass='=',
     seed=1).update(**d)
@@ -188,29 +188,65 @@ def where(src='data/diabetes.csv',opt=None):
         min={}, max={}, name={},index={},
         opt=opt or where0())
   def at(z,c): 
-    return  min(opt.div-1,
-                int(w.opt.div*z/c))
-  first, delta = None, 1+ 1/w.opt.div
-  for nth,chunk in table(src,w):
-    if nth == 0:
-      first  = first or any(chunk)
-      _,west = furthest(w,first,chunk)
-      c,east = furthest(w,west, chunk)
-    for row in chunk:
-      while True:
-        a,b = dist(w,row,west), dist(w,row,east)
-        if   a > (c*delta): west = row
-        elif b > (c*delta): east = row
-        else: break
-        c = dist(w,west,east)
-      x = (a*a + c*c - b*b)/(2*c+0.00001)
-      y = max(0,a*a - x*x)**0.5
+    return  min(opt.div-1, int(w.opt.div*z/c))
+  first = None 
+  for era,rows in table(src,w):
+    print(era)
+    if era == 0:
+      first  = first or any(rows)
+      _,west = furthest(w,first,rows)
+      c,east = furthest(w,west, rows)
+    for row in rows:
+      a,b,c,east,west,x,y = here(w,c,row,west,east)
       k = at(x,c), at(y,c)
       if not k in w.tiles:
         w.tiles[k] = Cache(w.opt.keep)
       w.tiles[k] += row
+  cluster(w.tiles,w.opt.div)
   for k,v in w.tiles.items(): 
-    print(k,Sym(map(lambda x:x[-1],v.items)).counts)
+    print(k,
+          Sym(map(lambda x:x[-1],v.items)).counts)
+
+def cluster(tiles,max):
+  m=[[0]*max]*max
+  for ((x,y),v) in tiles.items(): 
+    m[x][y]= len(v.items) if v else 0
+  cluster1(m, 0, max-1, 0, max-1)
+
+def cluster1(m,x0,x2,y0,y2,lvl=0,above=10**32):
+  x1 = int(x0 + (x2-x0)/2)
+  y1 = int(y0 + (y2-y0)/2)
+  for xa,xb,ya,yb in [(x0,x1,y0,y1),
+                      (x0,x1,y1,y2),
+                      (x1,x2,y0,y1),
+                      (x1,x2,y1,y2)]:
+    some = m[xa:xb][ya:yb]
+    n    = sum([x for x in items(some)])
+    if 0 < n < above:
+      say('|..' * lvl)
+      print('[%s:%s][%s:%s] #%s' % (xa,xb,ya,yb,n))
+      if n > 1 and  lvl < 10: 
+        cluster1(m,xa,xb,ya,yb,lvl+1,n)
+
+def items(lst):
+  if isinstance(lst,(list,tuple)):
+    for x in lst:
+      for y in items(x):
+        yield y
+  else:
+    yield lst
+              
+def here(w,c,row,west,east):
+  delta = 1 + 1/w.opt.div
+  while True:
+    a,b = dist(w,row,west), dist(w,row,east)
+    if   a > (c*delta): west = row
+    elif b > (c*delta): east = row
+    else: 
+      x = (a*a + c*c - b*b)/(2*c+0.00001)
+      y = max(0,a*a - x*x)**0.5
+      return a,b,c,east,west,x,y
+    c = dist(w,west,east); say("+")
 
 def _where( src='data/diabetes.csv'):
   if len(sys.argv) == 2:
