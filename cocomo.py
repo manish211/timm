@@ -6,13 +6,11 @@ any = random.choice
 rseed = random.seed
 _  = None;  Coc2tunings = dict(
 #              vlow  low   nom   high  vhigh  xhigh   
-sf= dict(
-  Flex=[        5.07, 4.05, 3.04, 2.03, 1.01,     _],
-  Pmat=[        7.80, 6.24, 4.68, 3.12, 1.56,     _],
-  Prec=[        6.20, 4.96, 3.72, 2.48, 1.24,     _],
-  Resl=[        7.07, 5.65, 4.24, 2.83, 1.41,     _],
-  Team=[        5.48, 4.38, 3.29, 2.19, 1.01,     _]),
-em= dict(
+  Flex=[        5.07, 4.05, 3.04, 2.03, 1.01,    _],
+  Pmat=[        7.80, 6.24, 4.68, 3.12, 1.56,    _],
+  Prec=[        6.20, 4.96, 3.72, 2.48, 1.24,    _],
+  Resl=[        7.07, 5.65, 4.24, 2.83, 1.41,    _],
+  Team=[        5.48, 4.38, 3.29, 2.19, 1.01,    _],
   acap=[        1.42, 1.19, 1.00, 0.85, 0.71,    _],
   aexp=[        1.22, 1.10, 1.00, 0.88, 0.81,    _],
   cplx=[        0.73, 0.87, 1.00, 1.17, 1.34, 1.74],
@@ -29,7 +27,7 @@ em= dict(
   site=[        1.22, 1.09, 1.00, 0.93, 0.86, 0.80], 
   stor=[           _,    _, 1.00, 1.05, 1.17, 1.46],
   time=[           _,    _, 1.00, 1.11, 1.29, 1.63],
-  tool=[        1.17, 1.09, 1.00, 0.90, 0.78,    _]))
+  tool=[        1.17, 1.09, 1.00, 0.90, 0.78,    _])
 
 def proj(this={},t=Coc2tunings):
   def counts(lst): 
@@ -44,15 +42,22 @@ def proj(this={},t=Coc2tunings):
  
 def COCOMO2(project = {}, 
             a = 2.94, b = 0.91,  # defaults
-            t= Coc2tunings): # defaults, see above
-  val = lambda x,y: project.get(x,y) - 1
-  sfs = [ t["sf"][x][ val(x,3) ] for x in t["sf"] ]
-  ems = [ t["em"][x][ val(x,3) ] for x in t["em"] ]
-  kloc =  val("kloc",10)
-  return a * mult(ems) * kloc**(b + 0.01*add(sfs)) 
-
-def mult(lst): return reduce(lambda x,y:x*y,lst)
-def add( lst): return reduce(lambda x,y:x+y,lst)
+            t= Coc2tunings,
+            blur = False): # defaults, see above
+  sf = lambda z: z[0].isupper
+  change =  {1:0;2:1;3:2;4:3;5:4;6:5}
+  if blur: 
+    change = {1:1;2:1;3:2;4:3;5:3;6:3}
+  sfs = 0; ems=1
+  for k,lst in t.items():
+    w = project.get(k,[3]) # list of settings
+    x = any(w)             # one setting
+    y = change[x]          # mapped to an index
+    z = lst[y]             # mapped to a tuning
+    if sf(k): sfs += z    
+    else    : ems *= z
+  kloc = project.get("kloc",10)
+  return a * ems * kloc**(b + 0.01 * sfs) 
 
 def report(lst):
   lst = sorted(lst)
@@ -66,7 +71,6 @@ def COCOMO2s(n=100, this={}):
     for k1 in ["sf","em"]:
       out[k1] = {k2:any(v) for k2,v in ranges[k1].items()}
     yield out
-
 
 def _coc(seed=1):
   rseed(seed)
