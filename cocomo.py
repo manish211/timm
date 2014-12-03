@@ -12,7 +12,7 @@ def ranges(t=None):
   t = t or Coc2tunings
   out= {k:[n+1 for n,v in enumerate(lst) if v]
           for k,lst in t.items()}
-  out["kloc"] = xrange(2,1000)
+  out["kloc"] = xrange(2,1001)
   return out
 
 def f4(z)    : return '%4.1f' % z
@@ -74,10 +74,33 @@ def _coc(proj,seed=1,n=1000):
           for _ in xrange(n)])
  
 def demo1(): return dict()
-def demo2(): return dict(kloc=xrange(2,10))
+def demo2(): return dict(kloc=xrange(2,11),acap=[3,4,5])
 
-_coc(proj=demo1); exit()
 
+def keys(proj,seed=1,n=10000,border=0.75): 
+  rseed(seed)
+  project0 = ranges()
+  lo, hi,log = {}, {}, []
+  for _ in xrange(n):
+    est,how= COCOMO2(proj(),project0=project0)
+    log += [(est,how)]
+    for k,v in dict(kloc=how["kloc"],est=est).items():
+      lo[k] = min(v, lo.get(k,   10**32))
+      hi[k] = max(v, hi.get(k,-1*10**32))
+  for est,how in log:
+    est1  = norm(est,       "est", lo, hi)
+    kloc0 = norm(how["kloc"],"kloc",lo,hi) 
+    kloc = lo["kloc"] + (hi["kloc"] - lo["kloc"]) * (int(kloc0*10)/10)
+    print(est1,lo["kloc"],hi["kloc"],how["kloc"],kloc0,kloc)
+    exit()
+
+def norm(v,x,lo,hi):
+  return (v - lo[x]) / (hi[x] - lo[x])
+
+#_coc(proj=demo2); exit()
+
+keys(demo2);
+exit()
 def COCONUT(training,          # list of projects
             a=10, b=1,         # initial  (a,b) guess
             deltaA    = 10,    # range of "a" guesses 
