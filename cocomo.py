@@ -5,6 +5,25 @@ sys.dont_write_bytecode = True
 any = random.choice
 rseed = random.seed
 
+## lib
+def guess(d):return {k:any(x) for k,x in d.items()}
+
+def ranges(t=None):
+  t = t or Coc2tunings
+  out= {k:[n+1 for n,v in enumerate(lst) if v]
+          for k,lst in t.items()}
+  out["kloc"] = xrange(2,1000)
+  return out
+
+def f4(z)    : return '%4.1f' % z
+def pretty(x): print(', '.join(map(f4,xtiles(x))))
+
+def xtiles(lst,div=10,parts=[1,3,5,7,9]):
+  lst = sorted(lst)
+  q   = len(lst) // div
+  return [lst[q*n][0] for n in parts]
+
+## Cocomo
 _  = None;  Coc2tunings = dict(
 #              vlow  low   nom   high  vhigh  xhigh   
   Flex=[        5.07, 4.05, 3.04, 2.03, 1.01,    _],
@@ -30,32 +49,29 @@ _  = None;  Coc2tunings = dict(
   time=[           _,    _, 1.00, 1.11, 1.29, 1.63],
   tool=[        1.17, 1.09, 1.00, 0.90, 0.78,    _])
  
+def COCOMO2(project = {}, project0=None,
+            t = Coc2tunings,     # defaults, see above
+            a = 2.94, b = 0.91): 
+  settings = guess(project0 or ranges(t))
+  guessed  = guess(project)
+  settings.update(guessed)
+  sfs, ems, kloc = 0, 1, 10
+  for k,setting in settings.items():
+    if k == 'kloc':
+      kloc = setting
+    else:
+      x = t[k][setting - 1]
+      if k[0].isupper() : 
+        sfs += x
+      else : 
+        ems *= x
+  return a * ems * kloc**(b + 0.01 * sfs),guessed
 
-def COCOMO2(project = {}, 
-            t = Coc2tunings, # defaults, see above
-            a = 2.94, b = 0.91):  # defaults)
-  defaults = {k:[n+1 for n,v in enumerate(lst) if v]
-                 for k,lst in t.items()}
-  project["kloc"] = project.get("kloc",xrange(2,1000))
-  guess = {k:any(project[k]) for k in project}
-  sfs   = 0
-  ems   = 1
-  for k,lst in t.items():
-    x = guess[k] if k in guess else any(defaults[k])
-    if k[0].isupper(): sfs += lst[x-1]
-    else             : ems *= lst[x-1]
-  return a * ems * guess["kloc"]**(b + 0.01 * sfs),guess
-
-def _coc(proj,seed=1,n=1000):
-  def pretty(lst,div=10,parts=[1,3,5,7,9]):
-    def xtiles(lst):
-      lst = sorted(lst)
-      q   = len(lst) // div
-      return [lst[q*n][0] for n in parts]
-    print(', '.join(map(short, xtiles(lst))))
-  short = lambda z: '%4.1f' % z
+def _coc(proj,seed=1,n=1000): 
   rseed(seed)
-  pretty([COCOMO2(proj()) for _ in xrange(n)])
+  project0 = ranges()
+  pretty([COCOMO2(proj(),project0=project0) 
+          for _ in xrange(n)])
  
 def demo1(): return dict()
 def demo2(): return dict(kloc=xrange(2,10))
