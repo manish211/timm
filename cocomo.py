@@ -4,6 +4,7 @@ sys.dont_write_bytecode = True
 
 any = random.choice
 rseed = random.seed
+
 _  = None;  Coc2tunings = dict(
 #              vlow  low   nom   high  vhigh  xhigh   
   Flex=[        5.07, 4.05, 3.04, 2.03, 1.01,    _],
@@ -28,83 +29,38 @@ _  = None;  Coc2tunings = dict(
   stor=[           _,    _, 1.00, 1.05, 1.17, 1.46],
   time=[           _,    _, 1.00, 1.11, 1.29, 1.63],
   tool=[        1.17, 1.09, 1.00, 0.90, 0.78,    _])
-
-def proj(this={},t=Coc2tunings):
-  def counts(lst): 
-    return [n+1 for n,v in enumerate(lst) if v]
-  out = {}
-  for k1 in ["sf","em"]:
-    out[k1] = {k2:counts(vs) 
-                 for k2,vs in t[k1].items()}
-  out.update(this)
-  out["kloc"]=xrange(2,2000)
-  return out
  
+
 def COCOMO2(project = {}, 
-            a = 2.94, b = 0.91,  # defaults
-            t= Coc2tunings,
-            blur = False): # defaults, see above
-  sf = lambda z: z[0].isupper
-  change =  {1:0;2:1;3:2;4:3;5:4;6:5}
-  if blur: 
-    change = {1:1;2:1;3:2;4:3;5:3;6:3}
-  sfs = 0; ems=1
+            t = Coc2tunings, # defaults, see above
+            a = 2.94, b = 0.91):  # defaults)
+  defaults = {k:[n+1 for n,v in enumerate(lst) if v]
+                 for k,lst in t.items()}
+  project["kloc"] = project.get("kloc",xrange(2,1000))
+  guess = {k:any(project[k]) for k in project}
+  sfs   = 0
+  ems   = 1
   for k,lst in t.items():
-    w = project.get(k,[3]) # list of settings
-    x = any(w)             # one setting
-    y = change[x]          # mapped to an index
-    z = lst[y]             # mapped to a tuning
-    if sf(k): sfs += z    
-    else    : ems *= z
-  kloc = project.get("kloc",10)
-  return a * ems * kloc**(b + 0.01 * sfs) 
+    x = guess[k] if k in guess else any(defaults[k])
+    if k[0].isupper(): sfs += lst[x-1]
+    else             : ems *= lst[x-1]
+  return a * ems * guess["kloc"]**(b + 0.01 * sfs),guess
 
-def report(lst):
-  lst = sorted(lst)
-  q = len(lst) // 4
-  return lst[q*2], lst[q*3] - lst[q]
-
-def COCOMO2s(n=100, this={}):
-  ranges = proj(this)
-  for _ in xrange(n):
-    out = {}
-    for k1 in ["sf","em"]:
-      out[k1] = {k2:any(v) for k2,v in ranges[k1].items()}
-    yield out
-
-def _coc(seed=1):
+def _coc(proj,seed=1,n=1000):
+  def pretty(lst,div=10,parts=[1,3,5,7,9]):
+    def xtiles(lst):
+      lst = sorted(lst)
+      q   = len(lst) // div
+      return [lst[q*n][0] for n in parts]
+    print(', '.join(map(short, xtiles(lst))))
+  short = lambda z: '%4.1f' % z
   rseed(seed)
-  for one in COCOMO2s(10, dict(
-      acap=[4,5], 
-      stor=[3,4],
-      pmat=[1,2],
-      kloc=xrange(135,200))):
-    print("\nsf",one["sf"])
-    print("em",one["em"])
+  pretty([COCOMO2(proj()) for _ in xrange(n)])
+ 
+def demo1(): return dict()
+def demo2(): return dict(kloc=xrange(2,10))
 
-_coc(); exit()
-
-def first(lst): return lst[0]
-def second(lst): return lst[1]
-
-def keys(**project):
-  told = []
-  n = 1000
-  n1 = 1000 // 5
-  for _ in xrange(n):
-    one = {key:any(val) for key,val in project.items()}
-    score =  COCOMO2(one)
-    told += [(score,one)]
-  told = sorted(told)
-  best,rest = told[:n1],told[n1:]
-  print(map(second,best))
-  print(report(map(first,best)))
-  print(report(map(first,rest)))
-
-keys(  acap= [4,5], 
-        stor= [3,4],
-        pmat= [1,2],
-        kloc=range(135,200))
+_coc(proj=demo1); exit()
 
 def COCONUT(training,          # list of projects
             a=10, b=1,         # initial  (a,b) guess
