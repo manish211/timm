@@ -7,7 +7,7 @@ rseed = random.seed
 
 ## lib
 def guess(d):return {k:any(x) for k,x in d.items()}
-
+def mult(lst): return reduce(lambda x,y: x*y,lst)
 def ranges(t=None):
   t = t or Coc2tunings
   out= {k:[n+1 for n,v in enumerate(lst) if v]
@@ -55,27 +55,43 @@ def COCOMO2(project = {}, project0=None,
   settings = guess(project0 or ranges(t))
   guessed  = guess(project)
   settings.update(guessed)
-  sfs, ems, kloc = 0, 1, 10
+  sfs, ems, kloc = [], [], 10
   for k,setting in settings.items():
     if k == 'kloc':
       kloc = setting
     else:
-      x = t[k][setting - 1]
-      if k[0].isupper() : 
-        sfs += x
-      else : 
-        ems *= x
-  return a * ems * kloc**(b + 0.01 * sfs),guessed
+      what = sfs if k[0].isupper() else ems 
+      what += [ t[k][setting - 1] ]
+  return a * mult(ems) * kloc**(b + 0.01 * sum(sfs)),guessed
 
 def _coc(proj,seed=1,n=1000): 
   rseed(seed)
-  project0 = ranges()
-  pretty([COCOMO2(proj(),project0=project0) 
-          for _ in xrange(n)])
+  project0  = ranges()
+  estimates = [COCOMO2(proj(),project0=project0) 
+               for _ in xrange(n)]
+  pretty(estimates)
  
-def demo1(): return dict()
-def demo2(): return dict(kloc=xrange(2,11),acap=[3,4,5])
+def ok(f):
+  all    = ranges()
+  prefix = 'W> %s :bad' % f.__name__
+  for k,some in f().items():
+    if not k in all:
+      print(prefix,k)
+    else:
+      possible   = all[k]
+      impossible = list(set(some) - set(possible))
+      if impossible:
+        print(prefix,k,impossible)
+  return f
 
+@ok
+def demo1(): return dict()
+
+@ok
+def demo2(): return dict(kloc=xrange(2,11),acap=[3,4,5,20])
+
+_coc(demo2)
+exit()
 
 def keys(proj,seed=1,n=10000,border=0.75): 
   rseed(seed)
@@ -99,8 +115,8 @@ def norm(v,x,lo,hi):
 
 #_coc(proj=demo2); exit()
 
-keys(demo2);
-exit()
+#keys(demo2);
+#exit()
 def COCONUT(training,          # list of projects
             a=10, b=1,         # initial  (a,b) guess
             deltaA    = 10,    # range of "a" guesses 
