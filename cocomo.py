@@ -6,8 +6,9 @@ any = random.choice
 rseed = random.seed
 
 ## lib
-def guess(d):return {k:any(x) for k,x in d.items()}
+
 def mult(lst): return reduce(lambda x,y: x*y,lst)
+
 def ranges(t=None):
   t = t or Coc2tunings
   out= {k:[n+1 for n,v in enumerate(lst) if v]
@@ -15,13 +16,15 @@ def ranges(t=None):
   out["kloc"] = xrange(2,1001)
   return out
 
-def f4(z)    : return '%4.1f' % z
-def pretty(x): print(', '.join(map(f4,xtiles(x))))
+def f7(z)   : return '%7.1f' % z
+def pretty(txt,x): 
+  print(txt+',',', '.join(map(f7,xtiles(x))))
 
 def xtiles(lst,div=10,parts=[1,3,5,7,9]):
+  v   = lambda x: lst[x][0]
   lst = sorted(lst)
   q   = len(lst) // div
-  return [lst[q*n][0] for n in parts]
+  return [v(0)]+[v(q*n) for n in parts]+[v(-1)]
 
 ## Cocomo
 _  = None;  Coc2tunings = dict(
@@ -52,6 +55,7 @@ _  = None;  Coc2tunings = dict(
 def COCOMO2(project = {}, project0=None,
             t = Coc2tunings,     # defaults, see above
             a = 2.94, b = 0.91): 
+  guess = lambda d: {k:any(x) for k,x in d.items()}
   settings = guess(project0 or ranges(t))
   guessed  = guess(project)
   settings.update(guessed)
@@ -69,27 +73,29 @@ def _coc(proj,seed=1,n=1000):
   project0  = ranges()
   estimates = [COCOMO2(proj(),project0=project0) 
                for _ in xrange(n)]
-  pretty(estimates)
+  pretty(proj.__name__, estimates)
  
 def ok(f):
   all    = ranges()
-  prefix = 'W> %s :bad' % f.__name__
+  prefix = f.__name__
   for k,some in f().items():
     if not k in all:
-      print(prefix,k)
+      raise KeyError( '%s.%s' % (prefix,k))
     else:
       possible   = all[k]
       impossible = list(set(some) - set(possible))
       if impossible:
-        print(prefix,k,impossible)
+        raise IndexError( '%s.%s=%s' % 
+                          (prefix,k,impossible))
   return f
 
 @ok
 def demo1(): return dict()
 
 @ok
-def demo2(): return dict(kloc=xrange(2,11),acap=[3,4,5,20])
+def demo2(): return dict(kloc=xrange(2,11),docu=[2,3,4,5])
 
+_coc(demo1)
 _coc(demo2)
 exit()
 
@@ -106,12 +112,232 @@ def keys(proj,seed=1,n=10000,border=0.75):
   for est,how in log:
     est1  = norm(est,       "est", lo, hi)
     kloc0 = norm(how["kloc"],"kloc",lo,hi) 
-    kloc = lo["kloc"] + (hi["kloc"] - lo["kloc"]) * (int(kloc0*10)/10)
     print(est1,lo["kloc"],hi["kloc"],how["kloc"],kloc0,kloc)
     exit()
 
 def norm(v,x,lo,hi):
   return (v - lo[x]) / (hi[x] - lo[x])
+
+risks = dict(lohi   =(('sced','rely')), 
+             lohi2  =(('sced','cplx')))
+
+def readRisks(risktable):
+risktable['sced','rely'] = ("0 0 0 1 2 0,"
+"0 0 0 0 1 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0")
+risktable['sced','cplx'] = ("0 0 0 1 2 4,"
+"0 0 0 0 1 2,"
+"0 0 0 0 0 1,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0")
+risktable['sced','time'] = ("0 0 0 1 2 4,"
+"0 0 0 0 1 2,"
+"0 0 0 0 0 1,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0")
+risktable['sced','pvol'] = ("0 0 0 1 2 0,"
+"0 0 0 0 1 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0")
+risktable['sced','tool'] = ("2 1 0 0 0 0,"
+"1 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0")
+risktable['sced','pexp'] = ("4 2 1 0 0 0,"
+"2 1 0 0 0 0,"
+"1 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0")
+risktable['sced','pcap'] = ("4 2 1 0 0 0,"
+"2 1 0 0 0 0,"
+"1 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0")
+risktable['sced','aexp'] = ("4 2 1 0 0 0,"
+"2 1 0 0 0 0,"
+"1 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0")
+risktable['sced','acap'] = ("4 2 1 0 0 0,"
+"2 1 0 0 0 0,"
+"1 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0")
+risktable['sced','ltex'] = ("2 1 0 0 0 0,"
+"1 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0")
+risktable['sced','pmat'] = ("2 1 0 0 0 0,"
+"1 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0")
+risktable['rely','acap'] = ("0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"1 0 0 0 0 0,"
+"2 1 0 0 0 0,"
+"4 2 1 0 0 0,"
+"0 0 0 0 0 0")
+risktable['rely','pcap'] = ("0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"1 0 0 0 0 0,"
+"2 1 0 0 0 0,"
+"4 2 1 0 0 0,"
+"0 0 0 0 0 0")
+risktable['cplx','acap'] = ("0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"1 0 0 0 0 0,"
+"2 1 0 0 0 0,"
+"4 2 1 0 0 0")
+risktable['cplx','pcap'] = ("0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"1 0 0 0 0 0,"
+"2 1 0 0 0 0,"
+"4 2 1 0 0 0")
+risktable['cplx','tool'] = ("0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"1 0 0 0 0 0,"
+"2 1 0 0 0 0,"
+"4 2 1 0 0 0")
+risktable['rely','pmat'] = ("0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"1 0 0 0 0 0,"
+"2 1 0 0 0 0,"
+"4 2 1 0 0 0,"
+"0 0 0 0 0 0")
+risktable['pmat','acap'] = ("2 1 0 0 0 0,"
+"1 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0")
+risktable['stor','acap'] = ("0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"1 0 0 0 0 0,"
+"2 1 0 0 0 0,"
+"4 2 1 0 0 0")
+risktable['time','acap'] = ("0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"1 0 0 0 0 0,"
+"2 1 0 0 0 0,"
+"4 2 1 0 0 0")
+risktable['tool','acap'] = ("2 1 0 0 0 0,"
+"1 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0")
+risktable['tool','pcap'] = ("2 1 0 0 0 0,"
+"1 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0")
+risktable['ruse','aexp'] = ("0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"1 0 0 0 0 0,"
+"2 1 0 0 0 0,"
+"4 2 1 0 0 0")
+risktable['ruse','ltex'] = ("0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"1 0 0 0 0 0,"
+"2 1 0 0 0 0,"
+"4 2 1 0 0 0")
+risktable['pmat','pcap'] = ("0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"1 0 0 0 0 0,"
+"2 1 0 0 0 0,"
+"4 2 1 0 0 0")
+risktable['stor','pcap'] = ("0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"1 0 0 0 0 0,"
+"2 1 0 0 0 0,"
+"4 2 1 0 0 0")
+risktable['time','pcap'] = ("0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"1 0 0 0 0 0,"
+"2 1 0 0 0 0,"
+"4 2 1 0 0 0")
+
+risktable['ltex','pcap'] = (
+"4 2 1 0 0 0,"
+"2 1 0 0 0 0,"
+"1 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0")
+
+risktable['pvol','pexp'] = 
+'"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"1 0 0 0 0 0,"
+"2 1 0 0 0 0,"
+"0 0 0 0 0 0")
+
+
+risktable['time','tool'] = (
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"1 0 0 0 0 0,"
+"2 1 0 0 0 0")
+
+risktable['tool','pmat'] = (
+"2 1 0 0 0 0,"
+"1 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0")
+risktable['team','aexp'] = (
+"2 1 0 0 0 0,"
+"1 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0")
+risktable['team','sced'] = (
+"2 1 0 0 0 0,"
+"1 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0")
+risktable['team','site'] = (
+"2 1 0 0 0 0,"
+"1 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0,"
+"0 0 0 0 0 0")
 
 #_coc(proj=demo2); exit()
 
