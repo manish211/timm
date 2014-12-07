@@ -101,12 +101,8 @@ def demo2(): return dict(kloc=xrange(2,11),docu=[2,3,4,5])
 #_coc(demo2)
 #exit()
 
-
-
-def keys(proj,seed=1,n=50,enough=0.75): 
+def keys(proj,seed=1,n=1000,enough=0.75): 
   rseed(seed)
-
-  
   lo, hi,log = {}, {}, []
   for _ in xrange(n):
     settings = guess(ranges())
@@ -119,16 +115,33 @@ def keys(proj,seed=1,n=50,enough=0.75):
     for k,v in [('kloc',kloc),('est',est),('mad',mad)]:
       lo[k] = min(v, lo.get(k,   10**32))
       hi[k] = max(v, hi.get(k,-1*10**32))
-  best=[]
-  rest=[]
+  best={}; rest={}
+  scores=[]
   for est0,kloc0,mad0,guessed in log:
     est1  = norm(est0,  "est",  lo, hi)
     kloc1 = norm(kloc0, "kloc", lo, hi) 
     mad1  = norm(mad0,  "mad",  lo, hi) 
     score = 1 - ((est1**2 + (1-kloc1)**2 + mad1) **0.5 / (3**0.5))
-    if score > enough: best += guessed
-    else: rest += guessed
-    print("kloc",kloc0,"est",est0,"mad",mad0,"=",score)
+    scores += [(score,guessed)]
+  scores = sorted(scores)
+  rests = at = int(enough*n)
+  bests = n - rests
+  border  = scores[at][0]
+  for score,guessed in sorted(scores):
+    what = best if score > border else rest
+    for k,v in guessed.items():
+      what[(k,v)] = what.get((k,v),0) + 1
+  br = []
+  #print(best)
+  for (k,v),b0 in best.items():
+    r0 = rest.get((k,v),0)
+    b = b0/bests
+    r = r0/rests
+    if b < r:
+      score = b**2/(b+r)
+      br += [(score,(k,v))]
+  print(sorted(br))
+
 
 def norm(v,x,lo,hi):
   return (v - lo[x]) / (hi[x] - lo[x] + 0.0001)
