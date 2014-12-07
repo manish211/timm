@@ -3,6 +3,7 @@ import random
 class Retry(RuntimeError):
    def __init__(i, arg): i.args = arg
 
+
 def shuffle(lst):
   random.shuffle(lst)
   return lst

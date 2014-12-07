@@ -1,0 +1,80 @@
+; -*- elisp -*-
+
+(setq lua-indent-level 2)
+
+(defun markdown-regexp-right (beg end)
+  (interactive "r")
+  (replace-regexp "-\|[^-]" "-:|\n" nil beg end)    
+  (replace-regexp "-\+-" "-|-" nil beg end)
+)
+
+
+(setq vc-follow-symlinks t)
+(setq flyspell-issue-welcome-flag nil) ;
+  
+(setq column-number-mode t)
+;(menu-bar-mode 0) 
+
+(progn
+  (setq inhibit-startup-message t)
+  (setq make-backup-files nil) 
+  (global-font-lock-mode t)
+  (xterm-mouse-mode t)
+  (show-paren-mode t)
+  (transient-mark-mode t)
+  (setq scroll-step 1)
+  (global-hl-line-mode 1)
+  (setq-default fill-column 52))
+
+(setq frame-title-format
+  '(:eval
+    (if buffer-file-name
+        (replace-regexp-in-string
+         "\\" "/"
+         (replace-regexp-in-string
+          (regexp-quote (getenv "HOME")) "~"
+          (convert-standard-filename buffer-file-name)))
+      (buffer-name))))
+
+(add-hook 'python-mode-hook
+   (lambda ()
+               (setq indent-tabs-mode nil
+                            tab-width 2)
+       (setq python-indent 2)))
+
+(setq auto-mode-alist 
+      (append
+       '(("\.pl" . prolog-mode)
+	 ("\.md" . markdown-mode)) 
+    auto-mode-alist))
+
+(setq prolog-indent-width 2
+            prolog-electric-dot-flag t
+            prolog-electric-dash-flag t
+            prolog-electric-colon-flag t)
+
+(add-hook 'markdown-mode-hook 'flyspell-mode)
+(add-hook 'python-mode-hook 'flyspell-mode)
+(put 'downcase-region 'disabled nil)
+
+;(setq c-toggle-syntactic-indentation nil)
+(setq c-basic-indent 2)
+(setq tab-width 2)
+;(setq indent-tabs-mode nil)
+
+(set-fill-column 70)
+
+(add-hook 'latex-mode-hook 'turn-on-flyspell)
+
+
+(defun wc (start end)
+    "Print number of words in the region."
+    (interactive "r")
+    (save-excursion
+      (save-restriction
+        (narrow-to-region start end)
+        (goto-char (point-min))
+         (message "Region has %d words."
+  (count-matches "\sw+")))))
+
+ (put 'upcase-region 'disabled nil)

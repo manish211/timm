@@ -42,7 +42,7 @@ _  = None;  Coc2tunings = dict(
   ltex=[        1.20, 1.09, 1.00, 0.91, 0.84,    _],
   pcap=[        1.34, 1.15, 1.00, 0.88, 0.76,    _], 
   pcon=[        1.29, 1.12, 1.00, 0.90, 0.81,    _],
-  plex=[        1.19, 1.09, 1.00, 0.91, 0.85,    _], 
+  pexp=[        1.19, 1.09, 1.00, 0.91, 0.85,    _], 
   pvol=[           _, 0.87, 1.00, 1.15, 1.30,    _],
   rely=[        0.82, 0.92, 1.00, 1.10, 1.26,    _],
   ruse=[           _, 0.95, 1.00, 1.07, 1.15, 1.24],
@@ -52,9 +52,7 @@ _  = None;  Coc2tunings = dict(
   time=[           _,    _, 1.00, 1.11, 1.29, 1.63],
   tool=[        1.17, 1.09, 1.00, 0.90, 0.78,    _])
  
-def COCOMO2(project = {},
-            t = Coc2tunings, 
-            a = 2.94, b = 0.91): 
+def COCOMO2(project, t=Coc2tunings,a=2.94, b=0.91): 
   sfs, ems, kloc = 0, 1, 10
   for k,setting in project.items():
     if k == 'kloc':
@@ -66,9 +64,10 @@ def COCOMO2(project = {},
       else           : ems *= value
   return a * ems * kloc**(b + 0.01 * sfs)
 
-def _coc(proj,seed=1,n=1000): 
-  def guess(d):
-    return {k:any(x) for k,x in d.items()}
+def guess(d):
+  return {k:any(x) for k,x in d.items()}
+
+def _coc(proj,seed=1,n=1000):  
   rseed(seed)
   settings, estimates = ranges(), []
   for _ in xrange(n):
@@ -98,40 +97,53 @@ def demo1(): return dict()
 @ok
 def demo2(): return dict(kloc=xrange(2,11),docu=[2,3,4,5])
 
-_coc(demo1)
-_coc(demo2)
-exit()
+#_coc(demo1)
+#_coc(demo2)
+#exit()
 
-def keys(proj,seed=1,n=10000,border=0.75): 
+
+
+def keys(proj,seed=1,n=50,enough=0.75): 
   rseed(seed)
-  project0 = ranges()
+
+  
   lo, hi,log = {}, {}, []
   for _ in xrange(n):
-    est,how= COCOMO2(proj(),project0=project0)
-    log += [(est,how)]
-    for k,v in dict(kloc=how["kloc"],est=est).items():
+    settings = guess(ranges())
+    guessed  = guess(proj())
+    settings.update(guessed)
+    est  = COCOMO2(settings)
+    mad  = risks(settings)
+    kloc = settings["kloc"]
+    log += [(est,kloc,mad,guessed)]
+    for k,v in [('kloc',kloc),('est',est),('mad',mad)]:
       lo[k] = min(v, lo.get(k,   10**32))
       hi[k] = max(v, hi.get(k,-1*10**32))
-  for est,how in log:
-    est1  = norm(est,       "est", lo, hi)
-    kloc0 = norm(how["kloc"],"kloc",lo,hi) 
-    print(est1,lo["kloc"],hi["kloc"],how["kloc"],kloc0,kloc)
-    exit()
+  best=[]
+  rest=[]
+  for est0,kloc0,mad0,guessed in log:
+    est1  = norm(est0,  "est",  lo, hi)
+    kloc1 = norm(kloc0, "kloc", lo, hi) 
+    mad1  = norm(mad0,  "mad",  lo, hi) 
+    score = 1 - ((est1**2 + (1-kloc1)**2 + mad1) **0.5 / (3**0.5))
+    if score > enough: best += guessed
+    else: rest += guessed
+    print("kloc",kloc0,"est",est0,"mad",mad0,"=",score)
 
 def norm(v,x,lo,hi):
-  return (v - lo[x]) / (hi[x] - lo[x])
+  return (v - lo[x]) / (hi[x] - lo[x] + 0.0001)
 
 def risks(project):
   risk = 0
-  for (x1,x2),m in R.items()::
+  for (x1,x2),m in Mad.items():
     v1    = project[x1] 
     v2    = project[x2]
-    risk += m[v1-1][v2-2]
+    risk += m[v1 - 1][v2 - 2]
   return risk
 
-R={}
+Mad={}
 
-R[('sced','cplx')] = R[('sced','time')] = [
+Mad[('sced','cplx')] = Mad[('sced','time')] = [
  [0,0,0,1,2,4],
  [0,0,0,0,1,2],
  [0,0,0,0,0,1],
@@ -139,7 +151,7 @@ R[('sced','cplx')] = R[('sced','time')] = [
  [0,0,0,0,0,0],
  [0,0,0,0,0,0]]
 
-R[('sced','rely')] =  R[('sced','pvol')] = [
+Mad[('sced','rely')] =  Mad[('sced','pvol')] = [
  [0,0,0,1,2,0],
  [0,0,0,0,1,0],
  [0,0,0,0,0,0],
@@ -147,9 +159,9 @@ R[('sced','rely')] =  R[('sced','pvol')] = [
  [0,0,0,0,0,0],
  [0,0,0,0,0,0]]
 
-R[('ltex','pcap')] = R[('sced','acap')] = \
-R[('sced','pexp')] = R[('sced','pcap')] = \
-R[('sced','aexp')] = [
+Mad[('ltex','pcap')] = Mad[('sced','acap')] = \
+Mad[('sced','pexp')] = Mad[('sced','pcap')] = \
+Mad[('sced','aexp')] = [
  [4,2,1,0,0,0],
  [2,1,0,0,0,0],
  [1,0,0,0,0,0],
@@ -157,11 +169,11 @@ R[('sced','aexp')] = [
  [0,0,0,0,0,0],
  [0,0,0,0,0,0]]
 
-R[('sced','tool')] = R[('sced','ltex')] = \
-R[('sced','pmat')] = R[('pmat','acap')] = \
-R[('tool','acap')] = R[('tool','pcap')] = \
-R[('tool','pmat')] = R[('team','aexp')] = \
-R[('team','sced')] = R[('team','site')] = [
+Mad[('sced','tool')] = Mad[('sced','ltex')] = \
+Mad[('sced','Pmat')] = Mad[('Pmat','acap')] = \
+Mad[('tool','acap')] = Mad[('tool','pcap')] = \
+Mad[('tool','Pmat')] = Mad[('Team','aexp')] = \
+Mad[('Team','sced')] = Mad[('Team','site')] = [
  [2,1,0,0,0,0],
  [1,0,0,0,0,0],
  [0,0,0,0,0,0],
@@ -169,8 +181,8 @@ R[('team','sced')] = R[('team','site')] = [
  [0,0,0,0,0,0],
  [0,0,0,0,0,0]]
 
-R[('rely','acap')] = R[('rely','pmat')] = \
-R[('rely','pcap')] = [
+Mad[('rely','acap')] = Mad[('rely','Pmat')] = \
+Mad[('rely','pcap')] = [
  [0,0,0,0,0,0],
  [0,0,0,0,0,0],
  [1,0,0,0,0,0],
@@ -178,11 +190,11 @@ R[('rely','pcap')] = [
  [4,2,1,0,0,0],
  [0,0,0,0,0,0]]
 
-R[('cplx','acap')] = R[('cplx','pcap')] = \
-R[('cplx','tool')] = R[('stor','acap')] = \
-R[('time','acap')] = R[('ruse','aexp')] = \
-R[('ruse','ltex')] = R[('pmat','pcap')] = \
-R[('stor','pcap')] = R[('time','pcap')] = [
+Mad[('cplx','acap')] = Mad[('cplx','pcap')] = \
+Mad[('cplx','tool')] = Mad[('stor','acap')] = \
+Mad[('time','acap')] = Mad[('ruse','aexp')] = \
+Mad[('ruse','ltex')] = Mad[('Pmat','pcap')] = \
+Mad[('stor','pcap')] = Mad[('time','pcap')] = [
  [0,0,0,0,0,0],
  [0,0,0,0,0,0],
  [0,0,0,0,0,0],
@@ -190,7 +202,7 @@ R[('stor','pcap')] = R[('time','pcap')] = [
  [2,1,0,0,0,0],
  [4,2,1,0,0,0]]
 
-R[('pvol','pexp')] = [
+Mad[('pvol','pexp')] = [
  [0,0,0,0,0,0],
  [0,0,0,0,0,0],
  [0,0,0,0,0,0],
@@ -198,7 +210,7 @@ R[('pvol','pexp')] = [
  [2,1,0,0,0,0],
  [0,0,0,0,0,0]]
 
-R[('time','tool')] = [
+Mad[('time','tool')] = [
  [0,0,0,0,0,0],
  [0,0,0,0,0,0],
  [0,0,0,0,0,0],
@@ -208,7 +220,7 @@ R[('time','tool')] = [
 
 #_coc(proj=demo2); exit()
 
-#keys(demo2);
+keys(demo2);
 #exit()
 def COCONUT(training,          # list of projects
             a=10, b=1,         # initial  (a,b) guess

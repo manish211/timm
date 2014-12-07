@@ -1,0 +1,8 @@
+[Class]
+[Directional]->[Class]
+[Bidirectional]<->[Class]
+[Aggregation]+-[Thing]
+[Composition]++-[Thing]
+[Inheritance]^[Example]
+[Splash of{bg:orange}]-[Color{bg:blue}]
+[Full class|a;b;c|Method()]-[Unicøde Tëst]
