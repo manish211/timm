@@ -1,8 +1,18 @@
 \documentclass[14pt]{beamer}
-\usetheme{CambridgeUS}
+\definecolor{ncred}{HTML}{E51837}
+\usefonttheme[onlymath]{serif}
+\mode<presentation>
+{
+    \usetheme{CambridgeUS}
+    %\usefonttheme{professionalfonts} 
+    \setbeamertemplate{itemize item}{\color{ncred}$\blacksquare$}
+    \setbeamertemplate{itemize subitem}{\color{ncred}$\blacktriangleright$}
+}
+
 
  
-\definecolor{ncred}{HTML}{E51837}
+
+
 
  %\setbeamercolor*{palette secondary}{use=structure,fg=white,bg=red}
  \setbeamercolor*{palette tertiary}{use=structure,fg=white,bg=ncred}
@@ -12,9 +22,10 @@
 \usepackage{amssymb}
 \usepackage{graphicx}
 \usepackage{textpos}
-\usepackage{times}
+\usepackage{helvet}
+%\usepackage{helvetica}
 
-\author[Tim Menzies]{Tim Menzies\\\includegraphics[width=3cm]{CSClogo}} 
+\author[Tim Menzies]{Tim Menzies\\\vspace{10mm}\includegraphics[width=4cm]{CSClogo2}} 
 
 
 
@@ -28,8 +39,8 @@
 %\setbeamercovered{transparent} 
 \setbeamertemplate{navigation symbols}{} 
 %\logo{CSClogo}
-%\institute{} 
-%\date{} 
+\institute{Com Sci, NcState, USA} 
+%\date{\footnotesize\today} 
 %\subject{} 
 \begin{document}
 
@@ -45,6 +56,9 @@
 
 \begin{itemize}
 \item Thing1
+\begin{itemize}
+\item asda
+\end{itemize}
 \item Thing2
 \end{itemize}
 \end{frame}
