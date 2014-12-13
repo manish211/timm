@@ -1,0 +1,2 @@
+alias emacs="emacs -q -l dotemacs"
+PS1="ME> "

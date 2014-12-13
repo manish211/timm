@@ -4,15 +4,36 @@ sys.dont_write_bytecode = True
 
 any = random.choice
 rseed = random.seed
+
+## lib
+
+def mult(lst): return reduce(lambda x,y: x*y,lst)
+
+def ranges(t=None):
+  t = t or Coc2tunings
+  out= {k:[n+1 for n,v in enumerate(lst) if v]
+          for k,lst in t.items()}
+  out["kloc"] = xrange(2,1001)
+  return out
+
+def f7(z)   : return '%7.1f' % z
+def pretty(txt,x): 
+  print(txt+',',', '.join(map(f7,xtiles(x))))
+
+def xtiles(lst,div=10,parts=[1,3,5,7,9]):
+  v   = lambda x: lst[x][0]
+  lst = sorted(lst)
+  q   = len(lst) // div
+  return [v(0)]+[v(q*n) for n in parts]+[v(-1)]
+
+## Cocomo
 _  = None;  Coc2tunings = dict(
 #              vlow  low   nom   high  vhigh  xhigh   
-sf= dict(
-  Flex=[        5.07, 4.05, 3.04, 2.03, 1.01,     _],
-  Pmat=[        7.80, 6.24, 4.68, 3.12, 1.56,     _],
-  Prec=[        6.20, 4.96, 3.72, 2.48, 1.24,     _],
-  Resl=[        7.07, 5.65, 4.24, 2.83, 1.41,     _],
-  Team=[        5.48, 4.38, 3.29, 2.19, 1.01,     _]),
-em= dict(
+  Flex=[        5.07, 4.05, 3.04, 2.03, 1.01,    _],
+  Pmat=[        7.80, 6.24, 4.68, 3.12, 1.56,    _],
+  Prec=[        6.20, 4.96, 3.72, 2.48, 1.24,    _],
+  Resl=[        7.07, 5.65, 4.24, 2.83, 1.41,    _],
+  Team=[        5.48, 4.38, 3.29, 2.19, 1.01,    _],
   acap=[        1.42, 1.19, 1.00, 0.85, 0.71,    _],
   aexp=[        1.22, 1.10, 1.00, 0.88, 0.81,    _],
   cplx=[        0.73, 0.87, 1.00, 1.17, 1.34, 1.74],
@@ -21,7 +42,7 @@ em= dict(
   ltex=[        1.20, 1.09, 1.00, 0.91, 0.84,    _],
   pcap=[        1.34, 1.15, 1.00, 0.88, 0.76,    _], 
   pcon=[        1.29, 1.12, 1.00, 0.90, 0.81,    _],
-  plex=[        1.19, 1.09, 1.00, 0.91, 0.85,    _], 
+  pexp=[        1.19, 1.09, 1.00, 0.91, 0.85,    _], 
   pvol=[           _, 0.87, 1.00, 1.15, 1.30,    _],
   rely=[        0.82, 0.92, 1.00, 1.10, 1.26,    _],
   ruse=[           _, 0.95, 1.00, 1.07, 1.15, 1.24],
@@ -29,79 +50,178 @@ em= dict(
   site=[        1.22, 1.09, 1.00, 0.93, 0.86, 0.80], 
   stor=[           _,    _, 1.00, 1.05, 1.17, 1.46],
   time=[           _,    _, 1.00, 1.11, 1.29, 1.63],
-  tool=[        1.17, 1.09, 1.00, 0.90, 0.78,    _]))
-
-def proj(this={},t=Coc2tunings):
-  def counts(lst): 
-    return [n+1 for n,v in enumerate(lst) if v]
-  out = {}
-  for k1 in ["sf","em"]:
-    out[k1] = {k2:counts(vs) 
-                 for k2,vs in t[k1].items()}
-  out.update(this)
-  out["kloc"]=xrange(2,2000)
-  return out
+  tool=[        1.17, 1.09, 1.00, 0.90, 0.78,    _])
  
-def COCOMO2(project = {}, 
-            a = 2.94, b = 0.91,  # defaults
-            t= Coc2tunings): # defaults, see above
-  val = lambda x,y: project.get(x,y) - 1
-  sfs = [ t["sf"][x][ val(x,3) ] for x in t["sf"] ]
-  ems = [ t["em"][x][ val(x,3) ] for x in t["em"] ]
-  kloc =  val("kloc",10)
-  return a * mult(ems) * kloc**(b + 0.01*add(sfs)) 
+def COCOMO2(project, t=Coc2tunings,a=2.94, b=0.91): 
+  sfs, ems, kloc = 0, 1, 10
+  for k,setting in project.items():
+    if k == 'kloc':
+      kloc = setting
+    else:
+      values = t[k]
+      value  = values[setting - 1]
+      if k[0].isupper: sfs += value
+      else           : ems *= value
+  return a * ems * kloc**(b + 0.01 * sfs)
 
-def mult(lst): return reduce(lambda x,y:x*y,lst)
-def add( lst): return reduce(lambda x,y:x+y,lst)
+def guess(d):
+  return {k:any(x) for k,x in d.items()}
 
-def report(lst):
-  lst = sorted(lst)
-  q = len(lst) // 4
-  return lst[q*2], lst[q*3] - lst[q]
-
-def COCOMO2s(n=100, this={}):
-  ranges = proj(this)
-  for _ in xrange(n):
-    out = {}
-    for k1 in ["sf","em"]:
-      out[k1] = {k2:any(v) for k2,v in ranges[k1].items()}
-    yield out
-
-
-def _coc(seed=1):
+def _coc(proj,seed=1,n=1000):  
   rseed(seed)
-  for one in COCOMO2s(10, dict(
-      acap=[4,5], 
-      stor=[3,4],
-      pmat=[1,2],
-      kloc=xrange(135,200))):
-    print("\nsf",one["sf"])
-    print("em",one["em"])
-
-_coc(); exit()
-
-def first(lst): return lst[0]
-def second(lst): return lst[1]
-
-def keys(**project):
-  told = []
-  n = 1000
-  n1 = 1000 // 5
+  settings, estimates = ranges(), []
   for _ in xrange(n):
-    one = {key:any(val) for key,val in project.items()}
-    score =  COCOMO2(one)
-    told += [(score,one)]
-  told = sorted(told)
-  best,rest = told[:n1],told[n1:]
-  print(map(second,best))
-  print(report(map(first,best)))
-  print(report(map(first,rest)))
+    settings = guess(settings)
+    guessed  = guess(proj())
+    settings.update(guessed)
+    estimates += [COCOMO2(settings),guessed]
+  pretty(proj.__name__, estimates)
+ 
+def ok(f):
+  all    = ranges()
+  prefix = f.__name__
+  for k,some in f().items():
+    if not k in all:
+      raise KeyError( '%s.%s' % (prefix,k))
+    else:
+      possible   = all[k]
+      impossible = list(set(some) - set(possible))
+      if impossible:
+        raise IndexError( '%s.%s=%s' % 
+                          (prefix,k,impossible))
+  return f
 
-keys(  acap= [4,5], 
-        stor= [3,4],
-        pmat= [1,2],
-        kloc=range(135,200))
+@ok
+def demo1(): return dict()
 
+@ok
+def demo2(): return dict(kloc=xrange(2,11),docu=[2,3,4,5])
+
+#_coc(demo1)
+#_coc(demo2)
+#exit()
+
+
+
+def keys(proj,seed=1,n=50,enough=0.75): 
+  rseed(seed)
+
+  
+  lo, hi,log = {}, {}, []
+  for _ in xrange(n):
+    settings = guess(ranges())
+    guessed  = guess(proj())
+    settings.update(guessed)
+    est  = COCOMO2(settings)
+    mad  = risks(settings)
+    kloc = settings["kloc"]
+    log += [(est,kloc,mad,guessed)]
+    for k,v in [('kloc',kloc),('est',est),('mad',mad)]:
+      lo[k] = min(v, lo.get(k,   10**32))
+      hi[k] = max(v, hi.get(k,-1*10**32))
+  best=[]
+  rest=[]
+  for est0,kloc0,mad0,guessed in log:
+    est1  = norm(est0,  "est",  lo, hi)
+    kloc1 = norm(kloc0, "kloc", lo, hi) 
+    mad1  = norm(mad0,  "mad",  lo, hi) 
+    score = 1 - ((est1**2 + (1-kloc1)**2 + mad1) **0.5 / (3**0.5))
+    if score > enough: best += guessed
+    else: rest += guessed
+    print("kloc",kloc0,"est",est0,"mad",mad0,"=",score)
+
+def norm(v,x,lo,hi):
+  return (v - lo[x]) / (hi[x] - lo[x] + 0.0001)
+
+def risks(project):
+  risk = 0
+  for (x1,x2),m in Mad.items():
+    v1    = project[x1] 
+    v2    = project[x2]
+    risk += m[v1 - 1][v2 - 2]
+  return risk
+
+Mad={}
+
+Mad[('sced','cplx')] = Mad[('sced','time')] = [
+ [0,0,0,1,2,4],
+ [0,0,0,0,1,2],
+ [0,0,0,0,0,1],
+ [0,0,0,0,0,0],
+ [0,0,0,0,0,0],
+ [0,0,0,0,0,0]]
+
+Mad[('sced','rely')] =  Mad[('sced','pvol')] = [
+ [0,0,0,1,2,0],
+ [0,0,0,0,1,0],
+ [0,0,0,0,0,0],
+ [0,0,0,0,0,0],
+ [0,0,0,0,0,0],
+ [0,0,0,0,0,0]]
+
+Mad[('ltex','pcap')] = Mad[('sced','acap')] = \
+Mad[('sced','pexp')] = Mad[('sced','pcap')] = \
+Mad[('sced','aexp')] = [
+ [4,2,1,0,0,0],
+ [2,1,0,0,0,0],
+ [1,0,0,0,0,0],
+ [0,0,0,0,0,0],
+ [0,0,0,0,0,0],
+ [0,0,0,0,0,0]]
+
+Mad[('sced','tool')] = Mad[('sced','ltex')] = \
+Mad[('sced','Pmat')] = Mad[('Pmat','acap')] = \
+Mad[('tool','acap')] = Mad[('tool','pcap')] = \
+Mad[('tool','Pmat')] = Mad[('Team','aexp')] = \
+Mad[('Team','sced')] = Mad[('Team','site')] = [
+ [2,1,0,0,0,0],
+ [1,0,0,0,0,0],
+ [0,0,0,0,0,0],
+ [0,0,0,0,0,0],
+ [0,0,0,0,0,0],
+ [0,0,0,0,0,0]]
+
+Mad[('rely','acap')] = Mad[('rely','Pmat')] = \
+Mad[('rely','pcap')] = [
+ [0,0,0,0,0,0],
+ [0,0,0,0,0,0],
+ [1,0,0,0,0,0],
+ [2,1,0,0,0,0],
+ [4,2,1,0,0,0],
+ [0,0,0,0,0,0]]
+
+Mad[('cplx','acap')] = Mad[('cplx','pcap')] = \
+Mad[('cplx','tool')] = Mad[('stor','acap')] = \
+Mad[('time','acap')] = Mad[('ruse','aexp')] = \
+Mad[('ruse','ltex')] = Mad[('Pmat','pcap')] = \
+Mad[('stor','pcap')] = Mad[('time','pcap')] = [
+ [0,0,0,0,0,0],
+ [0,0,0,0,0,0],
+ [0,0,0,0,0,0],
+ [1,0,0,0,0,0],
+ [2,1,0,0,0,0],
+ [4,2,1,0,0,0]]
+
+Mad[('pvol','pexp')] = [
+ [0,0,0,0,0,0],
+ [0,0,0,0,0,0],
+ [0,0,0,0,0,0],
+ [1,0,0,0,0,0],
+ [2,1,0,0,0,0],
+ [0,0,0,0,0,0]]
+
+Mad[('time','tool')] = [
+ [0,0,0,0,0,0],
+ [0,0,0,0,0,0],
+ [0,0,0,0,0,0],
+ [0,0,0,0,0,0],
+ [1,0,0,0,0,0],
+ [2,1,0,0,0,0]]
+
+#_coc(proj=demo2); exit()
+
+keys(demo2);
+#exit()
 def COCONUT(training,          # list of projects
             a=10, b=1,         # initial  (a,b) guess
             deltaA    = 10,    # range of "a" guesses 
