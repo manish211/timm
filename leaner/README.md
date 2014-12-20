@@ -15,13 +15,11 @@ Copyright (C) 2015 Tim Menzies <tim.menzies@gmail.com>
 
 + Don't worry about people stealing your ideas. If
   your ideas are any good, you'll have to ram them
-  down people's throats.   
-  __-- Howard Aiken__
+  down people's throats. _-- Howard Aiken_
 + To reach a wider audience, try pen source, open
   door, special sauce. That is, give away your tools
   to get a foot in the door, where you can sell the
-  special sauce that makes the tools run better.   
-  __-- Tim Menzies__
+  special sauce that makes the tools run better. _-- Tim Menzies_
  
 Everyone is permitted to copy and distribute
 verbatim or modified copies of this license
