@@ -19,6 +19,8 @@ ____
 big isn't it
 
 ````python
+from config import *
 
-def aa(bb): return bb+1
+print(the)
+
 ````

@@ -9,5 +9,7 @@ sys.dont_write_bytecode =True
 big isn't it
 
 """
+from config import *
 
-def aa(bb): return bb+1
+print(the)
+

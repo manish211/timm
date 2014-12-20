@@ -1,6 +1,12 @@
 # This is LEANER
 
-The least Python I can write to illustrate the ABCs of data mining.
+"I would not give a fig for the simplicity this side
+of complexity, but I would give my life for the
+simplicity on the other side of complexity."  
+-- _Oliver Wendell Holmes Jr._
 
-## Contents
+LEANER is the
+least Python I can write to illustrate the most
+about data mining.
+
 

@@ -26,7 +26,7 @@ status:
 
 README.md : etc/readme.md etc/license.md $(md) etc/toc1.awk
 	@cat $< > $@
-	@echo "" >> $@
+	@printf "\n\n## Contents\n\n" >> $@
 	@$(foreach f,$(py),\
 		gawk -f etc/toc1.awk src/$f >> $@;)
 	@cat etc/license.md  >> $@
