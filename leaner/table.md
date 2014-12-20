@@ -8,7 +8,7 @@ This file is part of ML101, where say that data mining is easy:
 
 Want to know more? 
 
-+ Download [table.py](https://github.com/ai-se/timm/blob/master/ml101/src/table.py)
++ Download [table.py](https://github.com/ai-se/timm/blob/master/leaner/src/table.py)
 + Read our [home](README.md) page.
 
 ____

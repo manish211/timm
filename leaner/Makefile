@@ -1,6 +1,6 @@
 py=$(shell cd src; ls *.py)
 md=$(subst src/,,$(subst .py,.md,$(py)))
-url="https://github.com/ai-se/timm/blob/master/leanlearn"
+url="https://github.com/ai-se/timm/blob/master/leaner"
 
 all: publish commit
 
@@ -29,7 +29,7 @@ README.md : etc/readme.txt $(md) etc/toc1.awk
 	@echo "" >> $@
 	@$(foreach f,$(py),\
 		gawk -f etc/toc1.awk src/$f >> $@;)
-	@echo "" >> $@
+	@cat etc/license.txt  >> $@
 	git add $@
 
 publish: $(md) README.md 
