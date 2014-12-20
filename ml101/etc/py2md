@@ -6,18 +6,21 @@ file=$1
 base=`basename $1`
 stem="${base%.*}"
 src="${stem}.py"
-url="https://github.com/ai-se/timm/m101"
+url=$2
 
 cat<<EOF
 # $stem
 
-This is [$src]($url/$file), part of ML101 where say that data mining is easy:
+This file is part of ML101, where say that data mining is easy:
 
 1. Find some crap;
 2. Cut the crap;
 3. Go to step 1.
 
-Want to know more? Read our [home](README.md) page.
+Want to know more? 
+
++ Download [$src]($url/$file)
++ Read our [home](README.md) page.
 
 ____
 

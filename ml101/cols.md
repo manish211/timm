@@ -1,12 +1,15 @@
 # cols
 
-This is [cols.py](https://github.com/ai-se/timm/m101/src/cols.py), part of ML101 where say that data mining is easy:
+This file is part of ML101, where say that data mining is easy:
 
 1. Find some crap;
 2. Cut the crap;
 3. Go to step 1.
 
-Want to know more? Read our [home](README.md) page.
+Want to know more? 
+
++ Download [cols.py](https://github.com/ai-se/blob/master/timm/m101/src/cols.py)
++ Read our [home](README.md) page.
 
 ____
 
