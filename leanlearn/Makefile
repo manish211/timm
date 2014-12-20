@@ -1,6 +1,6 @@
 py=$(shell cd src; ls *.py)
 md=$(subst src/,,$(subst .py,.md,$(py)))
-url="https://github.com/ai-se/blob/master/timm/m101"
+url="https://github.com/ai-se/timm/blob/master/leanlearn"
 
 all: publish commit
 

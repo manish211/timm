@@ -1,4 +1,4 @@
-# cols
+# table
 
 This file is part of ML101, where say that data mining is easy:
 
@@ -8,7 +8,7 @@ This file is part of ML101, where say that data mining is easy:
 
 Want to know more? 
 
-+ Download [cols.py](https://github.com/ai-se/blob/master/timm/m101/src/cols.py)
++ Download [table.py](https://github.com/ai-se/timm/blob/master/ml101/src/table.py)
 + Read our [home](README.md) page.
 
 ____
