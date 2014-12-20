@@ -1,0 +1,48 @@
+#!/bin/bash
+
+#!/usr/bin/bash 
+
+file=$1
+base=`basename $1`
+stem="${base%.*}"
+src="${stem}.py"
+url=$2
+
+cat<<EOF
+# $stem
+
+This file is part of ML101, where say that data mining is easy:
+
+1. Find some crap;
+2. Cut the crap;
+3. Go to step 1.
+
+Want to know more? 
+
++ Download [$src]($url/$file)
++ Read our [home](README.md) page.
+
+____
+
+EOF
+cat $1 |
+gawk --source '
+BEGIN { First = 1
+        In = 1}
+/^"""</,/^>"""/ { next }
+
+/^"""/ { In = 1 - In
+         if (In) 
+	     print "````python"
+         else
+	     if (First)
+               First = 0
+             else
+               print "````"
+         next
+       }
+! First { print $0 }
+END { if (In) print "````" }
+' 
+ 
+
