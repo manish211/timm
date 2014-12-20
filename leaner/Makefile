@@ -24,12 +24,12 @@ status:
 	@bash etc/py2md $< $(url) > $@
 	git add $@
 
-README.md : etc/readme.txt $(md) etc/toc1.awk
+README.md : etc/readme.md etc/license.md $(md) etc/toc1.awk
 	@cat $< > $@
 	@echo "" >> $@
 	@$(foreach f,$(py),\
 		gawk -f etc/toc1.awk src/$f >> $@;)
-	@cat etc/license.txt  >> $@
+	@cat etc/license.md  >> $@
 	git add $@
 
 publish: $(md) README.md 
