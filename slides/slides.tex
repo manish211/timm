@@ -1,0 +1,66 @@
+\documentclass[14pt]{beamer}
+\definecolor{ncred}{HTML}{E51837}
+\usefonttheme[onlymath]{serif}
+\mode<presentation>
+{
+    \usetheme{CambridgeUS}
+    %\usefonttheme{professionalfonts} 
+    \setbeamertemplate{itemize item}{\color{ncred}$\blacksquare$}
+    \setbeamertemplate{itemize subitem}{\color{ncred}$\blacktriangleright$}
+}
+
+
+ 
+
+
+
+ %\setbeamercolor*{palette secondary}{use=structure,fg=white,bg=red}
+ \setbeamercolor*{palette tertiary}{use=structure,fg=white,bg=ncred}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{textpos}
+\usepackage{helvet}
+%\usepackage{helvetica}
+
+\author[Tim Menzies]{Tim Menzies\\\vspace{10mm}\includegraphics[width=4cm]{CSClogo2}} 
+
+
+
+\addtobeamertemplate{frametitle}{}{%
+\begin{textblock*}{100mm}(.78\textwidth,6.3cm)
+\includegraphics[width=3cm]{CSClogo}
+\end{textblock*}}
+
+
+\title{Loving it}
+%\setbeamercovered{transparent} 
+\setbeamertemplate{navigation symbols}{} 
+%\logo{CSClogo}
+\institute{Com Sci, NcState, USA} 
+%\date{\footnotesize\today} 
+%\subject{} 
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+%\begin{frame}
+%\tableofcontents
+%\end{frame}
+
+\begin{frame}{Stuff to say}
+
+\begin{itemize}
+\item Thing1
+\begin{itemize}
+\item asda
+\end{itemize}
+\item Thing2
+\end{itemize}
+\end{frame}
+
+\end{document}

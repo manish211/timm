@@ -20,8 +20,7 @@ class o:
   def __repr__(i)    :  
     keys = [k for k in sorted(i.d().keys()) 
             if k[0] is not "_"]
-    print(keys)
-    show = [':%s=%s' % (k, name(i.d()[k])) 
+    show = [':%s = %s' % (k, name(i.d()[k])) 
             for k in keys]
     return '{'+' '.join(show)+'}'
 
