@@ -101,17 +101,41 @@ def demo2(): return dict(kloc=xrange(2,11),docu=[2,3,4,5])
 #_coc(demo2)
 #exit()
 
+def run(n,proj):
+  return [step(proj) for _ in xrange(n)]
+
+def step(proj):
+  settings = guess(ranges())
+  guessed  = guess(proj())
+  settings.update(guessed)
+  effort = COCOMO2(settings)
+  mad    = risks(settings)
+  kloc   = settings["kloc"]
+  return o(guessed=guessed,est=effort,
+           kloc=kloc,mad=mad)
+
+def norm(logs):
+  def n(v):
+    return (val - lo[n])/(hi[n] - lo[n] + 0.0001)
+  def ns(lst):
+    return [n(v) for n,val in enumerate(lst)]
+  m = len(logs[0])
+  lo = [   10**32] * m
+  hi = [-1*10**32] * m
+  for log in logs:
+    for n,val in enumerate(log):
+      lo[n] = min(val, lo[n])
+      hi[n] = min(val, hi[n])
+  return [ns(log), for log in logs]
+
+def scores(
+      
+    
 def keys(proj,seed=1,n=1000,enough=0.75): 
   rseed(seed)
   lo, hi,log = {}, {}, []
   for _ in xrange(n):
-    settings = guess(ranges())
-    guessed  = guess(proj())
-    settings.update(guessed)
-    est  = COCOMO2(settings)
-    mad  = risks(settings)
-    kloc = settings["kloc"]
-    log += [(est,kloc,mad,guessed)]
+    log = run(n,proj)
     for k,v in [('kloc',kloc),('est',est),('mad',mad)]:
       lo[k] = min(v, lo.get(k,   10**32))
       hi[k] = max(v, hi.get(k,-1*10**32))
@@ -141,7 +165,6 @@ def keys(proj,seed=1,n=1000,enough=0.75):
       score = b**2/(b+r)
       br += [(score,(k,v))]
   print(sorted(br))
-
 
 def norm(v,x,lo,hi):
   return (v - lo[x]) / (hi[x] - lo[x] + 0.0001)
@@ -231,10 +254,7 @@ Mad[('time','tool')] = [
  [1,0,0,0,0,0],
  [2,1,0,0,0,0]]
 
-#_coc(proj=demo2); exit()
 
-keys(demo2);
-#exit()
 def COCONUT(training,          # list of projects
             a=10, b=1,         # initial  (a,b) guess
             deltaA    = 10,    # range of "a" guesses 
@@ -380,3 +400,4 @@ def nasa93():
 	[h,h,h,vh,n,h,n,vh,n,n,vh,vh,h,n,n,n,n,l,l,n,n,n,  3.0, 38,231,12.0],
 	])
 
+print(step(demo1))
