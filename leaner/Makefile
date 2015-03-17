@@ -22,6 +22,7 @@ status:
 
 ./%.md : src/%.py
 	@bash etc/py2md $< $(url) > $@
+	echo $@
 	git add $@
 
 README.md : etc/readme.md etc/license.md $(md) etc/toc1.awk
