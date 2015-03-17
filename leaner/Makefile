@@ -22,7 +22,8 @@ status:
 
 ./%.md : src/%.py
 	@bash etc/py2md $< $(url) > $@
-	echo "Eerewq",$@
+	@printf "Eerewq"
+	@printf $@
 	git add $@
 
 README.md : etc/readme.md etc/license.md $(md) etc/toc1.awk
